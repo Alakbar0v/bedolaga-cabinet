@@ -88,3 +88,34 @@ describe('openAppScheme', () => {
     expect(createdIframes).toHaveLength(1);
   });
 });
+
+describe('openAppScheme guard (defense-in-depth)', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it.each([
+    'javascript:alert(1)',
+    'javascript://%0aalert(1)',
+    'data:text/html,<script>alert(1)</script>',
+    'vbscript://x',
+    'file:///etc/passwd',
+    'intent://scan/#Intent;end',
+    'no-scheme-at-all',
+  ])('never navigates for dangerous input (%s)', (url) => {
+    const { location, createdIframes } = setup({
+      userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) Safari/605.1',
+    });
+    openAppScheme(url);
+    expect(location.href).toBe('');
+    expect(createdIframes).toHaveLength(0);
+  });
+
+  it('still opens valid app schemes after the guard', () => {
+    const { location } = setup({
+      userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) Safari/605.1',
+    });
+    openAppScheme('happ://add/https://sp.example.com/abc');
+    expect(location.href).toBe('happ://add/https://sp.example.com/abc');
+  });
+});
