@@ -697,7 +697,9 @@
         "month": "monthly",
         "year": "yearly"
       },
-      "autopayHint": "Your subscription will be charged automatically via SBP, no card required"
+      "autopayHint": "Your subscription will be charged automatically via SBP, no card required",
+      "purchaseButton": "⚡ Subscribe with SBP auto-payment",
+      "purchaseHint": "First charge confirms the binding in your bank app; renewals are charged automatically per the tariff cadence."
     },
     "backToList": "Back to subscriptions",
     "confirmDelete": "Delete subscription?",

@@ -378,6 +378,22 @@ export const subscriptionApi = {
     return response.data;
   },
 
+  /**
+   * Оформление подписки на тариф через СБП-автопродление: первое списание =
+   * подтверждение привязки в банке. Для нового тарифа бэкенд создаёт
+   * неактивную заготовку, которую активирует первый чардж.
+   */
+  purchaseWithSbpRecurring: async (
+    tariffId: number,
+  ): Promise<{ status: string; redirect_url: string | null; subscription_id: number }> => {
+    const response = await apiClient.post(
+      '/cabinet/subscription/platega-recurrent/purchase',
+      {},
+      { params: { tariff_id: tariffId } },
+    );
+    return response.data;
+  },
+
   // ── Trial ───────────────────────────────────────────────────────────
 
   getTrialInfo: async (): Promise<TrialInfo> => {

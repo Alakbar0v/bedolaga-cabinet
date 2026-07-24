@@ -596,7 +596,9 @@
         "month": "每月",
         "year": "每年"
       },
-      "autopayHint": "您的订阅将通过 SBP 自动扣款，无需保存银行卡"
+      "autopayHint": "您的订阅将通过 SBP 自动扣款，无需保存银行卡",
+      "purchaseButton": "⚡ 通过SBP自动扣款订阅",
+      "purchaseHint": "首次扣款即在银行应用中确认绑定；续费将按资费周期自动扣款。"
     },
     "backToList": "返回订阅列表",
     "confirmDelete": "删除订阅？",
