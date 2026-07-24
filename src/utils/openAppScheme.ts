@@ -31,38 +31,15 @@ function isIOS(): boolean {
   return navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
 }
 
-// Schemes that must never reach a navigation sink even if a caller forgot to
-// validate: javascript:/data: are XSS vectors, the rest are abuse surfaces.
-// Mirrors isSafeAppLink in public/miniapp/redirect.html.
-const BLOCKED_SCHEMES = new Set([
-  'javascript',
-  'data',
-  'vbscript',
-  'file',
-  'blob',
-  'about',
-  'intent',
-  'content',
-  'filesystem',
-]);
-
-/**
- * Defense-in-depth: callers (DeepLinkRedirect allowlist, Connection config)
- * validate upstream, but the utility itself must not trust its input — a
- * missed validation at a future call site would otherwise become client-side
- * XSS via `location.href = 'javascript:…'`.
- */
-function isSafeToOpen(url: string): boolean {
-  const match = url
-    .trim()
-    .toLowerCase()
-    .match(/^([a-z][a-z0-9+.-]*):\/\//);
-  if (!match) return false;
-  return !BLOCKED_SCHEMES.has(match[1]);
-}
-
 export function openAppScheme(url: string): void {
-  if (!isSafeToOpen(url)) return;
+  // Defense-in-depth: callers (DeepLinkRedirect allowlist, Connection config)
+  // validate upstream, but the utility itself must not trust its input — a
+  // missed validation at a future call site would otherwise become client-side
+  // XSS via `location.href = 'javascript:…'`. Both guards are INLINE
+  // prefix-anchored RegExp tests so CodeQL recognizes them as taint barriers
+  // (js/xss, js/client-side-unvalidated-url-redirection).
+  if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(url)) return;
+  if (/^(javascript|data|vbscript|file|blob|about|intent|content|filesystem):/i.test(url)) return;
 
   const isHttp = /^https?:\/\//i.test(url);
   if (isHttp) {
