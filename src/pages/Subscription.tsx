@@ -1177,100 +1177,107 @@ export default function Subscription() {
                     border: `1px solid ${g.innerBorder}`,
                   }}
                 >
-                  <div className="text-sm font-semibold text-dark-50">
-                    {t('subscription.sbpRecurring.title')}
-                  </div>
-
-                  {sbpUiStateValue === 'off' && (
-                    <>
-                      <div className="mt-0.5 text-[11px] text-dark-50/30">
-                        {t('subscription.sbpRecurring.autopayHint')}
+                  {/* Заголовок и статус слева, компактное действие справа —
+                      зеркально соседнему тогглу «Автопродление». На мобиле
+                      кнопка падает вниз на всю ширину (w-full sm:w-auto). */}
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="min-w-0">
+                      <div className="text-sm font-semibold text-dark-50">
+                        {t('subscription.sbpRecurring.title')}
                       </div>
-                      <button
-                        onClick={() => enableSbpMutation.mutate()}
-                        disabled={enableSbpMutation.isPending}
-                        className="mt-3 w-full rounded-xl bg-accent-500 px-4 py-2.5 text-sm font-medium text-on-accent transition-opacity disabled:opacity-50"
-                      >
-                        {enableSbpMutation.isPending ? (
-                          <span className="mx-auto block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                        ) : (
-                          t('subscription.sbpRecurring.connect')
-                        )}
-                      </button>
-                    </>
-                  )}
 
-                  {sbpUiStateValue === 'pending' && (
-                    <>
-                      <div className="mt-0.5 text-[11px] text-dark-50/30">
-                        {t('subscription.sbpRecurring.statusPending')}
-                      </div>
-                      {sbpInfo?.redirect_url && (
-                        <button
-                          onClick={() => {
-                            if (sbpInfo.redirect_url) {
-                              openPaymentUrl(sbpInfo.redirect_url, platform, openLink);
-                            }
-                          }}
-                          className="mt-3 w-full rounded-xl bg-accent-500 px-4 py-2.5 text-sm font-medium text-on-accent transition-opacity"
-                        >
-                          {t('subscription.sbpRecurring.confirmInBank')}
-                        </button>
-                      )}
-                      <button
-                        onClick={handleCancelSbp}
-                        disabled={cancelSbpMutation.isPending}
-                        className="mt-2 text-[11px] font-medium transition-colors disabled:opacity-50"
-                        style={{ color: 'rgb(var(--color-critical-500))' }}
-                      >
-                        {t('subscription.sbpRecurring.cancel')}
-                      </button>
-                    </>
-                  )}
-
-                  {sbpUiStateValue === 'active' && sbpInfo && (
-                    <>
-                      <div className="mt-0.5 text-[11px] text-dark-50/30">
-                        {t('subscription.sbpRecurring.amountPerInterval', {
-                          amount: formatAmount((sbpInfo.amount_kopeks ?? 0) / 100),
-                          interval: t(sbpIntervalLabelKey(sbpInfo.interval)),
-                        })}
-                      </div>
-                      {sbpInfo.next_charge_at && (
+                      {sbpUiStateValue === 'off' && (
                         <div className="mt-0.5 text-[11px] text-dark-50/30">
-                          {t('subscription.sbpRecurring.nextCharge', {
-                            date: new Date(sbpInfo.next_charge_at).toLocaleDateString(uiLocale(), {
-                              day: '2-digit',
-                              month: '2-digit',
-                              year: 'numeric',
-                            }),
-                          })}
+                          {t('subscription.sbpRecurring.autopayHint')}
                         </div>
                       )}
-                      <button
-                        onClick={handleCancelSbp}
-                        disabled={cancelSbpMutation.isPending}
-                        className="mt-3 w-full rounded-xl border border-error-500/30 bg-error-500/10 px-4 py-2.5 text-sm font-medium text-error-400 transition-colors hover:bg-error-500/20 disabled:opacity-50"
-                      >
-                        {t('subscription.sbpRecurring.cancel')}
-                      </button>
-                    </>
-                  )}
+                      {sbpUiStateValue === 'pending' && (
+                        <div className="mt-0.5 text-[11px] text-dark-50/30">
+                          {t('subscription.sbpRecurring.statusPending')}
+                        </div>
+                      )}
+                      {sbpUiStateValue === 'active' && sbpInfo && (
+                        <>
+                          <div className="mt-0.5 text-[11px] text-dark-50/30">
+                            {t('subscription.sbpRecurring.amountPerInterval', {
+                              amount: formatAmount((sbpInfo.amount_kopeks ?? 0) / 100),
+                              interval: t(sbpIntervalLabelKey(sbpInfo.interval)),
+                            })}
+                          </div>
+                          {sbpInfo.next_charge_at && (
+                            <div className="mt-0.5 text-[11px] text-dark-50/30">
+                              {t('subscription.sbpRecurring.nextCharge', {
+                                date: new Date(sbpInfo.next_charge_at).toLocaleDateString(
+                                  uiLocale(),
+                                  {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric',
+                                  },
+                                ),
+                              })}
+                            </div>
+                          )}
+                        </>
+                      )}
+                      {sbpUiStateValue === 'past_due' && (
+                        <div className="mt-0.5 text-[11px] font-medium text-warning-400">
+                          {t('subscription.sbpRecurring.statusPastDue')}
+                        </div>
+                      )}
+                    </div>
 
-                  {sbpUiStateValue === 'past_due' && (
-                    <>
-                      <div className="mt-0.5 text-[11px] font-medium text-warning-400">
-                        {t('subscription.sbpRecurring.statusPastDue')}
-                      </div>
-                      <button
-                        onClick={handleCancelSbp}
-                        disabled={cancelSbpMutation.isPending}
-                        className="mt-3 w-full rounded-xl border border-error-500/30 bg-error-500/10 px-4 py-2.5 text-sm font-medium text-error-400 transition-colors hover:bg-error-500/20 disabled:opacity-50"
-                      >
-                        {t('subscription.sbpRecurring.cancel')}
-                      </button>
-                    </>
-                  )}
+                    <div className="flex shrink-0 flex-col gap-2 sm:items-end">
+                      {sbpUiStateValue === 'off' && (
+                        <button
+                          onClick={() => enableSbpMutation.mutate()}
+                          disabled={enableSbpMutation.isPending}
+                          className="w-full whitespace-nowrap rounded-xl bg-accent-500 px-5 py-2.5 text-sm font-medium text-on-accent transition-opacity disabled:opacity-50 sm:w-auto"
+                        >
+                          {enableSbpMutation.isPending ? (
+                            <span className="mx-auto block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                          ) : (
+                            t('subscription.sbpRecurring.connect')
+                          )}
+                        </button>
+                      )}
+
+                      {sbpUiStateValue === 'pending' && (
+                        <>
+                          {sbpInfo?.redirect_url && (
+                            <button
+                              onClick={() => {
+                                if (sbpInfo.redirect_url) {
+                                  openPaymentUrl(sbpInfo.redirect_url, platform, openLink);
+                                }
+                              }}
+                              className="w-full whitespace-nowrap rounded-xl bg-accent-500 px-5 py-2.5 text-sm font-medium text-on-accent transition-opacity sm:w-auto"
+                            >
+                              {t('subscription.sbpRecurring.confirmInBank')}
+                            </button>
+                          )}
+                          <button
+                            onClick={handleCancelSbp}
+                            disabled={cancelSbpMutation.isPending}
+                            className="text-[11px] font-medium transition-colors disabled:opacity-50 sm:text-right"
+                            style={{ color: 'rgb(var(--color-critical-500))' }}
+                          >
+                            {t('subscription.sbpRecurring.cancel')}
+                          </button>
+                        </>
+                      )}
+
+                      {(sbpUiStateValue === 'active' || sbpUiStateValue === 'past_due') && (
+                        <button
+                          onClick={handleCancelSbp}
+                          disabled={cancelSbpMutation.isPending}
+                          className="w-full whitespace-nowrap rounded-xl border border-error-500/30 bg-error-500/10 px-5 py-2.5 text-sm font-medium text-error-400 transition-colors hover:bg-error-500/20 disabled:opacity-50 sm:w-auto"
+                        >
+                          {t('subscription.sbpRecurring.cancel')}
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
