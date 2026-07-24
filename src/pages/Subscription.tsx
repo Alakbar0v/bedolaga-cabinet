@@ -1171,7 +1171,7 @@ export default function Subscription() {
                    this block too (backend supports a day-interval charge). */}
               {!subscription.is_trial && sbpUiStateValue !== 'hidden' && (
                 <div
-                  className="rounded-[14px] p-3.5"
+                  className="mt-3 rounded-[14px] p-3.5"
                   style={{
                     background: g.innerBg,
                     border: `1px solid ${g.innerBorder}`,
