@@ -3305,7 +3305,9 @@
         "notificationsFailed": "(ناموفق: {{count}})",
         "sendError": "ارسال پیشنهاد ناموفق بود",
         "notificationsSent": "اعلان‌های ارسال شده",
-        "offersCreated": "پیشنهادهای ایجاد شده"
+        "offersCreated": "پیشنهادهای ایجاد شده",
+        "deliveryTitle": "تحویل در تلگرام",
+        "openAsBroadcast": "نمایش به‌عنوان ارسال گروهی"
       },
       "notFound": "قالب یافت نشد",
       "noActiveTemplates": "قالب فعالی وجود ندارد",
