@@ -529,6 +529,14 @@ export interface TicketDetail extends Omit<Ticket, 'messages_count' | 'last_mess
   messages: TicketMessage[];
 }
 
+// Гейт согласия с офертой/политикой на экране первой авторизации.
+// documents — ключи документов, которые бэк реально требует отметить.
+export interface LegalConsentConfig {
+  required: boolean;
+  prechecked: boolean;
+  documents: string[];
+}
+
 export interface SupportConfig {
   tickets_enabled: boolean;
   support_type: 'tickets' | 'profile' | 'url' | 'both';
