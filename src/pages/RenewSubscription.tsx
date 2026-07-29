@@ -167,7 +167,7 @@ export default function RenewSubscription() {
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="text-base font-semibold" style={{ color: g.text }}>
-                      {option.period_days} {t('common.units.days', 'дней')}
+                      {option.period_days} {t('subscription.days', 'дней')}
                     </span>
                     {option.discount_percent > 0 && (
                       <span className="ml-2 rounded-full bg-success-400/15 px-2 py-0.5 text-[10px] font-semibold text-success-400">
@@ -184,7 +184,7 @@ export default function RenewSubscription() {
                     {perMonth !== null && (
                       <div className="text-[11px]" style={{ color: g.textSecondary }}>
                         {formatAmount(perMonth / 100)} {currencySymbol}/
-                        {t('common.units.mo', 'мес')}
+                        {t('subscription.month', 'мес')}
                       </div>
                     )}
                     {option.original_price_kopeks && (
