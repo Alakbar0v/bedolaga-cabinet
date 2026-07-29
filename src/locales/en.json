@@ -3168,7 +3168,9 @@
         "validDaysHint": "0 or empty — perpetual",
         "create": "Create batch",
         "creating": "Creating…",
-        "cancel": "Cancel"
+        "cancel": "Cancel",
+        "maxPerUser": "Per-user limit",
+        "maxPerUserHint": "How many coupons from this batch one person may redeem. 0 — unlimited; use 1 for giveaways and contests."
       },
       "validation": {
         "nameRequired": "Enter the batch name",
@@ -3193,7 +3195,8 @@
         "validUntil": "Valid until",
         "perpetual": "Perpetual",
         "createdAt": "Created",
-        "linksTitle": "Active links ({{count}})"
+        "linksTitle": "Active links ({{count}})",
+        "maxPerUser": "Per user"
       },
       "revoke": {
         "button": "Revoke unredeemed ({{count}})",
@@ -3206,7 +3209,16 @@
       "errors": {
         "loadFailed": "Batch not found",
         "createFailed": "Failed to create the batch",
-        "revokeFailed": "Failed to revoke the batch"
+        "revokeFailed": "Failed to revoke the batch",
+        "deleteFailed": "Could not delete the batch"
+      },
+      "delete": {
+        "button": "🗑 Delete batch",
+        "confirmTitle": "Delete the batch?",
+        "confirmText": "{{count}} coupons will be deleted along with the batch itself.",
+        "redeemedWarning": "{{count}} of them are already redeemed. The redemption history will be lost; granted subscriptions are not revoked.",
+        "confirm": "Delete",
+        "success": "Batch deleted ({{count}} coupons)"
       }
     },
     "promocodes": {
