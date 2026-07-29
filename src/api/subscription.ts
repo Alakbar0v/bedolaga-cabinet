@@ -13,6 +13,7 @@ import type {
   PurchasePreview,
   AppConfig,
   SbpRecurringInfo,
+  LavaRecurringInfo,
 } from '../types';
 
 /** Helper: build query params with optional subscription_id */
@@ -390,6 +391,34 @@ export const subscriptionApi = {
       '/cabinet/subscription/platega-recurrent/purchase',
       {},
       { params: { tariff_id: tariffId } },
+    );
+    return response.data;
+  },
+
+  // ── Recurring (Lava) ──────────────────────────────────────────────────
+
+  getLavaRecurring: async (subscriptionId?: number): Promise<LavaRecurringInfo> => {
+    const response = await apiClient.get<LavaRecurringInfo>(
+      '/cabinet/subscription/lava-recurrent',
+      withSubId(subscriptionId),
+    );
+    return response.data;
+  },
+
+  enableLavaRecurring: async (
+    subscriptionId?: number,
+  ): Promise<{ status: string; redirect_url: string | null }> => {
+    const response = await apiClient.post(
+      '/cabinet/subscription/lava-recurrent/enable',
+      ...bodyWithSubId({}, subscriptionId),
+    );
+    return response.data;
+  },
+
+  cancelLavaRecurring: async (subscriptionId?: number): Promise<{ status: string }> => {
+    const response = await apiClient.post(
+      '/cabinet/subscription/lava-recurrent/cancel',
+      ...bodyWithSubId({}, subscriptionId),
     );
     return response.data;
   },

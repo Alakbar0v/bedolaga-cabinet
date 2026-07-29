@@ -701,6 +701,31 @@
       "purchaseButton": "⚡ Subscribe with SBP auto-payment",
       "purchaseHint": "First charge confirms the binding in your bank app; renewals are charged automatically per the tariff cadence."
     },
+    "lavaRecurring": {
+      "title": "Lava auto-renewal",
+      "connect": "Connect",
+      "payFirst": "Pay the first invoice",
+      "cancel": "Disable",
+      "confirmCancel": "Disable Lava auto-renewal? The subscription will no longer renew automatically.",
+      "cancelled": "Lava auto-renewal disabled",
+      "enableError": "Could not enable Lava auto-renewal",
+      "cancelError": "Could not disable Lava auto-renewal",
+      "statusPending": "Waiting for the first invoice to be paid",
+      "statusActive": "Active",
+      "statusPastDue": "Payment failed — please try again",
+      "nextCharge": "next charge on {{date}}",
+      "amountPerPeriod": "{{amount}} ₽ {{period}}",
+      "amountPerDays": "{{amount}} ₽ every {{days}} days",
+      "period": {
+        "day": "daily",
+        "week": "weekly",
+        "month": "monthly",
+        "quarter": "quarterly",
+        "halfYear": "every six months",
+        "year": "yearly"
+      },
+      "autopayHint": "The subscription will renew automatically via Lava"
+    },
     "backToList": "Back to subscriptions",
     "confirmDelete": "Delete subscription?",
     "dailyAutoCharge": "Daily auto-charge",

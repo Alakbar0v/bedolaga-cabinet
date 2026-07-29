@@ -600,6 +600,31 @@
       "purchaseButton": "⚡ اشتراک با پرداخت خودکار SBP",
       "purchaseHint": "اولین برداشت، اتصال را در اپ بانک تأیید می‌کند؛ تمدیدها به‌صورت خودکار برداشت می‌شوند."
     },
+    "lavaRecurring": {
+      "title": "تمدید خودکار Lava",
+      "connect": "اتصال",
+      "payFirst": "پرداخت صورتحساب اول",
+      "cancel": "غیرفعال‌سازی",
+      "confirmCancel": "تمدید خودکار Lava غیرفعال شود؟ اشتراک دیگر به‌طور خودکار تمدید نمی‌شود.",
+      "cancelled": "تمدید خودکار Lava غیرفعال شد",
+      "enableError": "فعال‌سازی تمدید خودکار Lava ناموفق بود",
+      "cancelError": "غیرفعال‌سازی تمدید خودکار Lava ناموفق بود",
+      "statusPending": "در انتظار پرداخت صورتحساب اول",
+      "statusActive": "فعال",
+      "statusPastDue": "پرداخت ناموفق بود — دوباره تلاش کنید",
+      "nextCharge": "برداشت بعدی {{date}}",
+      "amountPerPeriod": "{{amount}} ₽ {{period}}",
+      "amountPerDays": "هر {{days}} روز {{amount}} ₽",
+      "period": {
+        "day": "روزانه",
+        "week": "هفتگی",
+        "month": "ماهانه",
+        "quarter": "هر سه ماه",
+        "halfYear": "هر شش ماه",
+        "year": "سالانه"
+      },
+      "autopayHint": "اشتراک به‌طور خودکار از طریق Lava تمدید می‌شود"
+    },
     "backToList": "بازگشت به فهرست اشتراک‌ها",
     "confirmDelete": "اشتراک حذف شود؟",
     "cta": {

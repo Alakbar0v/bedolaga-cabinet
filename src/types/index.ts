@@ -661,6 +661,18 @@ export interface SbpRecurringInfo {
   redirect_url?: string | null;
 }
 
+/**
+ * Автопродление Lava. В отличие от Platega период задан продуктом в кабинете
+ * Lava и приезжает числом дней (charge_days), а не enum-интервалом.
+ */
+export interface LavaRecurringInfo {
+  status: string; // 'none' | 'PENDING' | 'ACTIVE' | 'PAST_DUE'
+  charge_days?: number;
+  amount_kopeks?: number;
+  next_charge_at?: string | null;
+  redirect_url?: string | null;
+}
+
 // Ticket notifications types
 export interface TicketNotification {
   id: number;
