@@ -2050,7 +2050,15 @@
       "offlineConv": "离线转化",
       "apiKey": "API 密钥",
       "legalFooter": "法律页脚",
-      "legalFooterDesc": "登录页面底部的要约、隐私政策和定期付款链接"
+      "legalFooterDesc": "登录页面底部的要约、隐私政策和定期付款链接",
+      "botStartVideo": "机器人开始菜单视频",
+      "botStartVideoDesc": "机器人会在 /start 消息中附带该视频，替代 logo 图片。文件仅上传到 Telegram 一次，我们只保存其标识符。",
+      "botStartVideoUpload": "上传视频",
+      "botStartVideoReplace": "替换视频",
+      "botStartVideoRemove": "删除",
+      "botStartVideoActive": "已设置视频",
+      "botStartVideoNone": "未设置视频 — 菜单使用 logo 图片",
+      "botStartVideoError": "视频上传失败"
     },
     "buttons": {
       "color": "按钮颜色",

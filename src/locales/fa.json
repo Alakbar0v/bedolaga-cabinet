@@ -1983,7 +1983,15 @@
       "offlineConv": "تبدیل‌های آفلاین",
       "apiKey": "کلید API",
       "legalFooter": "پاورقی حقوقی",
-      "legalFooterDesc": "پیوند به پیشنهاد، سیاست حریم خصوصی و پرداخت‌های مکرر در پایین صفحه ورود"
+      "legalFooterDesc": "پیوند به پیشنهاد، سیاست حریم خصوصی و پرداخت‌های مکرر در پایین صفحه ورود",
+      "botStartVideo": "ویدیوی منوی شروع ربات",
+      "botStartVideoDesc": "ربات این ویدیو را به‌جای تصویر لوگو به پیام /start پیوست می‌کند. فایل یک‌بار در تلگرام بارگذاری می‌شود و ما فقط شناسه آن را نگه می‌داریم.",
+      "botStartVideoUpload": "بارگذاری ویدیو",
+      "botStartVideoReplace": "جایگزینی ویدیو",
+      "botStartVideoRemove": "حذف",
+      "botStartVideoActive": "ویدیو تنظیم شده است",
+      "botStartVideoNone": "ویدیویی تنظیم نشده — منو از تصویر لوگو استفاده می‌کند",
+      "botStartVideoError": "بارگذاری ویدیو ناموفق بود"
     },
     "buttons": {
       "color": "رنگ دکمه",

@@ -2823,7 +2823,15 @@
       "offlineConv": "Офлайн-конверсии",
       "apiKey": "API-ключ",
       "legalFooter": "Юридический футер",
-      "legalFooterDesc": "Ссылки на оферту, политику и рекуррентные платежи внизу страницы входа"
+      "legalFooterDesc": "Ссылки на оферту, политику и рекуррентные платежи внизу страницы входа",
+      "botStartVideo": "Видео стартового меню бота",
+      "botStartVideoDesc": "Бот прикрепит это видео к сообщению /start вместо картинки-логотипа. Файл разово отправляется в Telegram — храним только его идентификатор.",
+      "botStartVideoUpload": "Загрузить видео",
+      "botStartVideoReplace": "Заменить видео",
+      "botStartVideoRemove": "Удалить",
+      "botStartVideoActive": "Видео подключено",
+      "botStartVideoNone": "Видео не задано — меню с картинкой-логотипом",
+      "botStartVideoError": "Не удалось загрузить видео"
     },
     "buttons": {
       "color": "Цвет кнопки",
