@@ -4208,7 +4208,9 @@
         "sendError": "Не удалось отправить предложение",
         "notificationsSent": "Отправлено уведомлений",
         "offersCreated": "Создано офферов",
-        "notificationsFailed": "(не отправлено: {{count}})"
+        "notificationsFailed": "(не отправлено: {{count}})",
+        "deliveryTitle": "Доставка в Telegram",
+        "openAsBroadcast": "Открыть как рассылку"
       },
       "notFound": "Шаблон не найден",
       "noActiveTemplates": "Нет активных шаблонов",

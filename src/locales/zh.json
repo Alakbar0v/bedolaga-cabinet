@@ -3304,7 +3304,9 @@
         "notificationsFailed": "（失败: {{count}}）",
         "sendError": "发送优惠失败",
         "notificationsSent": "已发送通知",
-        "offersCreated": "已创建优惠"
+        "offersCreated": "已创建优惠",
+        "deliveryTitle": "Telegram 送达情况",
+        "openAsBroadcast": "作为群发查看"
       },
       "notFound": "未找到模板",
       "noActiveTemplates": "没有活跃的模板",

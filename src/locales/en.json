@@ -3807,7 +3807,9 @@
         "sendError": "Failed to send offer",
         "notificationsSent": "Notifications sent",
         "offersCreated": "Offers created",
-        "notificationsFailed": "(failed: {{count}})"
+        "notificationsFailed": "(failed: {{count}})",
+        "deliveryTitle": "Telegram delivery",
+        "openAsBroadcast": "Open as broadcast"
       },
       "notFound": "Template not found",
       "noActiveTemplates": "No active templates",
