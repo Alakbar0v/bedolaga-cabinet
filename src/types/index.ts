@@ -373,6 +373,7 @@ export interface TariffsPurchaseOptions {
   // СБП-оформление (Platega recurrent): показывать кнопку «Оформить с
   // автооплатой СБП» рядом с покупкой с баланса
   platega_recurrent_enabled?: boolean;
+  lava_recurrent_enabled?: boolean;
 }
 
 export interface ClassicPurchaseOptions {

@@ -623,7 +623,9 @@
         "halfYear": "每半年",
         "year": "每年"
       },
-      "autopayHint": "订阅将通过 Lava 自动续订"
+      "autopayHint": "订阅将通过 Lava 自动续订",
+      "purchaseButton": "⚡ 使用 Lava 自动续订下单",
+      "purchaseHint": "首期账单通过 Lava 链接支付；之后按产品周期自动扣款续订。"
     },
     "backToList": "返回订阅列表",
     "confirmDelete": "删除订阅？",
@@ -2369,7 +2371,9 @@
         "periodsRequired": "请添加至少一个期限",
         "dailyPriceRequired": "请输入大于0的每日价格",
         "trafficPackagesRequired": "请添加至少一个流量包（或关闭流量购买）"
-      }
+      },
+      "lavaProductLabel": "Lava 产品（自动续订）",
+      "lavaProductDesc": "来自 Lava 后台的产品 UUID：价格与扣款周期在那里设置。留空则该套餐不支持自动续订。"
     },
     "servers": {
       "title": "服务器管理",

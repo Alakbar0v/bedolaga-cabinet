@@ -724,7 +724,9 @@
         "halfYear": "every six months",
         "year": "yearly"
       },
-      "autopayHint": "The subscription will renew automatically via Lava"
+      "autopayHint": "The subscription will renew automatically via Lava",
+      "purchaseButton": "⚡ Subscribe with Lava auto-renewal",
+      "purchaseHint": "The first invoice is paid via a Lava link; renewals are then charged automatically on the product’s schedule."
     },
     "backToList": "Back to subscriptions",
     "confirmDelete": "Delete subscription?",
@@ -2765,7 +2767,9 @@
         "periodsRequired": "Add at least one period",
         "dailyPriceRequired": "Enter a price per day greater than 0",
         "trafficPackagesRequired": "Add at least one traffic package (or disable traffic topup)"
-      }
+      },
+      "lavaProductLabel": "Lava product (auto-renewal)",
+      "lavaProductDesc": "Product UUID from the Lava dashboard: price and charge period are configured there. Empty — auto-renewal is unavailable for this tariff."
     },
     "servers": {
       "title": "Squad Management",

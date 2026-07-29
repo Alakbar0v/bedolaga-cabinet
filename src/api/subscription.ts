@@ -423,6 +423,21 @@ export const subscriptionApi = {
     return response.data;
   },
 
+  /**
+   * Оформление подписки на тариф привязкой Lava: первое списание оплачивается
+   * по возвращённой ссылке и активирует подписку.
+   */
+  purchaseWithLavaRecurring: async (
+    tariffId: number,
+  ): Promise<{ status: string; redirect_url: string | null; subscription_id: number }> => {
+    const response = await apiClient.post(
+      '/cabinet/subscription/lava-recurrent/purchase',
+      {},
+      { params: { tariff_id: tariffId } },
+    );
+    return response.data;
+  },
+
   // ── Trial ───────────────────────────────────────────────────────────
 
   getTrialInfo: async (): Promise<TrialInfo> => {
