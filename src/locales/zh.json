@@ -5011,7 +5011,15 @@
     "tabActivate": "激活",
     "tabBuy": "购买",
     "tabMyGifts": "我的礼物",
-    "unlimitedTraffic": "无限流量"
+    "unlimitedTraffic": "无限流量",
+    "qrHint": "扫描以激活礼物",
+    "scanButton": "📷 扫描二维码",
+    "scanInProgress": "扫描中…",
+    "scanCancel": "停止扫描",
+    "scanDescription": "将摄像头对准礼物二维码",
+    "scanNotRecognized": "该二维码中没有礼物码",
+    "scanError": "扫描失败",
+    "scanNoCamera": "摄像头不可用 — 请手动输入代码"
   },
   "news": {
     "title": "新闻与更新",

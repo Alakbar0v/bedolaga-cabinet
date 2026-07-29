@@ -6058,7 +6058,15 @@
     "shareModalActivateVia": "Активировать через бота:",
     "shareModalActivateViaCabinet": "Или через сайт:",
     "copyMessage": "Скопировать сообщение",
-    "shareToastCopied": "Сообщение скопировано"
+    "shareToastCopied": "Сообщение скопировано",
+    "qrHint": "Отсканируйте, чтобы активировать подарок",
+    "scanButton": "📷 Отсканировать QR",
+    "scanInProgress": "Сканирование…",
+    "scanCancel": "Остановить сканирование",
+    "scanDescription": "Наведите камеру на QR-код подарка",
+    "scanNotRecognized": "В QR-коде нет кода подарка",
+    "scanError": "Не удалось отсканировать",
+    "scanNoCamera": "Камера недоступна — введите код вручную"
   },
   "news": {
     "title": "Новости и обновления",

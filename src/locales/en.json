@@ -5504,7 +5504,15 @@
     "shareModalActivateVia": "Activate via bot:",
     "shareModalActivateViaCabinet": "Or via website:",
     "copyMessage": "Copy message",
-    "shareToastCopied": "Message copied"
+    "shareToastCopied": "Message copied",
+    "qrHint": "Scan to activate the gift",
+    "scanButton": "📷 Scan QR",
+    "scanInProgress": "Scanning…",
+    "scanCancel": "Stop scanning",
+    "scanDescription": "Point the camera at the gift QR code",
+    "scanNotRecognized": "No gift code in this QR",
+    "scanError": "Could not scan",
+    "scanNoCamera": "Camera unavailable — enter the code manually"
   },
   "news": {
     "title": "News & Updates",

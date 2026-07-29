@@ -5012,7 +5012,15 @@
     "tabActivate": "فعال‌سازی",
     "tabBuy": "خرید",
     "tabMyGifts": "هدایای من",
-    "unlimitedTraffic": "ترافیک نامحدود"
+    "unlimitedTraffic": "ترافیک نامحدود",
+    "qrHint": "برای فعال‌سازی هدیه اسکن کنید",
+    "scanButton": "📷 اسکن QR",
+    "scanInProgress": "در حال اسکن…",
+    "scanCancel": "توقف اسکن",
+    "scanDescription": "دوربین را روی کد QR هدیه بگیرید",
+    "scanNotRecognized": "در این QR کد هدیه‌ای نیست",
+    "scanError": "اسکن ناموفق بود",
+    "scanNoCamera": "دوربین در دسترس نیست — کد را دستی وارد کنید"
   },
   "news": {
     "title": "اخبار و به‌روزرسانی‌ها",
