@@ -373,6 +373,7 @@ export interface TariffsPurchaseOptions {
   // СБП-оформление (Platega recurrent): показывать кнопку «Оформить с
   // автооплатой СБП» рядом с покупкой с баланса
   platega_recurrent_enabled?: boolean;
+  lava_recurrent_enabled?: boolean;
 }
 
 export interface ClassicPurchaseOptions {
@@ -656,6 +657,18 @@ export interface SavedCardsResponse {
 export interface SbpRecurringInfo {
   status: string; // 'none' | 'PENDING' | 'ACTIVE' | 'PAST_DUE'
   interval?: number; // 1=day,2=week,3=month,4=year
+  amount_kopeks?: number;
+  next_charge_at?: string | null;
+  redirect_url?: string | null;
+}
+
+/**
+ * Автопродление Lava. В отличие от Platega период задан продуктом в кабинете
+ * Lava и приезжает числом дней (charge_days), а не enum-интервалом.
+ */
+export interface LavaRecurringInfo {
+  status: string; // 'none' | 'PENDING' | 'ACTIVE' | 'PAST_DUE'
+  charge_days?: number;
   amount_kopeks?: number;
   next_charge_at?: string | null;
   redirect_url?: string | null;
