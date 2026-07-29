@@ -8,6 +8,7 @@ import { useCurrency } from '../../../hooks/useCurrency';
 import { usePromoDiscount } from '../../../hooks/usePromoDiscount';
 import { usePlatform } from '../../../platform';
 import { openPaymentUrl } from '../../../utils/openPaymentUrl';
+import { getMonthlyPriceKopeks } from '../../../utils/pricing';
 import InsufficientBalancePrompt from '../../InsufficientBalancePrompt';
 import type { Tariff, TariffPeriod } from '../../../types';
 
@@ -279,10 +280,7 @@ export function TariffPurchaseForm({
                   const displayDiscount = promoPeriod.percent;
                   const displayOriginal = promoPeriod.original;
                   const displayPrice = promoPeriod.price;
-                  const displayPerMonth =
-                    displayPrice !== period.price_kopeks
-                      ? Math.round(displayPrice / Math.max(1, period.days / 30))
-                      : period.price_per_month_kopeks;
+                  const displayPerMonth = getMonthlyPriceKopeks(displayPrice, period.days);
 
                   return (
                     <button
@@ -317,9 +315,11 @@ export function TariffPurchaseForm({
                           </span>
                         )}
                       </div>
-                      <div className="mt-1 text-xs text-dark-500">
-                        {formatPrice(displayPerMonth)}/{t('subscription.month')}
-                      </div>
+                      {displayPerMonth !== null && (
+                        <div className="mt-1 text-xs text-dark-500">
+                          {formatPrice(displayPerMonth)}/{t('subscription.month')}
+                        </div>
+                      )}
                     </button>
                   );
                 })}
