@@ -1930,7 +1930,7 @@
     },
     "broadcasts": {
       "title": "Broadcasts",
-      "subtitle": "History and management",
+      "subtitle": "Mass sending of messages to users",
       "create": "Create Broadcast",
       "empty": "No broadcasts",
       "selectFilter": "Select audience",
