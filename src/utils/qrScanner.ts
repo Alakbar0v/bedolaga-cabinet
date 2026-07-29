@@ -12,6 +12,11 @@ import {
 const TG_MOBILE_PLATFORMS = new Set(['ios', 'android', 'android_x', 'ios_x']);
 
 export const HTML5_QRCODE_CDN = 'https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js';
+// SRI-хеш ИМЕННО этого файла (sha384 от html5-qrcode@2.3.8/html5-qrcode.min.js).
+// Без него подмена на стороне CDN исполнилась бы в кабинете с полными правами
+// страницы. При несовпадении браузер откажется исполнять скрипт — сканер
+// деградирует в «камера недоступна», а не запускает чужой код.
+const HTML5_QRCODE_SRI = 'sha384-c9d8RFSL+u3exBOJ4Yp3HUJXS4znl9f+z66d1y54ig+ea249SpqR+w1wyvXz/lk+';
 
 export interface Html5QrcodeInstance {
   start: (
@@ -62,9 +67,14 @@ export async function loadHtml5Qrcode(): Promise<WindowWithHtml5['Html5Qrcode'] 
 
   const script = document.createElement('script');
   script.src = HTML5_QRCODE_CDN;
+  script.integrity = HTML5_QRCODE_SRI;
+  script.crossOrigin = 'anonymous';
+  script.referrerPolicy = 'no-referrer';
   document.head.appendChild(script);
   await new Promise<void>((resolve) => {
     script.onload = () => resolve();
+    // onerror срабатывает и при провале проверки целостности — вызывающий
+    // получит undefined и покажет «камера недоступна».
     script.onerror = () => resolve();
   });
   return w.Html5Qrcode;
