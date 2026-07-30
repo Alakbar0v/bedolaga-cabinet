@@ -2956,7 +2956,8 @@
         "byDate": "بر اساس تاریخ",
         "byBalance": "بر اساس موجودی",
         "byActivity": "بر اساس فعالیت",
-        "bySpent": "بر اساس هزینه"
+        "bySpent": "بر اساس هزینه",
+        "byExpiry": "بر اساس انقضا"
       },
       "pagination": {
         "showing": "نمایش {{from}}-{{to}} از {{total}}"

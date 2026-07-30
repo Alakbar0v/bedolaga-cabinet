@@ -3846,7 +3846,8 @@
         "byDate": "По дате",
         "byBalance": "По балансу",
         "byActivity": "По активности",
-        "bySpent": "По расходам"
+        "bySpent": "По расходам",
+        "byExpiry": "По истечению подписки"
       },
       "pagination": {
         "showing": "Показано {{from}}-{{to}} из {{total}}"

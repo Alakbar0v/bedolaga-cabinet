@@ -2955,7 +2955,8 @@
         "byDate": "按日期",
         "byBalance": "按余额",
         "byActivity": "按活跃度",
-        "bySpent": "按消费"
+        "bySpent": "按消费",
+        "byExpiry": "按到期"
       },
       "pagination": {
         "showing": "显示 {{from}}-{{to}}，共 {{total}}"
