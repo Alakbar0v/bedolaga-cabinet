@@ -1,5 +1,87 @@
 # Changelog
 
+## [1.65.0](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/compare/v1.64.0...v1.65.0) (2026-08-03)
+
+
+### Features
+
+* **admin:** панельная идентичность под Remnawave 3.0.0 ([e840ed2](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/e840ed2b60f5e525cb290ce5bddc70ef6dfe8a66))
+
+
+### Bug Fixes
+
+* **settings:** вернуть в админку категории, которых не было в дереве ([653d683](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/653d683835e2c10f7690f1f71df3552c3ba9ab2f))
+
+## [1.64.0](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/compare/v1.63.0...v1.64.0) (2026-07-29)
+
+
+### Features
+
+* **auth:** чекбоксы согласия с офертой и политикой при первой авторизации ([0f21629](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/0f21629ba516118790c5d7f65df18f485dfaeafe))
+* **branding:** загрузка видео стартового меню бота ([c9afea7](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/c9afea7a5043e2a3b02d2242a116878fc70a0be6))
+* **coupons:** лимит на пользователя и удаление партии в кабинете ([390da33](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/390da33914eb3f992719e33acf85decac660a880))
+* **gift:** QR подарка и сканирование в кабинете ([0e4dc43](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/0e4dc43335135fe229ce3c695fd7fa2722eb87e4))
+* **lava:** автопродление Lava на странице подписки ([2dce539](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/2dce539da2a7c3128084ed2bc6bcdf560d440c75))
+* **lava:** покупка привязкой, продукт тарифа в админке, CTA ([a28f116](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/a28f1167f7af57bfc6e5c7c370849e7478ec459f))
+* **promo-offers:** охват сегментов и прогресс доставки на странице отправки ([c6d8c0a](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/c6d8c0afe0a30b864a9d0834735fdc7b52d8f362))
+
+
+### Bug Fixes
+
+* **admin:** фиксированный телеграм-синий у свотча «Синий» вместо акцента темы ([62aaa5d](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/62aaa5d7c9eaedb5a118469587a35585f9e4f549))
+* **i18n:** починка плейсхолдеров и переводов в zh/fa/en локалях кабинета ([fb1f5cf](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/fb1f5cf3a762f55f18806be97a0db973316ff6ad))
+* **i18n:** существующие ключи вместо отсутствующих common.units.* на экране продления ([516399c](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/516399cef9fa4a100b5dae979a04fafe0d05e634))
+* **security:** SRI для CDN-скрипта сканера QR ([b615927](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/b615927283d9ae530c03f6120b3c5794d92e0689))
+* **subscription:** корректная цена за месяц при выборе периода ([888a02f](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/888a02f39722c68e4beddefbd1e39c402dfa51cb))
+
+## [1.63.0](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/compare/v1.62.0...v1.63.0) (2026-07-24)
+
+
+### Features
+
+* **admin:** статус и отмена СБП-автопродления в карточке юзера ([3328493](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/332849393c00fa4f7e143af2b293a2775c0a4e8e))
+* **balance:** СБП-привязки в сохранённых методах ([d938ac2](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/d938ac2dd9d9f9e27142ed578e17cc7d76ca4531))
+* **sbp-recurring:** СБП-оформление подписки на форме покупки тарифа ([f448c14](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/f448c149946cefee83e0e61f9c3c03b0d69a4362))
+* **subscription:** API и утилиты СБП-автопродления Platega ([9093aec](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/9093aec207bbc41e07433d55a90f9464c33a4b39))
+* **subscription:** блок СБП-автопродления на странице подписки ([29a3683](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/29a36837c8ad1310cce8fafa3e28f041c69a8d37))
+* **ws:** уведомления о событиях СБП-автопродления ([e8409a9](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/e8409a9007e25c685ceaa4b6a88c54237b02303a))
+
+
+### Bug Fixes
+
+* **auth:** различать устаревшего бота и ненастроенного на экране логина ([b3b07c3](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/b3b07c322de5ce48db83661a020dfe96be5b2237))
+* **blocking:** локализовать дефолтное сообщение на экране подписки на канал ([5e2e321](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/5e2e3214c9e997896860f952aec774aecbbf49a4))
+* **ci:** рабочий Trivy-пин, lowercase-референс образа, CodeQL v4 ([0a8b1a4](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/0a8b1a46d134c88f0222987dd40707d85368ff5a))
+* **connection:** открывать deep-link приложения на iOS через top-level переход, а не iframe ([03aa2e6](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/03aa2e6312ae602f087d30d7134020acb6338537))
+* **dashboard:** приветствие без пустого имени для email-пользователей ([147b1fb](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/147b1fbb2e78bb8b3e0bd690568ea47c429c08c9))
+* **referral:** показывать секцию вывода средств всем реферерам ([ce13792](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/ce13792f96547331f6a5093b7ff5b5ed32d840d9))
+* **sbp-recurring:** toast ошибки отмены + per-sub ключ inline-confirm в админке ([42a7190](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/42a71902418d3f5e8cd34c225442db40a9a1cf0d))
+* **sbp-recurring:** компактный layout СБП-блока на десктопе ([faf4c45](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/faf4c450b0e995e68fdce6f236a0a1a2de5e85c7))
+* **sbp-recurring:** отступ между тогглом автопродления и СБП-блоком ([17e27d3](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/17e27d343786e9b7e9e013d7c7e1d9e96de6e058))
+* **security:** внутренний гард openAppScheme от опасных схем (CodeQL) ([aa6bf44](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/aa6bf44db9808aa79e0d711c0331e75171be75c0))
+* **security:** инлайновые regex-барьеры для CodeQL в openAppScheme и redirect.html ([51d0f04](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/51d0f0431a121ad179eb5b376fbab539018040dd))
+* **support:** не склеивать t.me со ссылкой на внешний хелпдеск ([f04675b](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/f04675b2498abbbfb41ba48e0dd8cf7ee3a5a0a1))
+* **support:** ужесточить resolveSupportContact — схема, legacy-username, null ([ebde1f6](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/ebde1f6174552ab4bef7f1fef8ef7950942781e7))
+* **tariffs:** отправлять пустые промогруппы и описание при редактировании тарифа ([f1413de](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/f1413de5984859e20a58e3212270ccd1495a6954))
+
+## [1.62.0](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/compare/v1.61.0...v1.62.0) (2026-07-19)
+
+
+### Features
+
+* **payments:** способ оплаты cisPay ([4b98217](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/4b982175d75f5d7d43312859cc061462b52f9570))
+* **promocodes:** состав промокода чекбоксами — баланс / дни / промогруппа ([9ce838b](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/9ce838badeda4dde45b16f38458e260a100fb39d))
+* **referral-network:** кнопка построения полной реферальной сети ([19facf2](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/19facf2ba968212ba9f1bb974ce886e9facc348f))
+* **users:** кнопка «Отправить сообщение» в карточке пользователя ([2f743d8](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/2f743d82dbb4d737fcb5f54dda5269271bae3de2))
+
+
+### Bug Fixes
+
+* **admin:** дубликат ключа admin.paymentMethods.description ([46c1bc7](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/46c1bc79a454c71b469a64f82f90a9585f265ab0))
+* **i18n:** добавить недостающие английские переводы resetPassword и expiredDate_trial ([dd50d64](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/dd50d648d069bb69db54d18d8e3bdf6bec965872))
+* **i18n:** форматировать даты и числа локалью выбранного языка, а не браузера ([81fd96c](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/81fd96c2a758d8d092289dbaefa105b29f54137d))
+* **payment-methods:** admin display_name/description override locale on balance ([112e09b](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/112e09bc6d1f0776f3f98602151a7730a8ed9245))
+
 ## [1.61.0](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/compare/v1.60.0...v1.61.0) (2026-07-13)
 
 

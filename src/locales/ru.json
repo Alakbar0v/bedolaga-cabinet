@@ -2580,7 +2580,7 @@
         "Traffic Daily Check Enabled": "Ежедневная проверка",
         "Traffic Daily Check Time": "Время проверки",
         "Traffic Daily Threshold Gb": "Порог в день (ГБ)",
-        "Traffic Excluded User Uuids": "Исключённые UUID",
+        "Traffic Excluded User Ids": "Исключённые ID пользователей панели",
         "Traffic Fast Check Enabled": "Быстрая проверка",
         "Traffic Fast Check Interval Minutes": "Интервал (мин)",
         "Traffic Fast Check Threshold Gb": "Порог (ГБ)",
