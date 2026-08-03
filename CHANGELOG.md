@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.65.0](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/compare/v1.64.0...v1.65.0) (2026-08-03)
+
+
+### Features
+
+* **admin:** панельная идентичность под Remnawave 3.0.0 ([e840ed2](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/e840ed2b60f5e525cb290ce5bddc70ef6dfe8a66))
+
+
+### Bug Fixes
+
+* **settings:** вернуть в админку категории, которых не было в дереве ([653d683](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/653d683835e2c10f7690f1f71df3552c3ba9ab2f))
+
 ## [1.64.0](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/compare/v1.63.0...v1.64.0) (2026-07-29)
 
 
