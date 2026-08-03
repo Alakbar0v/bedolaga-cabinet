@@ -26,6 +26,10 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
   const [oidcError, setOidcError] = useState('');
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [scriptFailed, setScriptFailed] = useState(false);
+  // Lets the user opt into deep-link auth manually, without waiting for the
+  // Telegram widget script to fail. See #<issue-number>.
+  const [manualDeepLink, setManualDeepLink] = useState(false);
+  const showDeepLinkUI = scriptFailed || manualDeepLink;
   const loginWithTelegramOIDC = useAuthStore((s) => s.loginWithTelegramOIDC);
 
   // Deep link auth state
@@ -336,9 +340,10 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
     }
   }, [botUsername, loginWithDeepLink, navigate, t]);
 
-  // Auto-start deep link auth when script fails (with cancellation for Strict Mode)
+  // Auto-start deep link auth when script fails OR the user opts in manually
+  // (with cancellation for Strict Mode)
   useEffect(() => {
-    if (scriptFailed && !deepLinkToken && !deepLinkPolling) {
+    if (showDeepLinkUI && !deepLinkToken && !deepLinkPolling) {
       let cancelled = false;
       const start = async () => {
         if (!cancelled) await startDeepLinkAuth();
@@ -348,7 +353,7 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
         cancelled = true;
       };
     }
-  }, [scriptFailed, deepLinkToken, deepLinkPolling, startDeepLinkAuth]);
+  }, [showDeepLinkUI, deepLinkToken, deepLinkPolling, startDeepLinkAuth]);
 
   // Resume polling immediately when user returns to the page (e.g. after confirming in Telegram)
   // Browsers throttle setTimeout in background tabs, so polling may have stalled.
@@ -431,8 +436,9 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
     );
   }
 
-  // Deep link fallback UI
-  if (scriptFailed) {
+  // Deep link UI — shown either as an automatic fallback (widget script
+  // failed to load) or because the user explicitly chose this method.
+  if (showDeepLinkUI) {
     const resolvedBotUsername = deepLinkBotUsername || botUsername;
     const deepLinkUrl = deepLinkToken
       ? `https://t.me/${resolvedBotUsername}?start=webauth_${deepLinkToken}`
@@ -443,7 +449,7 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
       <div className="flex flex-col items-center space-y-5">
         {/* Info message */}
         <p className="max-w-xs text-center text-xs text-dark-400">
-          {t('auth.telegramWidgetBlocked')}
+          {t(scriptFailed ? 'auth.telegramWidgetBlocked' : 'auth.deepLinkIntro')}
         </p>
 
         {deepLinkToken && deepLinkUrl ? (
@@ -517,6 +523,27 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
             {t('common.loading')}
           </div>
         )}
+
+        {/* Only offer a way back if the widget actually works — if the
+            script failed there is nothing to go back to. */}
+        {!scriptFailed && (
+          <button
+            type="button"
+            onClick={() => {
+              if (pollTimeoutRef.current) clearTimeout(pollTimeoutRef.current);
+              if (expireTimeoutRef.current) clearTimeout(expireTimeoutRef.current);
+              pollTimeoutRef.current = null;
+              expireTimeoutRef.current = null;
+              setDeepLinkToken(null);
+              setDeepLinkPolling(false);
+              setDeepLinkError('');
+              setManualDeepLink(false);
+            }}
+            className="text-xs text-dark-400 underline decoration-dotted transition-colors hover:text-dark-300"
+          >
+            {t('auth.backToWidget')}
+          </button>
+        )}
       </div>
     );
   }
@@ -569,6 +596,17 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
           @{botUsername}
         </a>
       </div>
+
+      {/* Manual opt-in: same deep-link flow used as the anti-block fallback,
+          offered here as an explicit alternative for users who'd rather
+          confirm in the bot than type a phone number into the widget. */}
+      <button
+        type="button"
+        onClick={() => setManualDeepLink(true)}
+        className="text-xs text-dark-400 underline decoration-dotted transition-colors hover:text-dark-300"
+      >
+        {t('auth.loginWithBot')}
+      </button>
     </div>
   );
 }
