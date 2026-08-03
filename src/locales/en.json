@@ -208,7 +208,7 @@
     "loginFailed": "Login Failed",
     "telegramWidgetBlocked": "Telegram login widget is unavailable. Use the bot to sign in:",
     "deepLinkIntro": "Confirm sign-in right in the bot — no phone number needed:",
-    "loginWithBot": "Login via bot (no phone number)",
+    "loginWithBot": "Login via bot",
     "backToWidget": "Back to widget login",
     "openBotToLogin": "Open bot to sign in",
     "waitingForConfirmation": "Waiting for confirmation...",
