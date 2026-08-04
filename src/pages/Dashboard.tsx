@@ -14,6 +14,7 @@ import PromoOffersSection from '../components/PromoOffersSection';
 import NewsSection from '../components/news/NewsSection';
 import SubscriptionCardActive from '../components/dashboard/SubscriptionCardActive';
 import SubscriptionCardExpired from '../components/dashboard/SubscriptionCardExpired';
+import ConnectDeviceTile from '../components/dashboard/ConnectDeviceTile';
 import TrialOfferCard from '../components/dashboard/TrialOfferCard';
 import StatsGrid from '../components/dashboard/StatsGrid';
 import { giftApi } from '../api/gift';
@@ -301,6 +302,28 @@ export default function Dashboard() {
               onClick={() => navigate(`/subscriptions/${sub.id}`)}
             />
           ))}
+          {/* Подписку мог выдать бонус рекламной кампании — она создаётся сама,
+              и человек попадает на главную с готовым доступом. Пока подписка
+              одна, показываем здесь же, как подключить устройство: иначе за
+              этим нужно уходить на отдельную страницу, о чём он не догадается. */}
+          {multiSubData.subscriptions.length === 1 && (
+            <ConnectDeviceTile
+              subscription={multiSubData.subscriptions[0]}
+              connectedDevices={devicesData?.total ?? 0}
+              usedPercent={
+                multiSubData.subscriptions[0].traffic_limit_gb > 0
+                  ? Math.min(
+                      100,
+                      Math.round(
+                        (multiSubData.subscriptions[0].traffic_used_gb /
+                          multiSubData.subscriptions[0].traffic_limit_gb) *
+                          100,
+                      ),
+                    )
+                  : 0
+              }
+            />
+          )}
           {multiSubData.subscriptions.length > 3 && (
             <Link
               to="/subscriptions"
