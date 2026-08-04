@@ -2810,7 +2810,10 @@
         "save": "ذخیره",
         "defaultTrialTariff": "تعرفه پیش‌فرض آزمایشی",
         "selectTariff": "تعرفه را انتخاب کنید",
-        "tariff": "تعرفه"
+        "tariff": "تعرفه",
+        "includeTraffic": "ترافیک",
+        "trafficAmount": "حجم ترافیک",
+        "gb": "گیگابایت"
       },
       "stats": {
         "title": "آمار کد تخفیف",
@@ -2882,7 +2885,8 @@
         "daysRequired": "تعداد روزها باید بیشتر از 0 باشد",
         "groupRequired": "یک گروه تخفیف انتخاب کنید",
         "discountPercentInvalid": "درصد تخفیف باید بین 1 تا 100 باشد",
-        "discountHoursRequired": "مدت اعتبار تخفیف را به ساعت مشخص کنید"
+        "discountHoursRequired": "مدت اعتبار تخفیف را به ساعت مشخص کنید",
+        "trafficRequired": "حجم ترافیک باید بیشتر از ۰ باشد"
       }
     },
     "promoGroups": {

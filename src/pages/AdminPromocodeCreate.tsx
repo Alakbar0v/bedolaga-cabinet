@@ -44,6 +44,8 @@ export default function AdminPromocodeCreate() {
   const [includeBalance, setIncludeBalance] = useState(true);
   const [includeDays, setIncludeDays] = useState(false);
   const [includeGroup, setIncludeGroup] = useState(false);
+  const [includeTraffic, setIncludeTraffic] = useState(false);
+  const [trafficGb, setTrafficGb] = useState<number | ''>(0);
   const [balanceBonusRubles, setBalanceBonusRubles] = useState<number | ''>(0);
   const [subscriptionDays, setSubscriptionDays] = useState<number | ''>(0);
   const [maxUses, setMaxUses] = useState<number | ''>(1);
@@ -99,6 +101,8 @@ export default function AdminPromocodeCreate() {
         setBalanceBonusRubles(data.balance_bonus_rubles || 0);
       }
       setSubscriptionDays(data.subscription_days || 0);
+      setTrafficGb(data.traffic_gb || 0);
+      setIncludeTraffic((data.traffic_gb || 0) > 0);
       setMaxUses(data.max_uses || 1);
       setIsActive(data.is_active ?? true);
       setFirstPurchaseOnly(data.first_purchase_only || false);
@@ -133,7 +137,7 @@ export default function AdminPromocodeCreate() {
   // едет через promo_group_id при любом типе (бэкенд применяет её независимо).
   const derivedType: PromoCodeType =
     mode === 'bonus_set'
-      ? includeBalance && includeDays
+      ? includeTraffic || (includeBalance && includeDays)
         ? 'balance_and_days'
         : includeBalance
           ? 'balance'
@@ -148,6 +152,7 @@ export default function AdminPromocodeCreate() {
     const balanceValue = balanceBonusRubles === '' ? 0 : balanceBonusRubles;
     const daysValue = subscriptionDays === '' ? 0 : subscriptionDays;
     const maxUsesValue = maxUses === '' ? 0 : maxUses;
+    const trafficValue = trafficGb === '' ? 0 : trafficGb;
 
     const data: PromoCodeCreateRequest | PromoCodeUpdateRequest = {
       code: code.trim().toUpperCase(),
@@ -164,6 +169,7 @@ export default function AdminPromocodeCreate() {
         (mode === 'bonus_set' && includeDays)
           ? daysValue
           : 0,
+      traffic_gb: mode === 'bonus_set' && includeTraffic ? trafficValue : 0,
       max_uses: maxUsesValue,
       is_active: isActive,
       first_purchase_only: firstPurchaseOnly,
@@ -197,7 +203,7 @@ export default function AdminPromocodeCreate() {
     validationErrors.push('codeRequired');
   }
   if (mode === 'bonus_set') {
-    if (!includeBalance && !includeDays && !includeGroup) {
+    if (!includeBalance && !includeDays && !includeGroup && !includeTraffic) {
       validationErrors.push('bonusSetEmpty');
     }
     if (includeBalance && balanceValue <= 0) {
@@ -208,6 +214,9 @@ export default function AdminPromocodeCreate() {
     }
     if (includeGroup && !promoGroupId) {
       validationErrors.push('groupRequired');
+    }
+    if (includeTraffic && (trafficGb === '' || trafficGb <= 0)) {
+      validationErrors.push('trafficRequired');
     }
   }
   if (mode === 'trial_subscription' && daysValue <= 0) {
@@ -308,6 +317,7 @@ export default function AdminPromocodeCreate() {
                 [
                   ['includeBalance', includeBalance, setIncludeBalance] as const,
                   ['includeDays', includeDays, setIncludeDays] as const,
+                  ['includeTraffic', includeTraffic, setIncludeTraffic] as const,
                   ['includePromoGroup', includeGroup, setIncludeGroup] as const,
                 ] as const
               ).map(([key, checked, setChecked]) => (
@@ -357,6 +367,28 @@ export default function AdminPromocodeCreate() {
                 placeholder="0"
               />
               <span className="text-dark-400">{t('admin.promocodes.form.rub')}</span>
+            </div>
+          </div>
+        )}
+
+        {mode === 'bonus_set' && includeTraffic && (
+          <div>
+            <label htmlFor="pc-traffic-gb" className="mb-2 block text-sm font-medium text-dark-300">
+              {t('admin.promocodes.form.trafficAmount')}
+              <span className="text-error-400">*</span>
+            </label>
+            <div className="flex items-center gap-2">
+              <input
+                id="pc-traffic-gb"
+                type="number"
+                value={trafficGb}
+                onChange={createNumberInputHandler(setTrafficGb, 0)}
+                className="input w-32"
+                min={0}
+                step={1}
+                placeholder="0"
+              />
+              <span className="text-dark-400">{t('admin.promocodes.form.gb')}</span>
             </div>
           </div>
         )}

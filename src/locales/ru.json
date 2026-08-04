@@ -3694,7 +3694,10 @@
         "save": "Сохранить",
         "defaultTrialTariff": "Тариф триала по умолчанию",
         "selectTariff": "Выберите тариф",
-        "tariff": "Тариф"
+        "tariff": "Тариф",
+        "includeTraffic": "Трафик",
+        "trafficAmount": "Объём трафика",
+        "gb": "ГБ"
       },
       "stats": {
         "title": "Статистика промокода",
@@ -3770,7 +3773,8 @@
         "daysRequired": "Количество дней должно быть больше 0",
         "groupRequired": "Выберите группу скидок",
         "discountPercentInvalid": "Процент скидки должен быть от 1 до 100",
-        "discountHoursRequired": "Укажите время действия скидки в часах"
+        "discountHoursRequired": "Укажите время действия скидки в часах",
+        "trafficRequired": "Объём трафика должен быть больше 0"
       }
     },
     "promoGroups": {
