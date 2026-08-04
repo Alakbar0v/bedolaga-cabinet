@@ -518,6 +518,19 @@ export const adminUsersApi = {
     return response.data;
   },
 
+  // Delete one of the user's subscriptions (multi-tariff: trials pile up)
+  deleteSubscription: async (
+    userId: number,
+    subId: number,
+    force = false,
+  ): Promise<{ status: string }> => {
+    const response = await apiClient.delete(
+      `/cabinet/admin/users/${userId}/subscriptions/${subId}`,
+      { params: force ? { force: true } : undefined },
+    );
+    return response.data;
+  },
+
   // Update status
   updateStatus: async (
     userId: number,

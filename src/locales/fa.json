@@ -3105,7 +3105,11 @@
           "sbpCancelled": "پرداخت خودکار SBP غیرفعال شد",
           "sbpStatus_PENDING": "در انتظار",
           "sbpStatus_ACTIVE": "فعال",
-          "sbpStatus_PAST_DUE": "پرداخت ناموفق"
+          "sbpStatus_PAST_DUE": "پرداخت ناموفق",
+          "deleteTitle": "حذف اشتراک",
+          "deleteHint": "اشتراک و دستگاه‌های آن برای همیشه حذف می‌شوند",
+          "deleteButton": "حذف اشتراک",
+          "deleted": "اشتراک حذف شد"
         },
         "balance": {
           "current": "موجودی فعلی",

@@ -662,6 +662,24 @@ export default function AdminUserDetail() {
     }
   };
 
+  const handleDeleteSubscription = async () => {
+    if (!userId || !selectedSub) return;
+    setActionLoading(true);
+    try {
+      // Активную платную подписку сервер по умолчанию бережёт — админ уже
+      // подтвердил намерение кнопкой, поэтому просим удалить именно её.
+      const force = Boolean(selectedSub.is_active) && !selectedSub.is_trial;
+      await adminUsersApi.deleteSubscription(userId, selectedSub.id, force);
+      notify.success(t('admin.users.detail.subscription.deleted'), t('common.success'));
+      setSubscriptionDetailView(false);
+      await loadUser();
+    } catch {
+      notify.error(t('admin.users.userActions.error'), t('common.error'));
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   const handleDisableUser = async () => {
     if (!userId) return;
     setActionLoading(true);
@@ -874,6 +892,7 @@ export default function AdminUserDetail() {
             userSubscriptions={userSubscriptions}
             selectedSub={selectedSub}
             onCancelSbpRecurring={handleCancelSbpRecurring}
+            onDeleteSubscription={handleDeleteSubscription}
             activeSubscriptionId={activeSubscriptionId}
             onActiveSubscriptionChange={setActiveSubscriptionId}
             subscriptionDetailView={subscriptionDetailView}

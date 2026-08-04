@@ -3104,7 +3104,11 @@
           "sbpCancelled": "SBP 自动扣款已关闭",
           "sbpStatus_PENDING": "待确认",
           "sbpStatus_ACTIVE": "已启用",
-          "sbpStatus_PAST_DUE": "扣款失败"
+          "sbpStatus_PAST_DUE": "扣款失败",
+          "deleteTitle": "删除订阅",
+          "deleteHint": "订阅及其设备将被永久删除",
+          "deleteButton": "删除订阅",
+          "deleted": "订阅已删除"
         },
         "balance": {
           "current": "当前余额",
