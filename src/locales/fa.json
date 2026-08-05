@@ -199,6 +199,9 @@
     "orOpenInApp": "یا ربات را در برنامه باز کنید",
     "loginFailed": "ورود ناموفق",
     "telegramWidgetBlocked": "ویجت ورود تلگرام در دسترس نیست. از طریق ربات وارد شوید:",
+    "deepLinkIntro": "ورود را مستقیماً در ربات تأیید کنید — بدون نیاز به شماره تلفن:",
+    "loginWithBot": "ورود از طریق ربات",
+    "backToWidget": "بازگشت به ورود با ویجت",
     "openBotToLogin": "باز کردن ربات برای ورود",
     "waitingForConfirmation": "در انتظار تایید...",
     "deepLinkExpired": "لینک منقضی شده است. لطفا دوباره تلاش کنید.",
@@ -2967,7 +2970,8 @@
         "byDate": "بر اساس تاریخ",
         "byBalance": "بر اساس موجودی",
         "byActivity": "بر اساس فعالیت",
-        "bySpent": "بر اساس هزینه"
+        "bySpent": "بر اساس هزینه",
+        "byExpiry": "بر اساس انقضا"
       },
       "pagination": {
         "showing": "نمایش {{from}}-{{to}} از {{total}}"
@@ -3109,7 +3113,11 @@
           "sbpCancelled": "پرداخت خودکار SBP غیرفعال شد",
           "sbpStatus_PENDING": "در انتظار",
           "sbpStatus_ACTIVE": "فعال",
-          "sbpStatus_PAST_DUE": "پرداخت ناموفق"
+          "sbpStatus_PAST_DUE": "پرداخت ناموفق",
+          "deleteTitle": "حذف اشتراک",
+          "deleteHint": "اشتراک و دستگاه‌های آن برای همیشه حذف می‌شوند",
+          "deleteButton": "حذف اشتراک",
+          "deleted": "اشتراک حذف شد"
         },
         "balance": {
           "current": "موجودی فعلی",

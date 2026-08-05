@@ -207,6 +207,9 @@
     "orOpenInApp": "Or open the bot in the app",
     "loginFailed": "Login Failed",
     "telegramWidgetBlocked": "Telegram login widget is unavailable. Use the bot to sign in:",
+    "deepLinkIntro": "Confirm sign-in right in the bot — no phone number needed:",
+    "loginWithBot": "Login via bot",
+    "backToWidget": "Back to widget login",
     "openBotToLogin": "Open bot to sign in",
     "waitingForConfirmation": "Waiting for confirmation...",
     "deepLinkExpired": "Link expired. Please try again.",
@@ -3460,7 +3463,8 @@
         "byDate": "By date",
         "byBalance": "By balance",
         "byActivity": "By activity",
-        "bySpent": "By spending"
+        "bySpent": "By spending",
+        "byExpiry": "By expiry"
       },
       "pagination": {
         "showing": "Showing {{from}}-{{to}} of {{total}}"
@@ -3650,7 +3654,11 @@
           "sbpCancelled": "SBP auto-payment disabled",
           "sbpStatus_PENDING": "Pending",
           "sbpStatus_ACTIVE": "Active",
-          "sbpStatus_PAST_DUE": "Payment failed"
+          "sbpStatus_PAST_DUE": "Payment failed",
+          "deleteTitle": "Delete subscription",
+          "deleteHint": "The subscription and its devices will be removed permanently",
+          "deleteButton": "Delete subscription",
+          "deleted": "Subscription deleted"
         },
         "balance": {
           "current": "Current balance",
