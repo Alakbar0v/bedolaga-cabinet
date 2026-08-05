@@ -28,6 +28,7 @@ import { ActivityTab } from '../components/admin/userDetail/ActivityTab';
 import { TicketsTab } from '../components/admin/userDetail/TicketsTab';
 import { InfoTab } from '../components/admin/userDetail/InfoTab';
 import { SubscriptionTab } from '../components/admin/userDetail/SubscriptionTab';
+import { getApiErrorMessage } from '../utils/api-error';
 import { toNumber } from '../utils/inputHelpers';
 import { usePermissionStore } from '../store/permissions';
 
@@ -673,8 +674,12 @@ export default function AdminUserDetail() {
       notify.success(t('admin.users.detail.subscription.deleted'), t('common.success'));
       setSubscriptionDetailView(false);
       await loadUser();
-    } catch {
-      notify.error(t('admin.users.userActions.error'), t('common.error'));
+    } catch (err) {
+      // Отказы тут осмысленные и действенные: открытый временный доступ
+      // (409, «сначала заверши или восстанови grace»), активная платная без
+      // force (409), подписки нет (404). Общее «Ошибка» оставило бы админа
+      // гадать, почему кнопка не сработала, — показываем текст сервера.
+      notify.error(getApiErrorMessage(err, t('admin.users.userActions.error')), t('common.error'));
     } finally {
       setActionLoading(false);
     }
