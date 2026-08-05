@@ -87,8 +87,15 @@ export default function AdminPromocodeCreate() {
         setMode(data.type);
       } else {
         setMode('bonus_set');
-        setIncludeBalance(data.type === 'balance' || data.type === 'balance_and_days');
-        setIncludeDays(data.type === 'subscription_days' || data.type === 'balance_and_days');
+        // Галочки поднимаем по ЗНАЧЕНИЯМ, а не по типу. С появлением трафика
+        // balance_and_days перестал означать «есть и баланс, и дни»: этот тип
+        // теперь у любого набора с трафиком, в том числе с нулевым балансом и
+        // нулём дней. По типу такой код открывался бы с двумя чужими галочками
+        // на нулях, валидация требовала бы «больше 0», и Сохранить не работало
+        // бы, пока админ их не снимет, — а подсказка толкает вместо этого
+        // вписать сумму и молча добавить коду бонус, которого в нём не было.
+        setIncludeBalance(data.type === 'balance' || (data.balance_bonus_rubles || 0) > 0);
+        setIncludeDays(data.type === 'subscription_days' || (data.subscription_days || 0) > 0);
         // Промогруппа комбинируется с любым составом (bэкенд назначает её
         // независимо от типа), поэтому чекбокс — по факту наличия группы
         setIncludeGroup(data.type === 'promo_group' || !!data.promo_group_id);
