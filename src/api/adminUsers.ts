@@ -456,7 +456,8 @@ export const adminUsersApi = {
         | 'traffic'
         | 'last_activity'
         | 'total_spent'
-        | 'purchase_count';
+        | 'purchase_count'
+        | 'subscription_end_date';
     } = {},
   ): Promise<UsersListResponse> => {
     const response = await apiClient.get('/cabinet/admin/users', { params });
