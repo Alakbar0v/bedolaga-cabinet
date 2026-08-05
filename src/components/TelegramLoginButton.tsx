@@ -172,7 +172,12 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
   const loginWithTelegramWidget = useAuthStore((s) => s.loginWithTelegramWidget);
 
   useEffect(() => {
-    if (isOIDC || !containerRef.current || !botUsername || !widgetConfig) return;
+    // showDeepLinkUI обязан быть в зависимостях: пока он true, контейнер
+    // виджета размонтирован, а при возврате «Назад к виджету» сам по себе
+    // эффект не перезапустится — на legacy-пути scriptLoaded не меняется
+    // никогда, поэтому ни одна из остальных зависимостей не дрогнет, и
+    // пользователь получил бы пустое место вместо виджета.
+    if (showDeepLinkUI || isOIDC || !containerRef.current || !botUsername || !widgetConfig) return;
 
     const container = containerRef.current;
     while (container.firstChild) {
@@ -233,7 +238,15 @@ export default function TelegramLoginButton({ referralCode }: TelegramLoginButto
         container.removeChild(container.firstChild);
       }
     };
-  }, [isOIDC, botUsername, widgetConfig, loginWithTelegramWidget, navigate, handleScriptFailed]);
+  }, [
+    showDeepLinkUI,
+    isOIDC,
+    botUsername,
+    widgetConfig,
+    loginWithTelegramWidget,
+    navigate,
+    handleScriptFailed,
+  ]);
 
   // Deep link auth: request token and start polling with recursive setTimeout
   const startDeepLinkAuth = useCallback(async () => {
