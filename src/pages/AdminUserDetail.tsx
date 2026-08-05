@@ -28,6 +28,7 @@ import { ActivityTab } from '../components/admin/userDetail/ActivityTab';
 import { TicketsTab } from '../components/admin/userDetail/TicketsTab';
 import { InfoTab } from '../components/admin/userDetail/InfoTab';
 import { SubscriptionTab } from '../components/admin/userDetail/SubscriptionTab';
+import { getApiErrorMessage } from '../utils/api-error';
 import { toNumber } from '../utils/inputHelpers';
 import { usePermissionStore } from '../store/permissions';
 
@@ -662,6 +663,28 @@ export default function AdminUserDetail() {
     }
   };
 
+  const handleDeleteSubscription = async () => {
+    if (!userId || !selectedSub) return;
+    setActionLoading(true);
+    try {
+      // Активную платную подписку сервер по умолчанию бережёт — админ уже
+      // подтвердил намерение кнопкой, поэтому просим удалить именно её.
+      const force = Boolean(selectedSub.is_active) && !selectedSub.is_trial;
+      await adminUsersApi.deleteSubscription(userId, selectedSub.id, force);
+      notify.success(t('admin.users.detail.subscription.deleted'), t('common.success'));
+      setSubscriptionDetailView(false);
+      await loadUser();
+    } catch (err) {
+      // Отказы тут осмысленные и действенные: открытый временный доступ
+      // (409, «сначала заверши или восстанови grace»), активная платная без
+      // force (409), подписки нет (404). Общее «Ошибка» оставило бы админа
+      // гадать, почему кнопка не сработала, — показываем текст сервера.
+      notify.error(getApiErrorMessage(err, t('admin.users.userActions.error')), t('common.error'));
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   const handleDisableUser = async () => {
     if (!userId) return;
     setActionLoading(true);
@@ -874,6 +897,7 @@ export default function AdminUserDetail() {
             userSubscriptions={userSubscriptions}
             selectedSub={selectedSub}
             onCancelSbpRecurring={handleCancelSbpRecurring}
+            onDeleteSubscription={handleDeleteSubscription}
             activeSubscriptionId={activeSubscriptionId}
             onActiveSubscriptionChange={setActiveSubscriptionId}
             subscriptionDetailView={subscriptionDetailView}

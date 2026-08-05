@@ -3650,7 +3650,11 @@
           "sbpCancelled": "SBP auto-payment disabled",
           "sbpStatus_PENDING": "Pending",
           "sbpStatus_ACTIVE": "Active",
-          "sbpStatus_PAST_DUE": "Payment failed"
+          "sbpStatus_PAST_DUE": "Payment failed",
+          "deleteTitle": "Delete subscription",
+          "deleteHint": "The subscription and its devices will be removed permanently",
+          "deleteButton": "Delete subscription",
+          "deleted": "Subscription deleted"
         },
         "balance": {
           "current": "Current balance",

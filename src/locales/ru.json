@@ -4047,7 +4047,11 @@
           "sbpCancelled": "Автоплатёж по СБП отключён",
           "sbpStatus_PENDING": "Ожидает подтверждения",
           "sbpStatus_ACTIVE": "Активен",
-          "sbpStatus_PAST_DUE": "Платёж не прошёл"
+          "sbpStatus_PAST_DUE": "Платёж не прошёл",
+          "deleteTitle": "Удаление подписки",
+          "deleteHint": "Подписка и её устройства будут удалены безвозвратно",
+          "deleteButton": "Удалить подписку",
+          "deleted": "Подписка удалена"
         },
         "balance": {
           "current": "Текущий баланс",
