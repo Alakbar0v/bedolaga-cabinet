@@ -2812,7 +2812,10 @@
         "save": "保存",
         "defaultTrialTariff": "默认试用套餐",
         "selectTariff": "选择套餐",
-        "tariff": "套餐"
+        "tariff": "套餐",
+        "includeTraffic": "流量",
+        "trafficAmount": "流量额度",
+        "gb": "GB"
       },
       "stats": {
         "title": "促销码统计",
@@ -2884,7 +2887,8 @@
         "daysRequired": "天数必须大于0",
         "groupRequired": "请选择折扣组",
         "discountPercentInvalid": "折扣百分比必须在1到100之间",
-        "discountHoursRequired": "请指定折扣有效期（小时）"
+        "discountHoursRequired": "请指定折扣有效期（小时）",
+        "trafficRequired": "流量额度必须大于 0"
       }
     },
     "promoGroups": {

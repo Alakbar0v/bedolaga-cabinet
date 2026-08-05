@@ -3303,7 +3303,10 @@
         "save": "Save",
         "defaultTrialTariff": "Default trial tariff",
         "selectTariff": "Select tariff",
-        "tariff": "Tariff"
+        "tariff": "Tariff",
+        "includeTraffic": "Traffic",
+        "trafficAmount": "Traffic amount",
+        "gb": "GB"
       },
       "stats": {
         "title": "Promo code statistics",
@@ -3377,7 +3380,8 @@
         "daysRequired": "Number of days must be greater than 0",
         "groupRequired": "Select a discount group",
         "discountPercentInvalid": "Discount percent must be between 1 and 100",
-        "discountHoursRequired": "Specify the discount validity period in hours"
+        "discountHoursRequired": "Specify the discount validity period in hours",
+        "trafficRequired": "Traffic amount must be greater than 0"
       }
     },
     "promoGroups": {
