@@ -3456,7 +3456,8 @@
         "byDate": "By date",
         "byBalance": "By balance",
         "byActivity": "By activity",
-        "bySpent": "By spending"
+        "bySpent": "By spending",
+        "byExpiry": "By expiry"
       },
       "pagination": {
         "showing": "Showing {{from}}-{{to}} of {{total}}"
