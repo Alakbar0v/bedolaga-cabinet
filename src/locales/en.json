@@ -207,6 +207,9 @@
     "orOpenInApp": "Or open the bot in the app",
     "loginFailed": "Login Failed",
     "telegramWidgetBlocked": "Telegram login widget is unavailable. Use the bot to sign in:",
+    "deepLinkIntro": "Confirm sign-in right in the bot — no phone number needed:",
+    "loginWithBot": "Login via bot",
+    "backToWidget": "Back to widget login",
     "openBotToLogin": "Open bot to sign in",
     "waitingForConfirmation": "Waiting for confirmation...",
     "deepLinkExpired": "Link expired. Please try again.",
@@ -3300,7 +3303,10 @@
         "save": "Save",
         "defaultTrialTariff": "Default trial tariff",
         "selectTariff": "Select tariff",
-        "tariff": "Tariff"
+        "tariff": "Tariff",
+        "includeTraffic": "Traffic",
+        "trafficAmount": "Traffic amount",
+        "gb": "GB"
       },
       "stats": {
         "title": "Promo code statistics",
@@ -3374,7 +3380,8 @@
         "daysRequired": "Number of days must be greater than 0",
         "groupRequired": "Select a discount group",
         "discountPercentInvalid": "Discount percent must be between 1 and 100",
-        "discountHoursRequired": "Specify the discount validity period in hours"
+        "discountHoursRequired": "Specify the discount validity period in hours",
+        "trafficRequired": "Traffic amount must be greater than 0"
       }
     },
     "promoGroups": {
@@ -3456,7 +3463,8 @@
         "byDate": "By date",
         "byBalance": "By balance",
         "byActivity": "By activity",
-        "bySpent": "By spending"
+        "bySpent": "By spending",
+        "byExpiry": "By expiry"
       },
       "pagination": {
         "showing": "Showing {{from}}-{{to}} of {{total}}"
@@ -3646,7 +3654,11 @@
           "sbpCancelled": "SBP auto-payment disabled",
           "sbpStatus_PENDING": "Pending",
           "sbpStatus_ACTIVE": "Active",
-          "sbpStatus_PAST_DUE": "Payment failed"
+          "sbpStatus_PAST_DUE": "Payment failed",
+          "deleteTitle": "Delete subscription",
+          "deleteHint": "The subscription and its devices will be removed permanently",
+          "deleteButton": "Delete subscription",
+          "deleted": "Subscription deleted"
         },
         "balance": {
           "current": "Current balance",
