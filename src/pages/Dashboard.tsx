@@ -80,6 +80,24 @@ export default function Dashboard() {
     staleTime: API.BALANCE_STALE_TIME_MS,
   });
 
+  // Плитка «Подключить устройство» на главной живёт в МУЛЬТИТАРИФНОЙ ветке, а
+  // запрос выше там выключен: он привязан к одиночной подписке (`subscription`
+  // в мультитарифе всегда null). Без отдельного запроса счётчик плитки всегда
+  // показывал бы «0 из N», а лимит устройств не срабатывал бы никогда — то
+  // есть ровно то, ради чего плитку и добавили, не работало бы.
+  // Ключ ['devices', id] — тот же, что на странице подписки, так что кэш общий.
+  const homeSingleSub =
+    isMultiTariff && multiSubData?.subscriptions?.length === 1
+      ? multiSubData.subscriptions[0]
+      : null;
+
+  const { data: homeSingleSubDevices } = useQuery({
+    queryKey: ['devices', homeSingleSub?.id],
+    queryFn: () => subscriptionApi.getDevices(homeSingleSub?.id),
+    enabled: !!homeSingleSub,
+    staleTime: API.BALANCE_STALE_TIME_MS,
+  });
+
   const { data: referralInfo, isLoading: refLoading } = useQuery({
     queryKey: ['referral-info'],
     queryFn: referralApi.getReferralInfo,
@@ -306,18 +324,16 @@ export default function Dashboard() {
               и человек попадает на главную с готовым доступом. Пока подписка
               одна, показываем здесь же, как подключить устройство: иначе за
               этим нужно уходить на отдельную страницу, о чём он не догадается. */}
-          {multiSubData.subscriptions.length === 1 && (
+          {homeSingleSub && (
             <ConnectDeviceTile
-              subscription={multiSubData.subscriptions[0]}
-              connectedDevices={devicesData?.total ?? 0}
+              subscription={homeSingleSub}
+              connectedDevices={homeSingleSubDevices?.total ?? 0}
               usedPercent={
-                multiSubData.subscriptions[0].traffic_limit_gb > 0
+                homeSingleSub.traffic_limit_gb > 0
                   ? Math.min(
                       100,
                       Math.round(
-                        (multiSubData.subscriptions[0].traffic_used_gb /
-                          multiSubData.subscriptions[0].traffic_limit_gb) *
-                          100,
+                        (homeSingleSub.traffic_used_gb / homeSingleSub.traffic_limit_gb) * 100,
                       ),
                     )
                   : 0
