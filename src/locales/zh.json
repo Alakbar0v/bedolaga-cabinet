@@ -1004,7 +1004,12 @@
     "ticketsDisabled": "工单已禁用",
     "useExternalLink": "请使用外部链接获取支持",
     "create_ticket": "创建工单",
-    "writeButton": "发消息"
+    "writeButton": "发消息",
+    "errors": {
+      "alreadyOpenTicket": "您已有一个未关闭的工单。请在该工单中继续沟通，当前工单关闭后即可创建新工单。",
+      "createFailed": "创建工单失败，请重试。",
+      "replyFailed": "发送回复失败，请重试。"
+    }
   },
   "wheel": {
     "title": "幸运转盘",
