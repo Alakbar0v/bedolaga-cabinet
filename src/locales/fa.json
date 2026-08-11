@@ -199,6 +199,9 @@
     "orOpenInApp": "یا ربات را در برنامه باز کنید",
     "loginFailed": "ورود ناموفق",
     "telegramWidgetBlocked": "ویجت ورود تلگرام در دسترس نیست. از طریق ربات وارد شوید:",
+    "deepLinkIntro": "ورود را مستقیماً در ربات تأیید کنید — بدون نیاز به شماره تلفن:",
+    "loginWithBot": "ورود از طریق ربات",
+    "backToWidget": "بازگشت به ورود با ویجت",
     "openBotToLogin": "باز کردن ربات برای ورود",
     "waitingForConfirmation": "در انتظار تایید...",
     "deepLinkExpired": "لینک منقضی شده است. لطفا دوباره تلاش کنید.",
@@ -2815,7 +2818,10 @@
         "save": "ذخیره",
         "defaultTrialTariff": "تعرفه پیش‌فرض آزمایشی",
         "selectTariff": "تعرفه را انتخاب کنید",
-        "tariff": "تعرفه"
+        "tariff": "تعرفه",
+        "includeTraffic": "ترافیک",
+        "trafficAmount": "حجم ترافیک",
+        "gb": "گیگابایت"
       },
       "stats": {
         "title": "آمار کد تخفیف",
@@ -2887,7 +2893,8 @@
         "daysRequired": "تعداد روزها باید بیشتر از 0 باشد",
         "groupRequired": "یک گروه تخفیف انتخاب کنید",
         "discountPercentInvalid": "درصد تخفیف باید بین 1 تا 100 باشد",
-        "discountHoursRequired": "مدت اعتبار تخفیف را به ساعت مشخص کنید"
+        "discountHoursRequired": "مدت اعتبار تخفیف را به ساعت مشخص کنید",
+        "trafficRequired": "حجم ترافیک باید بیشتر از ۰ باشد"
       }
     },
     "promoGroups": {
@@ -2968,7 +2975,8 @@
         "byDate": "بر اساس تاریخ",
         "byBalance": "بر اساس موجودی",
         "byActivity": "بر اساس فعالیت",
-        "bySpent": "بر اساس هزینه"
+        "bySpent": "بر اساس هزینه",
+        "byExpiry": "بر اساس انقضا"
       },
       "pagination": {
         "showing": "نمایش {{from}}-{{to}} از {{total}}"
@@ -3110,7 +3118,11 @@
           "sbpCancelled": "پرداخت خودکار SBP غیرفعال شد",
           "sbpStatus_PENDING": "در انتظار",
           "sbpStatus_ACTIVE": "فعال",
-          "sbpStatus_PAST_DUE": "پرداخت ناموفق"
+          "sbpStatus_PAST_DUE": "پرداخت ناموفق",
+          "deleteTitle": "حذف اشتراک",
+          "deleteHint": "اشتراک و دستگاه‌های آن برای همیشه حذف می‌شوند",
+          "deleteButton": "حذف اشتراک",
+          "deleted": "اشتراک حذف شد"
         },
         "balance": {
           "current": "موجودی فعلی",

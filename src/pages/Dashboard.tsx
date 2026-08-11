@@ -14,6 +14,7 @@ import PromoOffersSection from '../components/PromoOffersSection';
 import NewsSection from '../components/news/NewsSection';
 import SubscriptionCardActive from '../components/dashboard/SubscriptionCardActive';
 import SubscriptionCardExpired from '../components/dashboard/SubscriptionCardExpired';
+import ConnectDeviceTile from '../components/dashboard/ConnectDeviceTile';
 import TrialOfferCard from '../components/dashboard/TrialOfferCard';
 import StatsGrid from '../components/dashboard/StatsGrid';
 import { giftApi } from '../api/gift';
@@ -76,6 +77,24 @@ export default function Dashboard() {
     queryKey: ['devices'],
     queryFn: () => subscriptionApi.getDevices(),
     enabled: !!subscription && !isMultiTariff,
+    staleTime: API.BALANCE_STALE_TIME_MS,
+  });
+
+  // Плитка «Подключить устройство» на главной живёт в МУЛЬТИТАРИФНОЙ ветке, а
+  // запрос выше там выключен: он привязан к одиночной подписке (`subscription`
+  // в мультитарифе всегда null). Без отдельного запроса счётчик плитки всегда
+  // показывал бы «0 из N», а лимит устройств не срабатывал бы никогда — то
+  // есть ровно то, ради чего плитку и добавили, не работало бы.
+  // Ключ ['devices', id] — тот же, что на странице подписки, так что кэш общий.
+  const homeSingleSub =
+    isMultiTariff && multiSubData?.subscriptions?.length === 1
+      ? multiSubData.subscriptions[0]
+      : null;
+
+  const { data: homeSingleSubDevices } = useQuery({
+    queryKey: ['devices', homeSingleSub?.id],
+    queryFn: () => subscriptionApi.getDevices(homeSingleSub?.id),
+    enabled: !!homeSingleSub,
     staleTime: API.BALANCE_STALE_TIME_MS,
   });
 
@@ -301,6 +320,26 @@ export default function Dashboard() {
               onClick={() => navigate(`/subscriptions/${sub.id}`)}
             />
           ))}
+          {/* Подписку мог выдать бонус рекламной кампании — она создаётся сама,
+              и человек попадает на главную с готовым доступом. Пока подписка
+              одна, показываем здесь же, как подключить устройство: иначе за
+              этим нужно уходить на отдельную страницу, о чём он не догадается. */}
+          {homeSingleSub && (
+            <ConnectDeviceTile
+              subscription={homeSingleSub}
+              connectedDevices={homeSingleSubDevices?.total ?? 0}
+              usedPercent={
+                homeSingleSub.traffic_limit_gb > 0
+                  ? Math.min(
+                      100,
+                      Math.round(
+                        (homeSingleSub.traffic_used_gb / homeSingleSub.traffic_limit_gb) * 100,
+                      ),
+                    )
+                  : 0
+              }
+            />
+          )}
           {multiSubData.subscriptions.length > 3 && (
             <Link
               to="/subscriptions"
