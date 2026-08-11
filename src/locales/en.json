@@ -1134,7 +1134,12 @@
     "contactSupport": "Please contact {{username}} for support",
     "contactUs": "Contact Support",
     "create_ticket": "Create ticket",
-    "writeButton": "Message"
+    "writeButton": "Message",
+    "errors": {
+      "alreadyOpenTicket": "You already have an open ticket. Please continue the conversation there — a new ticket can be created once the current one is closed.",
+      "createFailed": "Could not create the ticket. Please try again.",
+      "replyFailed": "Could not send the reply. Please try again."
+    }
   },
   "wheel": {
     "title": "Fortune Wheel",
