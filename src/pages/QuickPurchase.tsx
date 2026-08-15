@@ -19,6 +19,7 @@ import type {
   LandingTariff,
   LandingTariffPeriod,
   LandingPaymentMethod,
+  LandingPersonalization,
   PurchaseRequest,
 } from '../api/landings';
 import {
@@ -96,6 +97,67 @@ function ErrorState({ message }: { message: string }) {
         </div>
         <h2 className="text-lg font-semibold text-dark-50">{t('landing.error', 'Error')}</h2>
         <p className="text-sm text-dark-300">{message}</p>
+      </div>
+    </div>
+  );
+}
+
+function PersonalizationNotice({ personalization }: { personalization: LandingPersonalization }) {
+  const { t } = useTranslation();
+  const isBlocked = personalization.status === 'has_active_subscription';
+
+  const title = isBlocked
+    ? t('landing.personalized.blockedTitle', 'You already have an active subscription')
+    : t('landing.personalized.notFoundTitle', 'User not found');
+  const desc = isBlocked
+    ? t('landing.personalized.blockedDesc', 'Manage your subscription in the Telegram bot.')
+    : t('landing.personalized.notFoundDesc', 'Open the bot first, then come back to this link.');
+
+  return (
+    <div className="flex min-h-dvh items-center justify-center px-4">
+      <div className="flex max-w-sm flex-col items-center gap-4 text-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent-500/10">
+          <svg
+            className="h-8 w-8 text-accent-400"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+          >
+            {isBlocked ? (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            ) : (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
+              />
+            )}
+          </svg>
+        </div>
+        <h2 className="text-lg font-semibold text-dark-50">{title}</h2>
+        <p className="text-sm text-dark-300">{desc}</p>
+        {isBlocked && personalization.active_subscription_ends_at && (
+          <p className="text-xs text-dark-500">
+            {t('landing.personalized.activeUntil', 'Active until {{date}}', {
+              date: new Date(personalization.active_subscription_ends_at).toLocaleDateString(),
+            })}
+          </p>
+        )}
+        {personalization.bot_link && (
+          <a
+            href={personalization.bot_link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 rounded-xl bg-accent-500 px-6 py-3 text-sm font-semibold text-on-accent shadow-lg shadow-accent-500/25 transition-all hover:bg-accent-400"
+          >
+            {t('landing.personalized.openBot', 'Open bot')}
+          </a>
+        )}
       </div>
     </div>
   );
@@ -770,14 +832,23 @@ export default function QuickPurchase() {
   // (хук кладёт rates в глобальный кэш utils/format.ts).
   useCurrency();
 
+  // Personalized (?tgid=) mode: read once on mount from the current URL, not
+  // sessionStorage — unlike subid/referrer, a stale value here would
+  // personalize the page for the WRONG account.
+  const tgid = useMemo(() => {
+    const raw = new URLSearchParams(window.location.search).get('tgid');
+    const parsed = raw ? Number(raw) : NaN;
+    return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : undefined;
+  }, []);
+
   // Fetch config
   const {
     data: config,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['landing-config', slug, i18n.language],
-    queryFn: () => landingApi.getConfig(slug!, i18n.language),
+    queryKey: ['landing-config', slug, i18n.language, tgid],
+    queryFn: () => landingApi.getConfig(slug!, i18n.language, tgid),
     enabled: !!slug,
     staleTime: 60_000,
     retry: 1,
@@ -839,9 +910,17 @@ export default function QuickPurchase() {
       sessionStorage.setItem('landing_referrer', document.referrer.slice(0, 500));
     }
     // Save subid from URL (also clamped to backend limit of 255)
-    const urlSubid = new URLSearchParams(window.location.search).get('subid');
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlSubid = urlParams.get('subid');
     if (urlSubid) {
       sessionStorage.setItem('landing_subid', urlSubid.slice(0, 255));
+    }
+    // Save yclid (Yandex Direct click id) from URL. Backend validates it as
+    // ^[0-9]{1,64}$ and rejects the WHOLE purchase with 422 if it isn't —
+    // validate here too so a malformed/foreign yclid param never blocks checkout.
+    const urlYclid = urlParams.get('yclid');
+    if (urlYclid && /^[0-9]{1,64}$/.test(urlYclid)) {
+      sessionStorage.setItem('landing_yclid', urlYclid);
     }
   }, []);
 
@@ -1019,14 +1098,28 @@ export default function QuickPurchase() {
   );
 
   const currentPrice = selectedPeriod?.price_kopeks ?? 0;
+  // Both checked (not just status): can_purchase is the field the backend
+  // actually intends as the purchasability signal, status=='ok' is the
+  // documented invariant that goes with it — belt and suspenders.
+  const isPersonalized =
+    config?.personalization?.status === 'ok' && config.personalization.can_purchase === true;
 
   // Validation
   const canSubmit = useMemo(() => {
     if (!selectedTariffId || !selectedPeriodDays || !selectedMethod) return false;
+    if (isPersonalized) return true; // no contact form in this mode — tgid identifies the buyer
     if (!isValidContact(contactValue)) return false;
     if (isGift && !isValidContact(giftRecipient)) return false;
     return true;
-  }, [selectedTariffId, selectedPeriodDays, selectedMethod, contactValue, isGift, giftRecipient]);
+  }, [
+    selectedTariffId,
+    selectedPeriodDays,
+    selectedMethod,
+    isPersonalized,
+    contactValue,
+    isGift,
+    giftRecipient,
+  ]);
 
   // Purchase mutation
   const purchaseMutation = useMutation({
@@ -1065,18 +1158,23 @@ export default function QuickPurchase() {
     const data: PurchaseRequest = {
       tariff_id: selectedTariffId!,
       period_days: selectedPeriodDays!,
-      contact_type: detectContactType(contactValue),
-      contact_value: contactValue.trim(),
       payment_method: paymentMethod,
       language: i18n.language,
-      is_gift: isGift,
+      is_gift: isPersonalized ? false : isGift,
       referrer: sessionStorage.getItem('landing_referrer') || undefined,
     };
 
-    if (isGift && giftRecipient) {
-      data.gift_recipient_type = detectContactType(giftRecipient);
-      data.gift_recipient_value = giftRecipient.trim();
-      data.gift_message = giftMessage.trim() || undefined;
+    if (isPersonalized) {
+      data.telegram_id = tgid;
+    } else {
+      data.contact_type = detectContactType(contactValue);
+      data.contact_value = contactValue.trim();
+
+      if (isGift && giftRecipient) {
+        data.gift_recipient_type = detectContactType(giftRecipient);
+        data.gift_recipient_value = giftRecipient.trim();
+        data.gift_message = giftMessage.trim() || undefined;
+      }
     }
 
     // Get Yandex CID for offline conversions (sync from localStorage)
@@ -1084,6 +1182,8 @@ export default function QuickPurchase() {
     if (ymCid) data.yandex_cid = ymCid;
     const subid = sessionStorage.getItem('landing_subid');
     if (subid) (data as unknown as Record<string, unknown>).subid = subid;
+    const yclid = sessionStorage.getItem('landing_yclid');
+    if (yclid) data.yclid = yclid;
 
     // Fire landing-specific click goal
     if (config?.analytics_click_enabled && config?.analytics_click_goal) {
@@ -1114,6 +1214,14 @@ export default function QuickPurchase() {
   if (error || !config) {
     const errMsg = getApiErrorMessage(error, t('landing.notFound', 'Landing page not found'));
     return <ErrorState message={errMsg} />;
+  }
+
+  // Personalized (?tgid=) mode, but the buyer can't purchase here: unknown
+  // tgid, or they already have an active subscription. tariffs/payment_methods
+  // are already [] from the backend in this case — show the notice instead of
+  // an empty purchase grid.
+  if (config.personalization && config.personalization.status !== 'ok') {
+    return <PersonalizationNotice personalization={config.personalization} />;
   }
 
   const showTariffCards = visibleTariffs.length > 1;
@@ -1180,30 +1288,35 @@ export default function QuickPurchase() {
               </div>
             )}
 
-            {/* Gift toggle */}
-            {config.gift_enabled && <GiftToggle isGift={isGift} onToggle={setIsGift} />}
+            {/* Gift toggle — not offered in personalized mode (tgid identifies
+                a single existing bot account, not a gift recipient) */}
+            {!isPersonalized && config.gift_enabled && (
+              <GiftToggle isGift={isGift} onToggle={setIsGift} />
+            )}
 
-            {/* Contact form */}
-            <ContactForm
-              contactValue={contactValue}
-              onContactChange={(v) => {
-                setContactValue(v);
-                try {
-                  localStorage.setItem(contactKey, v);
-                } catch {
-                  /* */
-                }
-                setSubmitError(null);
-              }}
-              isGift={isGift}
-              giftRecipient={giftRecipient}
-              onGiftRecipientChange={(v) => {
-                setGiftRecipient(v);
-                setSubmitError(null);
-              }}
-              giftMessage={giftMessage}
-              onGiftMessageChange={setGiftMessage}
-            />
+            {/* Contact form — replaced by tgid in personalized mode */}
+            {!isPersonalized && (
+              <ContactForm
+                contactValue={contactValue}
+                onContactChange={(v) => {
+                  setContactValue(v);
+                  try {
+                    localStorage.setItem(contactKey, v);
+                  } catch {
+                    /* */
+                  }
+                  setSubmitError(null);
+                }}
+                isGift={isGift}
+                giftRecipient={giftRecipient}
+                onGiftRecipientChange={(v) => {
+                  setGiftRecipient(v);
+                  setSubmitError(null);
+                }}
+                giftMessage={giftMessage}
+                onGiftMessageChange={setGiftMessage}
+              />
+            )}
 
             {/* Tariff cards */}
             {showTariffCards && (

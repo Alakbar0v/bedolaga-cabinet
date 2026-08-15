@@ -316,6 +316,54 @@ function SuccessState({
   );
 }
 
+function TelegramSuccessState({
+  tariffName,
+  periodDays,
+  botLink,
+}: {
+  tariffName: string | null;
+  periodDays: number | null;
+  botLink: string | null;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="flex flex-col items-center gap-6 text-center"
+    >
+      <AnimatedCheckmark />
+      <div>
+        <h1 className="text-xl font-bold text-dark-50">
+          {t('landing.personalized.successTitle', 'Payment successful!')}
+        </h1>
+        {tariffName && periodDays !== null && (
+          <p className="mt-1 text-sm text-dark-300">
+            {tariffName} — {periodDays} {t('landing.daysAccess')}
+          </p>
+        )}
+        <p className="mt-2 text-sm text-dark-400">
+          {t(
+            'landing.personalized.successDesc',
+            'Your subscription is active. Refresh it in your app to see the new connection.',
+          )}
+        </p>
+      </div>
+      {botLink && (
+        <a
+          href={botLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent-500 px-6 py-3 text-sm font-medium text-on-accent transition-colors hover:bg-accent-400"
+        >
+          {t('landing.personalized.openBot', 'Open bot')}
+        </a>
+      )}
+    </motion.div>
+  );
+}
+
 function PendingActivationState({
   tariffName,
   periodDays,
@@ -764,6 +812,11 @@ export default function PurchaseSuccess() {
   const isPendingActivation = purchaseStatus?.status === 'pending_activation';
   const isFailed = purchaseStatus?.status === 'failed' || purchaseStatus?.status === 'expired';
 
+  // Personalized (?tgid=) purchase: no cabinet credentials, no subscription_url
+  // (the backend deliberately withholds it — see landing.py), no activate step.
+  // Just confirm success and point back at the bot/app.
+  const isTelegramDirect = isSuccess && purchaseStatus?.mode === 'telegram';
+
   // Deferred gift the buyer just paid for → show the transferable claim link to
   // forward (it stays PAID until the recipient claims it).
   const isBuyerGiftLink = purchaseStatus?.status === 'paid' && !!purchaseStatus?.is_gift;
@@ -796,6 +849,12 @@ export default function PurchaseSuccess() {
             periodDays={purchaseStatus.period_days}
             recipientContactValue={purchaseStatus.recipient_contact_value}
             contactType={purchaseStatus.contact_type}
+          />
+        ) : isTelegramDirect ? (
+          <TelegramSuccessState
+            tariffName={purchaseStatus.tariff_name}
+            periodDays={purchaseStatus.period_days}
+            botLink={purchaseStatus.bot_link}
           />
         ) : isEmailSelfPurchase ? (
           <CabinetCredentialsState

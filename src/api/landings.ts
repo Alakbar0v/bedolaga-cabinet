@@ -78,6 +78,19 @@ export interface LandingDiscountInfo {
   badge_text: string | null;
 }
 
+/**
+ * Present only when the request carried ?tgid= — null means anonymous mode.
+ * 'user_not_found' / 'has_active_subscription' both mean the purchase grid
+ * must not be shown (the backend already returns tariffs: [] for those).
+ */
+export interface LandingPersonalization {
+  status: 'ok' | 'user_not_found' | 'has_active_subscription';
+  telegram_id: number | null;
+  bot_link: string | null;
+  can_purchase: boolean;
+  active_subscription_ends_at: string | null;
+}
+
 export interface LandingConfig {
   slug: string;
   title: string;
@@ -97,13 +110,17 @@ export interface LandingConfig {
   analytics_click_enabled: boolean;
   analytics_click_goal: string;
   sticky_pay_button: boolean;
+  personalization: LandingPersonalization | null;
 }
 
 export interface PurchaseRequest {
   tariff_id: number;
   period_days: number;
-  contact_type: 'email' | 'telegram';
-  contact_value: string;
+  // Personalized (?tgid=) mode: identifies an existing bot user, replaces the
+  // contact form below. Mutually exclusive with contact_type/contact_value.
+  telegram_id?: number;
+  contact_type?: 'email' | 'telegram';
+  contact_value?: string;
   payment_method: string;
   is_gift: boolean;
   gift_recipient_type?: 'email' | 'telegram';
@@ -114,6 +131,7 @@ export interface PurchaseRequest {
   yandex_cid?: string;
   referrer?: string;
   subid?: string;
+  yclid?: string;
 }
 
 export interface PurchaseResponse {
@@ -123,6 +141,10 @@ export interface PurchaseResponse {
 
 export interface PurchaseStatus {
   status: 'pending' | 'paid' | 'delivered' | 'pending_activation' | 'failed' | 'expired';
+  // 'telegram' for personalized (?tgid=) purchases — no subscription_url,
+  // no cabinet credentials, no activate step (see fields below).
+  mode?: 'guest' | 'telegram';
+  requires_activation?: boolean;
   subscription_url: string | null;
   subscription_crypto_link: string | null;
   is_gift: boolean;
@@ -277,9 +299,12 @@ export function toLocaleDict(
 }
 
 export const landingApi = {
-  getConfig: async (slug: string, lang?: string): Promise<LandingConfig> => {
-    const params = lang ? `?lang=${lang}` : '';
-    const response = await apiClient.get(`/cabinet/landing/${slug}${params}`);
+  getConfig: async (slug: string, lang?: string, tgid?: number): Promise<LandingConfig> => {
+    const params = new URLSearchParams();
+    if (lang) params.set('lang', lang);
+    if (tgid) params.set('tgid', String(tgid));
+    const qs = params.toString();
+    const response = await apiClient.get(`/cabinet/landing/${slug}${qs ? `?${qs}` : ''}`);
     return response.data;
   },
 

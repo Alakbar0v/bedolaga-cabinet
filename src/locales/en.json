@@ -5294,6 +5294,16 @@
       "alsoSent": "We also emailed it to {{contact}}.",
       "copyMessage": "Copy message"
     },
+    "personalized": {
+      "blockedTitle": "You already have an active subscription",
+      "blockedDesc": "Manage your subscription in the Telegram bot.",
+      "activeUntil": "Active until {{date}}",
+      "notFoundTitle": "User not found",
+      "notFoundDesc": "Open the bot first, then come back to this link.",
+      "openBot": "Open bot",
+      "successTitle": "Payment successful!",
+      "successDesc": "Your subscription is active. Refresh it in your app to see the new connection."
+    },
     "notFound": "Page not found",
     "forMe": "For me",
     "asGift": "As a gift",

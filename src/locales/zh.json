@@ -4844,6 +4844,16 @@
       "alsoSent": "我们也已发送到 {{contact}}。",
       "copyMessage": "复制消息"
     },
+    "personalized": {
+      "blockedTitle": "您已有一个有效订阅",
+      "blockedDesc": "请在 Telegram 机器人中管理您的订阅。",
+      "activeUntil": "有效期至 {{date}}",
+      "notFoundTitle": "未找到用户",
+      "notFoundDesc": "请先打开机器人，然后再返回此链接。",
+      "openBot": "打开机器人",
+      "successTitle": "支付成功！",
+      "successDesc": "您的订阅已激活。请在应用中刷新以查看新的连接。"
+    },
     "notFound": "页面未找到",
     "forMe": "为自己",
     "asGift": "作为礼物",
