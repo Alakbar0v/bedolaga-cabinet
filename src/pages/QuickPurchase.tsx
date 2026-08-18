@@ -30,6 +30,7 @@ import LanguageSwitcher from '../components/LanguageSwitcher';
 import { cn } from '../lib/utils';
 import { getApiErrorMessage } from '../utils/api-error';
 import { getPendingCampaignSlug } from '../utils/campaign';
+import { readContactPrefill, stripContactFromUrl } from '../utils/contactPrefill';
 import { formatPrice } from '../utils/format';
 import { setFavicon, letterFaviconDataUri, roundedFaviconDataUri } from '../utils/favicon';
 import { useCurrency } from '../hooks/useCurrency';
@@ -869,14 +870,12 @@ export default function QuickPurchase() {
   const [selectedTariffId, setSelectedTariffId] = useState<number | null>(null);
   const [selectedPeriodDays, setSelectedPeriodDays] = useState<number | null>(null);
   const contactKey = `lp_contact_${slug ?? ''}`;
-  const [contactValue, setContactValue] = useState(() => {
-    try {
-      const urlContact = new URLSearchParams(window.location.search).get('contact');
-      return urlContact || localStorage.getItem(contactKey) || '';
-    } catch {
-      return '';
-    }
-  });
+  const [contactValue, setContactValue] = useState(() => readContactPrefill(contactKey));
+  // Контакт уже в состоянии — вычищаем его из адресной строки, чтобы личный
+  // email не уехал в Метрику, Referer и историю браузера.
+  useEffect(() => {
+    stripContactFromUrl();
+  }, []);
   const [isGift, setIsGift] = useState(false);
   const [giftRecipient, setGiftRecipient] = useState('');
   const [giftMessage, setGiftMessage] = useState('');
