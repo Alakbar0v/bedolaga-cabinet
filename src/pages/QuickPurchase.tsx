@@ -871,7 +871,8 @@ export default function QuickPurchase() {
   const contactKey = `lp_contact_${slug ?? ''}`;
   const [contactValue, setContactValue] = useState(() => {
     try {
-      return localStorage.getItem(contactKey) || '';
+      const urlContact = new URLSearchParams(window.location.search).get('contact');
+      return urlContact || localStorage.getItem(contactKey) || '';
     } catch {
       return '';
     }
