@@ -5,6 +5,7 @@ import type { NodeInfo } from '@/api/adminRemnawave';
 import { GeoCheckIcon, PlayIcon, WarningIcon, XCloseIcon } from '@/components/icons';
 import { Spinner } from '@/components/ui/Spinner';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
+import { useIsTelegram } from '@/platform/hooks/usePlatform';
 import { cn } from '@/lib/utils';
 import { GeoCheckReport } from './GeoCheckReport';
 import { buildGeoCheckRequest, isRouteReady, type GeoCheckRouteMode } from './geoCheckRoute';
@@ -27,7 +28,12 @@ export function GeoCheckModal({ node, onClose }: GeoCheckModalProps) {
   const { t } = useTranslation();
   const [mode, setMode] = useState<GeoCheckRouteMode>('default');
   const [value, setValue] = useState('');
-  const [fullscreen, setFullscreen] = useState(false);
+  const [fullscreenRequested, setFullscreenRequested] = useState(false);
+
+  // В Mini App окно Telegram и так занимает экран целиком: отдельный
+  // полноэкранный режим там только снимал отступы и залезал под хром.
+  const canFullscreen = !useIsTelegram();
+  const fullscreen = canFullscreen && fullscreenRequested;
 
   const job = useGeoCheckJob(node.uuid);
   const isRunning = job.phase === 'running';
@@ -35,11 +41,11 @@ export function GeoCheckModal({ node, onClose }: GeoCheckModalProps) {
   // Пока идёт проверка, закрывать по Escape нельзя: задача уже поставлена
   // в панель, и молча потерять её результат — хуже, чем подождать.
   const dialogRef = useFocusTrap<HTMLDivElement>(true, {
-    onEscape: isRunning ? undefined : fullscreen ? () => setFullscreen(false) : onClose,
+    onEscape: isRunning ? undefined : fullscreen ? () => setFullscreenRequested(false) : onClose,
   });
 
   useEffect(() => {
-    if (job.phase !== 'done') setFullscreen(false);
+    if (job.phase !== 'done') setFullscreenRequested(false);
   }, [job.phase]);
 
   const canStart = isRouteReady(mode, value);
@@ -211,7 +217,8 @@ export function GeoCheckModal({ node, onClose }: GeoCheckModalProps) {
             result={job.result}
             nodeName={node.name}
             fullscreen={fullscreen}
-            onToggleFullscreen={() => setFullscreen((v) => !v)}
+            canFullscreen={canFullscreen}
+            onToggleFullscreen={() => setFullscreenRequested((v) => !v)}
             onRerun={job.retry}
           />
         )}

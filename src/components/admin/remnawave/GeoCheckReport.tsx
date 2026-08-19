@@ -25,6 +25,11 @@ interface GeoCheckReportProps {
   result: GeoCheckResult;
   nodeName: string;
   fullscreen: boolean;
+  /**
+   * Показывать ли переключатель полного экрана. В Telegram Mini App окно и так
+   * во весь экран — режим лишь снимал отступы и лез под хром Telegram.
+   */
+  canFullscreen: boolean;
   onToggleFullscreen: () => void;
   onRerun: () => void;
 }
@@ -42,6 +47,7 @@ export function GeoCheckReport({
   result,
   nodeName,
   fullscreen,
+  canFullscreen,
   onToggleFullscreen,
   onRerun,
 }: GeoCheckReportProps) {
@@ -133,17 +139,23 @@ export function GeoCheckReport({
         </div>
 
         <div className="flex items-center gap-1">
-          <button
-            type="button"
-            onClick={onToggleFullscreen}
-            disabled={!imageSrc}
-            className={TOOLBAR_BUTTON}
-            title={fullscreenLabel}
-            aria-label={fullscreenLabel}
-            aria-pressed={fullscreen}
-          >
-            {fullscreen ? <CollapseIcon className="h-4 w-4" /> : <ExpandIcon className="h-4 w-4" />}
-          </button>
+          {canFullscreen && (
+            <button
+              type="button"
+              onClick={onToggleFullscreen}
+              disabled={!imageSrc}
+              className={TOOLBAR_BUTTON}
+              title={fullscreenLabel}
+              aria-label={fullscreenLabel}
+              aria-pressed={fullscreen}
+            >
+              {fullscreen ? (
+                <CollapseIcon className="h-4 w-4" />
+              ) : (
+                <ExpandIcon className="h-4 w-4" />
+              )}
+            </button>
+          )}
           <button
             type="button"
             onClick={handleCopy}
