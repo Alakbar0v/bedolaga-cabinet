@@ -32,7 +32,11 @@ export function GeoCheckModal({ node, onClose }: GeoCheckModalProps) {
 
   // В Mini App окно Telegram и так занимает экран целиком: отдельный
   // полноэкранный режим там только снимал отступы и залезал под хром.
-  const canFullscreen = !useIsTelegram();
+  // Тот же признак закрывает и скачивание: в webview Telegram оно уводит
+  // из приложения вместо сохранения файла.
+  const isTelegram = useIsTelegram();
+  const canFullscreen = !isTelegram;
+  const canDownload = !isTelegram;
   const fullscreen = canFullscreen && fullscreenRequested;
 
   const job = useGeoCheckJob(node.uuid);
@@ -218,6 +222,7 @@ export function GeoCheckModal({ node, onClose }: GeoCheckModalProps) {
             nodeName={node.name}
             fullscreen={fullscreen}
             canFullscreen={canFullscreen}
+            canDownload={canDownload}
             onToggleFullscreen={() => setFullscreenRequested((v) => !v)}
             onRerun={job.retry}
           />

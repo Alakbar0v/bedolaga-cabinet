@@ -30,6 +30,14 @@ interface GeoCheckReportProps {
    * во весь экран — режим лишь снимал отступы и лез под хром Telegram.
    */
   canFullscreen: boolean;
+  /**
+   * Показывать ли скачивание. В webview Telegram атрибут `download`
+   * игнорируется: вместо сохранения файла webview уходит на blob и подменяет
+   * собой Mini App, вернуться можно только кнопкой «Назад». Штатный
+   * `downloadFile` из Bot API 8.0 тут не помогает — он требует HTTPS-ссылку
+   * на файл, а отчёт приходит base64 внутри JSON.
+   */
+  canDownload: boolean;
   onToggleFullscreen: () => void;
   onRerun: () => void;
 }
@@ -48,6 +56,7 @@ export function GeoCheckReport({
   nodeName,
   fullscreen,
   canFullscreen,
+  canDownload,
   onToggleFullscreen,
   onRerun,
 }: GeoCheckReportProps) {
@@ -170,16 +179,18 @@ export function GeoCheckReport({
               <CopyIcon className="h-4 w-4" />
             )}
           </button>
-          <button
-            type="button"
-            onClick={handleDownload}
-            disabled={!imageSrc}
-            className={TOOLBAR_BUTTON}
-            title={t('admin.remnawave.geoCheck.download', 'Download SVG')}
-            aria-label={t('admin.remnawave.geoCheck.download', 'Download SVG')}
-          >
-            <DownloadIcon className="h-4 w-4" />
-          </button>
+          {canDownload && (
+            <button
+              type="button"
+              onClick={handleDownload}
+              disabled={!imageSrc}
+              className={TOOLBAR_BUTTON}
+              title={t('admin.remnawave.geoCheck.download', 'Download SVG')}
+              aria-label={t('admin.remnawave.geoCheck.download', 'Download SVG')}
+            >
+              <DownloadIcon className="h-4 w-4" />
+            </button>
+          )}
           <button
             type="button"
             onClick={onRerun}
