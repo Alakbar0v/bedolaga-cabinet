@@ -4,16 +4,16 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import {
   adminRemnawaveApi,
-  NodeInfo,
-  NodeRealtimeStats,
-  SquadWithLocalInfo,
-  SystemStatsResponse,
-  AutoSyncStatus,
-  RecapResponse,
-  DevicesStatsResponse,
-  TopConsumersResponse,
-  HealthResponse,
-  SubscriptionRequestStatsResponse,
+  type NodeInfo,
+  type NodeRealtimeStats,
+  type SquadWithLocalInfo,
+  type SystemStatsResponse,
+  type AutoSyncStatus,
+  type RecapResponse,
+  type DevicesStatsResponse,
+  type TopConsumersResponse,
+  type HealthResponse,
+  type SubscriptionRequestStatsResponse,
 } from '../api/adminRemnawave';
 import { usePlatform } from '../platform/hooks/usePlatform';
 import { formatUptime } from '../utils/format';
@@ -54,14 +54,17 @@ import {
   SubscriptionIcon,
   BackIcon,
   ChevronRightIcon,
+  GeoCheckIcon,
 } from '../components/icons';
+import { GeoCheckModal } from '../components/admin/remnawave/GeoCheckModal';
+import { supportsGeoCheck } from '../utils/nodeVersion';
 
 const formatBytes = (bytes: number): string => {
   if (bytes === 0) return '0 B';
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB'];
   const i = Math.min(Math.floor(Math.log(bytes) / Math.log(k)), sizes.length - 1);
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  return parseFloat((bytes / k ** i).toFixed(2)) + ' ' + sizes[i];
 };
 
 // Алгоритмический ISO 3166-1 alpha-2 → regional indicator. Глобус-fallback
@@ -149,6 +152,11 @@ interface NodeCardProps {
 function NodeCard({ node, providerName, realtime, onAction, isLoading }: NodeCardProps) {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
+  const [geoCheckOpen, setGeoCheckOpen] = useState(false);
+
+  // GeoCheck умеет только узел 3.3.0+; на старом узле кнопку не показываем,
+  // чтобы админ не упирался в ошибку панели.
+  const canGeoCheck = supportsGeoCheck(node.versions);
 
   const isUp = node.is_connected && node.is_node_online && !node.is_disabled;
   const dotColor = node.is_disabled ? 'bg-dark-500' : isUp ? 'bg-success-400' : 'bg-error-400';
@@ -233,6 +241,20 @@ function NodeCard({ node, providerName, realtime, onAction, isLoading }: NodeCar
         </div>
 
         <div className="flex shrink-0 items-center gap-1.5">
+          {canGeoCheck && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setGeoCheckOpen(true);
+              }}
+              disabled={node.is_disabled || !node.is_connected}
+              className="rounded-lg bg-dark-700 p-1.5 text-dark-300 transition-colors hover:bg-dark-600 hover:text-dark-100 disabled:cursor-not-allowed disabled:opacity-50"
+              title={t('admin.remnawave.geoCheck.title', 'GeoCheck')}
+              aria-label={t('admin.remnawave.geoCheck.title', 'GeoCheck')}
+            >
+              <GeoCheckIcon className="h-3.5 w-3.5" />
+            </button>
+          )}
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -431,6 +453,8 @@ function NodeCard({ node, providerName, realtime, onAction, isLoading }: NodeCar
           )}
         </div>
       )}
+
+      {geoCheckOpen && <GeoCheckModal node={node} onClose={() => setGeoCheckOpen(false)} />}
     </div>
   );
 }

@@ -3472,6 +3472,47 @@
         },
         "usersOnlineCount": "{{count}} 在线"
       },
+      "geoCheck": {
+        "title": "GeoCheck",
+        "start": "开始检测",
+        "running": "正在检测地理位置",
+        "runningHint": "节点正在测试连接，通常需要一分钟以内。",
+        "changeRoute": "更改路由",
+        "rerun": "重新检测",
+        "reportAlt": "{{node}} 的 GeoCheck 报告",
+        "invalidIp": "请输入有效的 IPv4 或 IPv6 地址",
+        "invalidInterface": "请输入有效的网卡名称",
+        "fullscreen": "全屏",
+        "exitFullscreen": "退出全屏",
+        "copyJson": "复制 JSON 报告",
+        "download": "下载 SVG",
+        "zoomIn": "放大",
+        "zoomOut": "缩小",
+        "zoomReset": "重置缩放",
+        "mode": {
+          "legend": "检测路由",
+          "default": "默认",
+          "ip": "IP 地址",
+          "interface": "网络接口"
+        },
+        "hint": {
+          "default": "节点将使用默认出站路由。",
+          "ip": "选择节点的某个 IP 地址，或输入任意地址。",
+          "interface": "选择节点的某个网络接口，或输入任意名称。"
+        },
+        "placeholder": {
+          "default": "自动"
+        },
+        "tab": {
+          "report": "报告",
+          "json": "JSON"
+        },
+        "error": {
+          "title": "检测失败",
+          "timeout": "节点未及时响应。请重新运行检测。",
+          "generic": "无法完成检测。"
+        }
+      },
       "overview": {
         "bandwidth": "各 inbound 流量",
         "connections": "连接数",

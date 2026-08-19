@@ -1841,6 +1841,47 @@
         },
         "usersOnlineCount": "{{count}} online"
       },
+      "geoCheck": {
+        "title": "GeoCheck",
+        "start": "Run check",
+        "running": "Running the geo check",
+        "runningHint": "The node is testing its connection — this usually takes up to a minute.",
+        "changeRoute": "Change route",
+        "rerun": "Run again",
+        "reportAlt": "GeoCheck report for {{node}}",
+        "invalidIp": "Enter a valid IPv4 or IPv6 address",
+        "invalidInterface": "Enter a valid interface name",
+        "fullscreen": "Fullscreen",
+        "exitFullscreen": "Exit fullscreen",
+        "copyJson": "Copy JSON report",
+        "download": "Download SVG",
+        "zoomIn": "Zoom in",
+        "zoomOut": "Zoom out",
+        "zoomReset": "Reset zoom",
+        "mode": {
+          "legend": "Check route",
+          "default": "Default",
+          "ip": "IP address",
+          "interface": "Interface"
+        },
+        "hint": {
+          "default": "The node will use its default outbound route.",
+          "ip": "Pick one of the node addresses or type any address.",
+          "interface": "Pick one of the node interfaces or type any name."
+        },
+        "placeholder": {
+          "default": "Automatic"
+        },
+        "tab": {
+          "report": "Report",
+          "json": "JSON"
+        },
+        "error": {
+          "title": "Check failed",
+          "timeout": "The node did not answer in time. Try running the check again.",
+          "generic": "The check could not be completed."
+        }
+      },
       "squads": {
         "synced": "Synced",
         "notSynced": "Not synced",
