@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch';
 import { MinusIcon, PlusIcon, ResetIcon } from '@/components/icons';
@@ -12,6 +12,9 @@ import { MinusIcon, PlusIcon, ResetIcon } from '@/components/icons';
 const READABLE_WIDTH = 760;
 
 /** Масштаб 1 — отчёт вписан в ширину области; ниже опускаться незачем. */
+/** Ширины строк-заглушек, повторяющие ритм отчёта: заголовок, строки, пробел. */
+const SKELETON_ROWS = [42, 88, 80, 84, 30, 70, 76, 82, 64, 28, 86, 74, 80, 68];
+
 const SCALE_MIN = 1;
 const SCALE_MAX = 8;
 
@@ -37,6 +40,27 @@ export function GeoCheckImageViewer({ src, alt, fullscreen }: GeoCheckImageViewe
   const { t } = useTranslation();
   const hostRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
+  // Отчёт весит сотни килобайт вместе со встроенным шрифтом, и между приходом
+  // данных и первой отрисовкой есть заметная пауза. До неё показываем
+  // скелетон, а не пустую тёмную коробку с кнопками зума.
+  //
+  // Готовность хранится как «какая картинка отрисована», а не флагом: тогда
+  // новый отчёт автоматически считается незагруженным, без сбрасывающего
+  // эффекта.
+  const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
+  const loaded = loadedSrc === src;
+
+  // Подпись отчёта для ключа. Длины и хвоста base64 недостаточно: отчёты
+  // одного узла кончаются одинаково и совпали бы по такой подписи, а зум
+  // тогда не сбрасывается. Полная строка в ключе — сотни килобайт на каждый
+  // рендер, поэтому считаем хеш один раз на отчёт.
+  const srcId = useMemo(() => {
+    let hash = 0;
+    for (let i = 0; i < src.length; i += 1) {
+      hash = (hash * 31 + src.charCodeAt(i)) | 0;
+    }
+    return `${src.length}:${hash}`;
+  }, [src]);
 
   useLayoutEffect(() => {
     const host = hostRef.current;
@@ -57,13 +81,27 @@ export function GeoCheckImageViewer({ src, alt, fullscreen }: GeoCheckImageViewe
 
   return (
     <div ref={hostRef} className="relative h-full">
+      {!loaded && (
+        <div className="absolute inset-0 z-10 space-y-2 p-4" aria-busy="true">
+          {SKELETON_ROWS.map((w) => (
+            <div
+              key={w}
+              className="h-3 animate-pulse rounded bg-dark-700/50"
+              style={{ width: `${w}%` }}
+            />
+          ))}
+        </div>
+      )}
       {width > 0 && (
         <TransformWrapper
           // Пересобираем, когда меняется нужный стартовый масштаб: полный экран,
           // поворот телефона, разворот окна. Ключ огрублён до десятых — пока
           // отчёт и так вписывается (масштаб 1), перетаскивание окна мышью
           // ничего не сбрасывает.
-          key={`${fullscreen}-${Math.round(initialScale * 10)}`}
+          // `src` в ключе: перезапуск проверки даёт новый отчёт, и он должен
+          // открыться в исходном масштабе, а не унаследовать зум и сдвиг от
+          // предыдущего.
+          key={`${srcId}-${fullscreen}-${Math.round(initialScale * 10)}`}
           centerOnInit={false}
           disablePadding
           doubleClick={{ mode: 'toggle' }}
@@ -81,36 +119,45 @@ export function GeoCheckImageViewer({ src, alt, fullscreen }: GeoCheckImageViewe
                 // иначе браузер перехватит их под прокрутку.
                 wrapperClass="!h-full !w-full cursor-grab touch-none active:cursor-grabbing"
               >
-                <img alt={alt} className="block w-full select-none" draggable={false} src={src} />
+                <img
+                  alt={alt}
+                  className="block w-full select-none"
+                  draggable={false}
+                  src={src}
+                  onLoad={() => setLoadedSrc(src)}
+                  onError={() => setLoadedSrc(src)}
+                />
               </TransformComponent>
 
-              <div className="absolute bottom-3 right-3 z-10 flex items-center gap-0.5 rounded-xl border border-dark-100/10 bg-dark-950/70 p-1 shadow-lg backdrop-blur-md">
-                <button
-                  type="button"
-                  onClick={() => zoomOut()}
-                  className={controlButton}
-                  aria-label={t('admin.remnawave.geoCheck.zoomOut', 'Zoom out')}
-                >
-                  <MinusIcon className="h-4 w-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => zoomIn()}
-                  className={controlButton}
-                  aria-label={t('admin.remnawave.geoCheck.zoomIn', 'Zoom in')}
-                >
-                  <PlusIcon className="h-4 w-4" />
-                </button>
-                <span aria-hidden className="mx-0.5 h-5 w-px bg-dark-100/15" />
-                <button
-                  type="button"
-                  onClick={() => resetTransform()}
-                  className={controlButton}
-                  aria-label={t('admin.remnawave.geoCheck.zoomReset', 'Reset zoom')}
-                >
-                  <ResetIcon className="h-4 w-4" />
-                </button>
-              </div>
+              {loaded && (
+                <div className="absolute bottom-3 right-3 z-10 flex items-center gap-0.5 rounded-xl border border-dark-100/10 bg-dark-950/70 p-1 shadow-lg backdrop-blur-md">
+                  <button
+                    type="button"
+                    onClick={() => zoomOut()}
+                    className={controlButton}
+                    aria-label={t('admin.remnawave.geoCheck.zoomOut', 'Zoom out')}
+                  >
+                    <MinusIcon className="h-4 w-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => zoomIn()}
+                    className={controlButton}
+                    aria-label={t('admin.remnawave.geoCheck.zoomIn', 'Zoom in')}
+                  >
+                    <PlusIcon className="h-4 w-4" />
+                  </button>
+                  <span aria-hidden className="mx-0.5 h-5 w-px bg-dark-100/15" />
+                  <button
+                    type="button"
+                    onClick={() => resetTransform()}
+                    className={controlButton}
+                    aria-label={t('admin.remnawave.geoCheck.zoomReset', 'Reset zoom')}
+                  >
+                    <ResetIcon className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
             </>
           )}
         </TransformWrapper>
