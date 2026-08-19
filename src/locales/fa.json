@@ -644,6 +644,16 @@
     },
     "dailyAutoCharge": "برداشت خودکار روزانه",
     "defaultName": "اشتراک",
+    "connectFooter": {
+      "connect": "اتصال دستگاه",
+      "full": "همه ظرفیت‌ها پر است",
+      "connectedDevices": "دستگاه‌های متصل",
+      "disconnect": "قطع اتصال",
+      "addSlots": "افزودن ظرفیت",
+      "limitExplained": "طرح «{{name}}» ‏{{count}} ظرفیت دارد و همه پر است. یکی را آزاد کنید یا ظرفیت اضافه کنید.",
+      "limitExplainedNoTopup": "طرح «{{name}}» ‏{{count}} ظرفیت دارد و همه پر است. یک ظرفیت را آزاد کنید.",
+      "noTopupHint": "روی اشتراک آزمایشی نمی‌توان ظرفیت خرید — یکی را آزاد کنید یا طرح پولی بگیرید."
+    },
     "delete": "حذف",
     "deleteTitle": "حذف اشتراک",
     "get_config": "دریافت پیکربندی",

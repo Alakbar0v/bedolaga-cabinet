@@ -739,6 +739,16 @@
     "confirmDelete": "Delete subscription?",
     "dailyAutoCharge": "Daily auto-charge",
     "defaultName": "Subscription",
+    "connectFooter": {
+      "connect": "Connect a device",
+      "full": "All slots are in use",
+      "connectedDevices": "Connected devices",
+      "disconnect": "Disconnect",
+      "addSlots": "Add slots",
+      "limitExplained": "The «{{name}}» plan gives {{count}} slots and all are in use. Free one up or add more.",
+      "limitExplainedNoTopup": "The «{{name}}» plan gives {{count}} slots and all are in use. Free up a slot to continue.",
+      "noTopupHint": "Slots cannot be bought on a trial subscription — free one up or switch to a paid plan."
+    },
     "delete": "Delete",
     "deleteTitle": "Delete subscription",
     "get_config": "Get config",

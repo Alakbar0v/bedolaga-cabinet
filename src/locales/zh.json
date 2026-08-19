@@ -644,6 +644,16 @@
     },
     "dailyAutoCharge": "每日自动扣费",
     "defaultName": "订阅",
+    "connectFooter": {
+      "connect": "连接设备",
+      "full": "所有名额已占满",
+      "connectedDevices": "已连接设备",
+      "disconnect": "断开",
+      "addSlots": "增加名额",
+      "limitExplained": "「{{name}}」套餐提供 {{count}} 个名额，且已全部占用。请释放一个名额或增加名额。",
+      "limitExplainedNoTopup": "「{{name}}」套餐提供 {{count}} 个名额，且已全部占用。请先释放一个名额。",
+      "noTopupHint": "试用订阅无法购买名额 — 请释放已占用的名额或改用付费套餐。"
+    },
     "delete": "删除",
     "deleteTitle": "删除订阅",
     "get_config": "获取配置",

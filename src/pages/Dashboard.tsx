@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueries, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/auth';
@@ -14,13 +14,13 @@ import PromoOffersSection from '../components/PromoOffersSection';
 import NewsSection from '../components/news/NewsSection';
 import SubscriptionCardActive from '../components/dashboard/SubscriptionCardActive';
 import SubscriptionCardExpired from '../components/dashboard/SubscriptionCardExpired';
-import ConnectDeviceTile from '../components/dashboard/ConnectDeviceTile';
 import TrialOfferCard from '../components/dashboard/TrialOfferCard';
 import StatsGrid from '../components/dashboard/StatsGrid';
 import { giftApi } from '../api/gift';
 import { promoApi } from '../api/promo';
 import PendingGiftCard from '../components/dashboard/PendingGiftCard';
 import SubscriptionListCard from '../components/subscription/SubscriptionListCard';
+import { DeviceLimitSheet } from '../components/subscription/DeviceLimitSheet';
 import { API } from '../config/constants';
 import { ChevronRightIcon, StarIcon } from '@/components/icons';
 
@@ -86,17 +86,28 @@ export default function Dashboard() {
   // показывал бы «0 из N», а лимит устройств не срабатывал бы никогда — то
   // есть ровно то, ради чего плитку и добавили, не работало бы.
   // Ключ ['devices', id] — тот же, что на странице подписки, так что кэш общий.
-  const homeSingleSub =
-    isMultiTariff && multiSubData?.subscriptions?.length === 1
-      ? multiSubData.subscriptions[0]
-      : null;
+  // Карточки подписок на главной показывают, сколько устройств подключено, и
+  // дают подключить ещё. Число устройств живёт в панели, поэтому запрос идёт
+  // на каждую показанную подписку; ключ ['devices', id] тот же, что на
+  // странице подписки, так что кэш общий и переход туда не стоит сети.
+  const visibleSubscriptions = useMemo(
+    () => multiSubData?.subscriptions?.slice(0, 3) ?? [],
+    [multiSubData],
+  );
 
-  const { data: homeSingleSubDevices } = useQuery({
-    queryKey: ['devices', homeSingleSub?.id],
-    queryFn: () => subscriptionApi.getDevices(homeSingleSub?.id),
-    enabled: !!homeSingleSub,
-    staleTime: API.BALANCE_STALE_TIME_MS,
+  const deviceQueries = useQueries({
+    queries: visibleSubscriptions.map((sub) => ({
+      queryKey: ['devices', sub.id],
+      queryFn: () => subscriptionApi.getDevices(sub.id),
+      staleTime: API.BALANCE_STALE_TIME_MS,
+    })),
   });
+
+  // Подписка, у которой разбираем исчерпанный лимит устройств.
+  const [deviceLimitSubId, setDeviceLimitSubId] = useState<number | null>(null);
+  const deviceLimitSub = visibleSubscriptions.find((s) => s.id === deviceLimitSubId) ?? null;
+  const deviceLimitDevices =
+    deviceQueries[visibleSubscriptions.findIndex((s) => s.id === deviceLimitSubId)]?.data;
 
   const { data: referralInfo, isLoading: refLoading } = useQuery({
     queryKey: ['referral-info'],
@@ -313,33 +324,18 @@ export default function Dashboard() {
               {t('dashboard.manageAll', 'Управление')} →
             </Link>
           </div>
-          {multiSubData.subscriptions.slice(0, 3).map((sub) => (
+          {visibleSubscriptions.map((sub, index) => (
             <SubscriptionListCard
               key={sub.id}
               subscription={sub}
               onClick={() => navigate(`/subscriptions/${sub.id}`)}
+              connect={{
+                connectedDevices: deviceQueries[index]?.data?.total,
+                onConnect: () => navigate(`/connection?sub=${sub.id}`),
+                onManage: () => setDeviceLimitSubId(sub.id),
+              }}
             />
           ))}
-          {/* Подписку мог выдать бонус рекламной кампании — она создаётся сама,
-              и человек попадает на главную с готовым доступом. Пока подписка
-              одна, показываем здесь же, как подключить устройство: иначе за
-              этим нужно уходить на отдельную страницу, о чём он не догадается. */}
-          {homeSingleSub && (
-            <ConnectDeviceTile
-              subscription={homeSingleSub}
-              connectedDevices={homeSingleSubDevices?.total ?? 0}
-              usedPercent={
-                homeSingleSub.traffic_limit_gb > 0
-                  ? Math.min(
-                      100,
-                      Math.round(
-                        (homeSingleSub.traffic_used_gb / homeSingleSub.traffic_limit_gb) * 100,
-                      ),
-                    )
-                  : 0
-              }
-            />
-          )}
           {multiSubData.subscriptions.length > 3 && (
             <Link
               to="/subscriptions"
@@ -463,6 +459,22 @@ export default function Dashboard() {
           steps={onboardingSteps}
           onComplete={handleOnboardingComplete}
           onSkip={handleOnboardingComplete}
+        />
+      )}
+
+      {deviceLimitSub && (
+        <DeviceLimitSheet
+          isOpen
+          onClose={() => setDeviceLimitSubId(null)}
+          subscriptionId={deviceLimitSub.id}
+          subscriptionName={deviceLimitSub.tariff_name || t('subscription.defaultName', 'Подписка')}
+          deviceLimit={deviceLimitSub.device_limit}
+          isTrial={deviceLimitSub.is_trial}
+          devices={deviceLimitDevices?.devices ?? []}
+          onOpenSubscription={() => {
+            setDeviceLimitSubId(null);
+            navigate(`/subscriptions/${deviceLimitSub.id}`);
+          }}
         />
       )}
     </div>
