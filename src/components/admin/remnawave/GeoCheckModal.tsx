@@ -65,11 +65,20 @@ export function GeoCheckModal({ node, onClose }: GeoCheckModalProps) {
   return createPortal(
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center"
+      // Safe-зоны обязательны и в полноэкранном режиме: в Mini App сверху
+      // висит шапка Telegram, снизу — home indicator, и обнулённые отступы
+      // прятали под ними панель инструментов и кнопки зума.
       style={{
-        paddingTop: fullscreen ? 0 : 'max(1rem, env(safe-area-inset-top))',
-        paddingBottom: fullscreen ? 0 : 'max(1rem, env(safe-area-inset-bottom))',
-        paddingLeft: fullscreen ? 0 : 'max(1rem, env(safe-area-inset-left))',
-        paddingRight: fullscreen ? 0 : 'max(1rem, env(safe-area-inset-right))',
+        paddingTop: fullscreen ? 'env(safe-area-inset-top)' : 'max(1rem, env(safe-area-inset-top))',
+        paddingBottom: fullscreen
+          ? 'env(safe-area-inset-bottom)'
+          : 'max(1rem, env(safe-area-inset-bottom))',
+        paddingLeft: fullscreen
+          ? 'env(safe-area-inset-left)'
+          : 'max(1rem, env(safe-area-inset-left))',
+        paddingRight: fullscreen
+          ? 'env(safe-area-inset-right)'
+          : 'max(1rem, env(safe-area-inset-right))',
       }}
     >
       <div
@@ -85,23 +94,40 @@ export function GeoCheckModal({ node, onClose }: GeoCheckModalProps) {
         tabIndex={-1}
         className={cn(
           'relative flex w-full flex-col border border-dark-700 bg-dark-900 shadow-2xl',
+          // max-h-full, а не 100dvh: отступы safe-зон уже урезали контейнер,
+          // и абсолютная высота вылезала бы за них.
           fullscreen
-            ? 'h-full max-h-none max-w-none rounded-none p-3'
-            : 'max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-2xl p-5',
+            ? 'h-full max-h-full max-w-none rounded-none p-3'
+            : 'max-h-full overflow-y-auto rounded-2xl p-5',
           // Отчёт заметно шире формы запуска — под него модалка расширяется.
           !fullscreen && (job.phase === 'done' ? 'max-w-4xl' : 'max-w-2xl'),
         )}
       >
-        <div className="mb-4 flex items-center justify-between gap-3">
+        {/* В полноэкранном режиме шапка ужимается в одну строку: место по
+            вертикали — ровно то, ради чего его и включают. */}
+        <div
+          className={cn('flex items-center justify-between gap-3', fullscreen ? 'mb-2' : 'mb-4')}
+        >
           <div className="flex min-w-0 items-center gap-2.5">
-            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-accent-500/15 text-accent-400">
-              <GeoCheckIcon className="h-5 w-5" />
+            <span
+              className={cn(
+                'flex shrink-0 items-center justify-center rounded-xl bg-accent-500/15 text-accent-400',
+                fullscreen ? 'h-7 w-7' : 'h-9 w-9',
+              )}
+            >
+              <GeoCheckIcon className={fullscreen ? 'h-4 w-4' : 'h-5 w-5'} />
             </span>
             <div className="min-w-0">
-              <h3 id="geocheck-modal-title" className="text-lg font-semibold text-dark-100">
-                {t('admin.remnawave.geoCheck.title', 'GeoCheck')}
+              <h3
+                id="geocheck-modal-title"
+                className={cn(
+                  'font-semibold text-dark-100',
+                  fullscreen ? 'truncate text-sm' : 'text-lg',
+                )}
+              >
+                {fullscreen ? node.name : t('admin.remnawave.geoCheck.title', 'GeoCheck')}
               </h3>
-              <p className="truncate text-xs text-dark-400">{node.name}</p>
+              {!fullscreen && <p className="truncate text-xs text-dark-400">{node.name}</p>}
             </div>
           </div>
           {!isRunning && (

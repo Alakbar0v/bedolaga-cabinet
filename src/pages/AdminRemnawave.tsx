@@ -201,261 +201,266 @@ function NodeCard({ node, providerName, realtime, onAction, isLoading }: NodeCar
           ? 'text-warning-400'
           : 'text-dark-400';
 
+  // Модалка — сосед кликабельного блока, а не его потомок: портал уносит её
+  // в document.body только по DOM, а события React прогоняет по дереву
+  // компонентов, и клики внутри неё всплывали бы в onClick карточки.
   return (
-    <div
-      className={`rounded-xl border border-dark-700 bg-dark-800/50 p-3.5 transition-colors hover:border-dark-600 ${
-        hasBreakdown ? 'cursor-pointer' : ''
-      }`}
-      onClick={hasBreakdown ? () => setExpanded((v) => !v) : undefined}
-    >
-      {/* Identity + actions */}
-      <div className="flex items-center justify-between gap-3">
-        <div className="flex min-w-0 items-center gap-2">
-          <span
-            className={`h-2 w-2 shrink-0 rounded-full ${dotColor} ${isUp ? 'animate-pulse' : ''}`}
-            title={statusText}
-          />
-          <span className="flex shrink-0 items-center gap-1 rounded-md bg-dark-700/60 px-1.5 py-0.5 text-[11px] text-dark-300">
-            <UsersIcon className="h-3 w-3" />
-            {node.users_online ?? 0}
-          </span>
-          <span className="shrink-0 text-base leading-none">
-            {getCountryFlag(node.country_code)}
-          </span>
-          <h3 className="truncate font-semibold text-dark-100">{node.name}</h3>
-          {(providerLabel || providerFavicon) && (
-            <span className="flex min-w-0 max-w-[7rem] shrink items-center gap-1 rounded-md bg-accent-500/15 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-accent-300">
-              {providerFavicon && (
-                <img
-                  src={providerFavicon}
-                  alt=""
-                  className="h-3 w-3 shrink-0 rounded-[2px]"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              )}
-              {providerLabel && <span className="truncate">{providerLabel}</span>}
+    <>
+      <div
+        className={`rounded-xl border border-dark-700 bg-dark-800/50 p-3.5 transition-colors hover:border-dark-600 ${
+          hasBreakdown ? 'cursor-pointer' : ''
+        }`}
+        onClick={hasBreakdown ? () => setExpanded((v) => !v) : undefined}
+      >
+        {/* Identity + actions */}
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-2">
+            <span
+              className={`h-2 w-2 shrink-0 rounded-full ${dotColor} ${isUp ? 'animate-pulse' : ''}`}
+              title={statusText}
+            />
+            <span className="flex shrink-0 items-center gap-1 rounded-md bg-dark-700/60 px-1.5 py-0.5 text-[11px] text-dark-300">
+              <UsersIcon className="h-3 w-3" />
+              {node.users_online ?? 0}
             </span>
-          )}
-        </div>
+            <span className="shrink-0 text-base leading-none">
+              {getCountryFlag(node.country_code)}
+            </span>
+            <h3 className="truncate font-semibold text-dark-100">{node.name}</h3>
+            {(providerLabel || providerFavicon) && (
+              <span className="flex min-w-0 max-w-[7rem] shrink items-center gap-1 rounded-md bg-accent-500/15 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-accent-300">
+                {providerFavicon && (
+                  <img
+                    src={providerFavicon}
+                    alt=""
+                    className="h-3 w-3 shrink-0 rounded-[2px]"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                )}
+                {providerLabel && <span className="truncate">{providerLabel}</span>}
+              </span>
+            )}
+          </div>
 
-        <div className="flex shrink-0 items-center gap-1.5">
-          {canGeoCheck && (
+          <div className="flex shrink-0 items-center gap-1.5">
+            {canGeoCheck && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setGeoCheckOpen(true);
+                }}
+                disabled={node.is_disabled || !node.is_connected}
+                className="rounded-lg bg-dark-700 p-1.5 text-dark-300 transition-colors hover:bg-dark-600 hover:text-dark-100 disabled:cursor-not-allowed disabled:opacity-50"
+                title={t('admin.remnawave.geoCheck.title', 'GeoCheck')}
+                aria-label={t('admin.remnawave.geoCheck.title', 'GeoCheck')}
+              >
+                <GeoCheckIcon className="h-3.5 w-3.5" />
+              </button>
+            )}
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                setGeoCheckOpen(true);
+                onAction(node.uuid, 'restart');
               }}
-              disabled={node.is_disabled || !node.is_connected}
+              disabled={isLoading || node.is_disabled}
               className="rounded-lg bg-dark-700 p-1.5 text-dark-300 transition-colors hover:bg-dark-600 hover:text-dark-100 disabled:cursor-not-allowed disabled:opacity-50"
-              title={t('admin.remnawave.geoCheck.title', 'GeoCheck')}
-              aria-label={t('admin.remnawave.geoCheck.title', 'GeoCheck')}
+              title={t('admin.remnawave.nodes.restart', 'Restart')}
             >
-              <GeoCheckIcon className="h-3.5 w-3.5" />
+              <ArrowPathIcon className="h-3.5 w-3.5" />
             </button>
-          )}
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onAction(node.uuid, 'restart');
-            }}
-            disabled={isLoading || node.is_disabled}
-            className="rounded-lg bg-dark-700 p-1.5 text-dark-300 transition-colors hover:bg-dark-600 hover:text-dark-100 disabled:cursor-not-allowed disabled:opacity-50"
-            title={t('admin.remnawave.nodes.restart', 'Restart')}
-          >
-            <ArrowPathIcon className="h-3.5 w-3.5" />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onAction(node.uuid, node.is_disabled ? 'enable' : 'disable');
-            }}
-            disabled={isLoading}
-            className={`rounded-lg p-1.5 transition-colors disabled:opacity-50 ${
-              node.is_disabled
-                ? 'bg-success-500/20 text-success-400 hover:bg-success-500/30'
-                : 'bg-error-500/20 text-error-400 hover:bg-error-500/30'
-            }`}
-            title={
-              node.is_disabled
-                ? t('admin.remnawave.nodes.enable', 'Enable')
-                : t('admin.remnawave.nodes.disable', 'Disable')
-            }
-          >
-            {node.is_disabled ? (
-              <PlayIcon className="h-3.5 w-3.5" />
-            ) : (
-              <StopIcon className="h-3.5 w-3.5" />
-            )}
-          </button>
-          {hasBreakdown && (
-            <ChevronRightIcon
-              className={`h-4 w-4 text-dark-500 transition-transform ${
-                expanded ? 'rotate-90' : ''
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onAction(node.uuid, node.is_disabled ? 'enable' : 'disable');
+              }}
+              disabled={isLoading}
+              className={`rounded-lg p-1.5 transition-colors disabled:opacity-50 ${
+                node.is_disabled
+                  ? 'bg-success-500/20 text-success-400 hover:bg-success-500/30'
+                  : 'bg-error-500/20 text-error-400 hover:bg-error-500/30'
               }`}
-            />
-          )}
-        </div>
-      </div>
-
-      {/* Address + traffic + uptime */}
-      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-dark-400">
-        <span className="flex min-w-0 max-w-full items-center gap-1 font-mono text-dark-500">
-          <GlobeIcon className="h-3 w-3 shrink-0" />
-          <span className="truncate">{node.address}</span>
-        </span>
-        <span className="flex items-center gap-1.5">
-          <span className="text-dark-300">{formatBytes(used)}</span>
-          {trafficPct !== null && (
-            <span className="h-1 w-16 overflow-hidden rounded-full bg-dark-700">
-              <span
-                className="block h-full rounded-full bg-accent-500"
-                style={{ width: `${trafficPct}%` }}
+              title={
+                node.is_disabled
+                  ? t('admin.remnawave.nodes.enable', 'Enable')
+                  : t('admin.remnawave.nodes.disable', 'Disable')
+              }
+            >
+              {node.is_disabled ? (
+                <PlayIcon className="h-3.5 w-3.5" />
+              ) : (
+                <StopIcon className="h-3.5 w-3.5" />
+              )}
+            </button>
+            {hasBreakdown && (
+              <ChevronRightIcon
+                className={`h-4 w-4 text-dark-500 transition-transform ${
+                  expanded ? 'rotate-90' : ''
+                }`}
               />
+            )}
+          </div>
+        </div>
+
+        {/* Address + traffic + uptime */}
+        <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-dark-400">
+          <span className="flex min-w-0 max-w-full items-center gap-1 font-mono text-dark-500">
+            <GlobeIcon className="h-3 w-3 shrink-0" />
+            <span className="truncate">{node.address}</span>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="text-dark-300">{formatBytes(used)}</span>
+            {trafficPct !== null && (
+              <span className="h-1 w-16 overflow-hidden rounded-full bg-dark-700">
+                <span
+                  className="block h-full rounded-full bg-accent-500"
+                  style={{ width: `${trafficPct}%` }}
+                />
+              </span>
+            )}
+            <span className="text-dark-500">/ {limit > 0 ? formatBytes(limit) : '∞'}</span>
+          </span>
+          {node.xray_uptime > 0 && (
+            <span className="flex items-center gap-1 text-dark-500">
+              <StatUptimeIcon className="h-3 w-3" />
+              {formatUptime(node.xray_uptime)}
             </span>
           )}
-          <span className="text-dark-500">/ {limit > 0 ? formatBytes(limit) : '∞'}</span>
-        </span>
-        {node.xray_uptime > 0 && (
-          <span className="flex items-center gap-1 text-dark-500">
-            <StatUptimeIcon className="h-3 w-3" />
-            {formatUptime(node.xray_uptime)}
-          </span>
+        </div>
+
+        {/* Live metrics — mobile: 3 fixed rows so wrapping speeds don't reflow;
+          desktop (sm+): the original single wrap row, wide enough not to jump. */}
+        {(ramPct !== null || loadAvg || rx > 0 || tx > 0 || node.versions) && (
+          <>
+            {/* Mobile: processor · traffic · versions */}
+            <div className="mt-2 space-y-1 border-t border-dark-700/60 pt-2 font-mono text-[10.5px] tabular-nums text-dark-500 sm:hidden">
+              {(loadAvg || ramPct !== null) && (
+                <div className="flex items-center gap-3">
+                  {loadAvg && (
+                    <span className="flex items-center gap-1" title="load average 1 / 5 / 15 min">
+                      <CpuIcon className="h-3 w-3 shrink-0 text-dark-500" />
+                      {loadAvg}
+                    </span>
+                  )}
+                  {ramPct !== null && (
+                    <span className="flex items-center gap-1.5" title="RAM">
+                      <MemoryIcon className="h-3 w-3 shrink-0 text-dark-500" />
+                      <span className={ramColorClass}>{ramPct}%</span>
+                      <span className="h-1 w-10 overflow-hidden rounded-full bg-dark-700">
+                        <span
+                          className="block h-full rounded-full bg-dark-400"
+                          style={{ width: `${ramPct}%` }}
+                        />
+                      </span>
+                    </span>
+                  )}
+                </div>
+              )}
+              {(rx > 0 || tx > 0) && (
+                <div className="flex items-center gap-4">
+                  <span className="flex items-center gap-1">
+                    <DownloadIcon className="h-3 w-3 shrink-0 text-success-400/70" />
+                    {formatSpeed(rx)}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <UploadIcon className="h-3 w-3 shrink-0 text-accent-400/70" />
+                    {formatSpeed(tx)}
+                  </span>
+                </div>
+              )}
+              {(node.versions?.node || node.versions?.xray) && (
+                <div className="flex items-center gap-3 text-dark-600">
+                  {node.versions?.node && (
+                    <span className="flex items-center gap-1" title="remnanode">
+                      <RemnawaveIcon className="h-3 w-3 shrink-0" />
+                      {node.versions.node}
+                    </span>
+                  )}
+                  {node.versions?.xray && (
+                    <span className="flex items-center gap-1" title="xray core">
+                      <XrayIcon className="h-3 w-3 shrink-0" />
+                      {node.versions.xray}
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Desktop: single wrap row (original) */}
+            <div className="mt-2 hidden flex-wrap items-center gap-x-3 gap-y-1 border-t border-dark-700/60 pt-2 font-mono text-[10.5px] tabular-nums text-dark-500 sm:flex">
+              {ramPct !== null && (
+                <span className="flex items-center gap-1.5" title="RAM">
+                  <MemoryIcon className="h-3 w-3 text-dark-500" />
+                  <span className={ramColorClass}>{ramPct}%</span>
+                  <span className="h-1 w-10 overflow-hidden rounded-full bg-dark-700">
+                    <span
+                      className="block h-full rounded-full bg-dark-400"
+                      style={{ width: `${ramPct}%` }}
+                    />
+                  </span>
+                </span>
+              )}
+              {loadAvg && (
+                <span className="flex items-center gap-1" title="load average 1 / 5 / 15 min">
+                  <CpuIcon className="h-3 w-3 text-dark-500" />
+                  {loadAvg}
+                </span>
+              )}
+              <span className="flex items-center gap-2">
+                <span className="flex items-center gap-0.5">
+                  <DownloadIcon className="h-3 w-3 text-success-400/70" />
+                  {formatSpeed(rx)}
+                </span>
+                <span className="flex items-center gap-0.5">
+                  <UploadIcon className="h-3 w-3 text-accent-400/70" />
+                  {formatSpeed(tx)}
+                </span>
+              </span>
+              {(node.versions?.node || node.versions?.xray) && (
+                <span className="ml-auto flex items-center gap-2.5 text-dark-600">
+                  {node.versions?.node && (
+                    <span className="flex items-center gap-1" title="remnanode">
+                      <RemnawaveIcon className="h-3 w-3" />
+                      {node.versions.node}
+                    </span>
+                  )}
+                  {node.versions?.xray && (
+                    <span className="flex items-center gap-1" title="xray core">
+                      <XrayIcon className="h-3 w-3" />
+                      {node.versions.xray}
+                    </span>
+                  )}
+                </span>
+              )}
+            </div>
+          </>
+        )}
+
+        {/* Per-node traffic accordion (merged from the former Traffic tab) */}
+        {expanded && hasBreakdown && (
+          <div
+            className="mt-3 space-y-3 border-t border-dark-700/60 pt-3"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {inbounds.length > 0 && (
+              <NodeTrafficBreakdown
+                title={t('admin.remnawave.traffic.inbounds', 'Inbounds')}
+                items={inbounds}
+              />
+            )}
+            {outbounds.length > 0 && (
+              <NodeTrafficBreakdown
+                title={t('admin.remnawave.traffic.outbounds', 'Outbounds')}
+                items={outbounds}
+              />
+            )}
+          </div>
         )}
       </div>
 
-      {/* Live metrics — mobile: 3 fixed rows so wrapping speeds don't reflow;
-          desktop (sm+): the original single wrap row, wide enough not to jump. */}
-      {(ramPct !== null || loadAvg || rx > 0 || tx > 0 || node.versions) && (
-        <>
-          {/* Mobile: processor · traffic · versions */}
-          <div className="mt-2 space-y-1 border-t border-dark-700/60 pt-2 font-mono text-[10.5px] tabular-nums text-dark-500 sm:hidden">
-            {(loadAvg || ramPct !== null) && (
-              <div className="flex items-center gap-3">
-                {loadAvg && (
-                  <span className="flex items-center gap-1" title="load average 1 / 5 / 15 min">
-                    <CpuIcon className="h-3 w-3 shrink-0 text-dark-500" />
-                    {loadAvg}
-                  </span>
-                )}
-                {ramPct !== null && (
-                  <span className="flex items-center gap-1.5" title="RAM">
-                    <MemoryIcon className="h-3 w-3 shrink-0 text-dark-500" />
-                    <span className={ramColorClass}>{ramPct}%</span>
-                    <span className="h-1 w-10 overflow-hidden rounded-full bg-dark-700">
-                      <span
-                        className="block h-full rounded-full bg-dark-400"
-                        style={{ width: `${ramPct}%` }}
-                      />
-                    </span>
-                  </span>
-                )}
-              </div>
-            )}
-            {(rx > 0 || tx > 0) && (
-              <div className="flex items-center gap-4">
-                <span className="flex items-center gap-1">
-                  <DownloadIcon className="h-3 w-3 shrink-0 text-success-400/70" />
-                  {formatSpeed(rx)}
-                </span>
-                <span className="flex items-center gap-1">
-                  <UploadIcon className="h-3 w-3 shrink-0 text-accent-400/70" />
-                  {formatSpeed(tx)}
-                </span>
-              </div>
-            )}
-            {(node.versions?.node || node.versions?.xray) && (
-              <div className="flex items-center gap-3 text-dark-600">
-                {node.versions?.node && (
-                  <span className="flex items-center gap-1" title="remnanode">
-                    <RemnawaveIcon className="h-3 w-3 shrink-0" />
-                    {node.versions.node}
-                  </span>
-                )}
-                {node.versions?.xray && (
-                  <span className="flex items-center gap-1" title="xray core">
-                    <XrayIcon className="h-3 w-3 shrink-0" />
-                    {node.versions.xray}
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Desktop: single wrap row (original) */}
-          <div className="mt-2 hidden flex-wrap items-center gap-x-3 gap-y-1 border-t border-dark-700/60 pt-2 font-mono text-[10.5px] tabular-nums text-dark-500 sm:flex">
-            {ramPct !== null && (
-              <span className="flex items-center gap-1.5" title="RAM">
-                <MemoryIcon className="h-3 w-3 text-dark-500" />
-                <span className={ramColorClass}>{ramPct}%</span>
-                <span className="h-1 w-10 overflow-hidden rounded-full bg-dark-700">
-                  <span
-                    className="block h-full rounded-full bg-dark-400"
-                    style={{ width: `${ramPct}%` }}
-                  />
-                </span>
-              </span>
-            )}
-            {loadAvg && (
-              <span className="flex items-center gap-1" title="load average 1 / 5 / 15 min">
-                <CpuIcon className="h-3 w-3 text-dark-500" />
-                {loadAvg}
-              </span>
-            )}
-            <span className="flex items-center gap-2">
-              <span className="flex items-center gap-0.5">
-                <DownloadIcon className="h-3 w-3 text-success-400/70" />
-                {formatSpeed(rx)}
-              </span>
-              <span className="flex items-center gap-0.5">
-                <UploadIcon className="h-3 w-3 text-accent-400/70" />
-                {formatSpeed(tx)}
-              </span>
-            </span>
-            {(node.versions?.node || node.versions?.xray) && (
-              <span className="ml-auto flex items-center gap-2.5 text-dark-600">
-                {node.versions?.node && (
-                  <span className="flex items-center gap-1" title="remnanode">
-                    <RemnawaveIcon className="h-3 w-3" />
-                    {node.versions.node}
-                  </span>
-                )}
-                {node.versions?.xray && (
-                  <span className="flex items-center gap-1" title="xray core">
-                    <XrayIcon className="h-3 w-3" />
-                    {node.versions.xray}
-                  </span>
-                )}
-              </span>
-            )}
-          </div>
-        </>
-      )}
-
-      {/* Per-node traffic accordion (merged from the former Traffic tab) */}
-      {expanded && hasBreakdown && (
-        <div
-          className="mt-3 space-y-3 border-t border-dark-700/60 pt-3"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {inbounds.length > 0 && (
-            <NodeTrafficBreakdown
-              title={t('admin.remnawave.traffic.inbounds', 'Inbounds')}
-              items={inbounds}
-            />
-          )}
-          {outbounds.length > 0 && (
-            <NodeTrafficBreakdown
-              title={t('admin.remnawave.traffic.outbounds', 'Outbounds')}
-              items={outbounds}
-            />
-          )}
-        </div>
-      )}
-
       {geoCheckOpen && <GeoCheckModal node={node} onClose={() => setGeoCheckOpen(false)} />}
-    </div>
+    </>
   );
 }
 
