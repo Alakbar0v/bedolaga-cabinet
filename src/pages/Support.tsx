@@ -9,6 +9,8 @@ import { infoApi } from '../api/info';
 import { useAuthStore } from '../store/auth';
 import { logger } from '../utils/logger';
 import { checkRateLimit, getRateLimitResetTime, RATE_LIMIT_KEYS } from '../utils/rateLimit';
+import { getApiErrorMessage } from '../utils/api-error';
+import { isOpenTicketConflict } from '../utils/ticketErrors';
 import type { SupportConfig, TicketDetail } from '../types';
 import { Card } from '@/components/data-display/Card';
 import { Button } from '@/components/primitives/Button';
@@ -55,7 +57,10 @@ export default function Support() {
   const [newTitle, setNewTitle] = useState('');
   const [newMessage, setNewMessage] = useState('');
   const [replyMessage, setReplyMessage] = useState('');
-  const [rateLimitError, setRateLimitError] = useState<string | null>(null);
+  // Ошибка активной формы: и клиентский rate-limit, и отказ бэка (409 «уже есть
+  // открытый тикет», 403 «поддержка выключена/пользователь заблокирован» и т.п.).
+  // Формы create и reply взаимоисключающие, поэтому состояние одно на обе.
+  const [formError, setFormError] = useState<string | null>(null);
 
   // Media attachment states (multi-upload, up to 10)
   const [createAttachments, setCreateAttachments] = useState<MediaAttachment[]>([]);
@@ -154,10 +159,25 @@ export default function Support() {
     onSuccess: (ticket) => {
       queryClient.invalidateQueries({ queryKey: ['tickets'] });
       setShowCreateForm(false);
+      setFormError(null);
       setNewTitle('');
       setNewMessage('');
       clearCreateAttachments();
       setSelectedTicket(ticket);
+    },
+    onError: (error) => {
+      // Без этого отказ бэка (чаще всего 409 «уже есть открытый тикет») уходил
+      // в никуда: форма просто оставалась на месте, и пользователь жал «Отправить»
+      // снова и снова, не понимая, почему обращение не создаётся.
+      log.error('Ticket creation failed', error);
+      if (isOpenTicketConflict(error)) {
+        setFormError(t('support.errors.alreadyOpenTicket'));
+        // Открытый тикет мог появиться в другой сессии (бот, второе устройство) —
+        // подтягиваем список, чтобы пользователю было куда перейти.
+        queryClient.invalidateQueries({ queryKey: ['tickets'] });
+        return;
+      }
+      setFormError(getApiErrorMessage(error, t('support.errors.createFailed')));
     },
   });
 
@@ -176,8 +196,15 @@ export default function Support() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['ticket', selectedTicket?.id] });
+      setFormError(null);
       setReplyMessage('');
       clearReplyAttachments();
+    },
+    onError: (error) => {
+      // Ответ в тикет молчал ровно так же: 403 (блокировка в поддержке) и 400
+      // (тикет уже закрыт) выглядели как «кнопка не работает».
+      log.error('Ticket reply failed', error);
+      setFormError(getApiErrorMessage(error, t('support.errors.replyFailed')));
     },
   });
 
@@ -321,6 +348,7 @@ export default function Support() {
           onClick={() => {
             setShowCreateForm(true);
             setSelectedTicket(null);
+            setFormError(null);
             clearCreateAttachments();
           }}
         >
@@ -374,6 +402,7 @@ export default function Support() {
                   onClick={() => {
                     setSelectedTicket(ticket as unknown as TicketDetail);
                     setShowCreateForm(false);
+                    setFormError(null);
                     clearReplyAttachments();
                   }}
                   className={`w-full rounded-bento border p-4 text-left transition-all ${
@@ -414,11 +443,11 @@ export default function Support() {
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
-                  setRateLimitError(null);
+                  setFormError(null);
                   // Rate limit: max 3 tickets per 60 seconds
                   if (!checkRateLimit(RATE_LIMIT_KEYS.TICKET_CREATE, 3, 60000)) {
                     const resetTime = getRateLimitResetTime(RATE_LIMIT_KEYS.TICKET_CREATE);
-                    setRateLimitError(t('support.tooManyRequests', { seconds: resetTime }));
+                    setFormError(t('support.tooManyRequests', { seconds: resetTime }));
                     return;
                   }
                   createMutation.mutate();
@@ -495,9 +524,9 @@ export default function Support() {
                   )}
                 </div>
 
-                {rateLimitError && (
+                {formError && (
                   <div className="rounded-xl border border-error-500/30 bg-error-500/10 p-3 text-sm text-error-400">
-                    {rateLimitError}
+                    {formError}
                   </div>
                 )}
 
@@ -515,6 +544,7 @@ export default function Support() {
                     variant="secondary"
                     onClick={() => {
                       setShowCreateForm(false);
+                      setFormError(null);
                       clearCreateAttachments();
                     }}
                   >
@@ -570,7 +600,7 @@ export default function Support() {
                       </div>
                       {msg.message_text && (
                         <div
-                          className="whitespace-pre-wrap text-dark-200 [&_a]:text-accent-400 [&_a]:underline"
+                          className="whitespace-pre-wrap break-words text-dark-200 [&_a]:text-accent-400 [&_a]:underline"
                           dangerouslySetInnerHTML={{ __html: linkifyText(msg.message_text) }}
                         />
                       )}
@@ -589,11 +619,11 @@ export default function Support() {
                 <form
                   onSubmit={(e) => {
                     e.preventDefault();
-                    setRateLimitError(null);
+                    setFormError(null);
                     // Rate limit: max 5 replies per 30 seconds
                     if (!checkRateLimit(RATE_LIMIT_KEYS.TICKET_REPLY, 5, 30000)) {
                       const resetTime = getRateLimitResetTime(RATE_LIMIT_KEYS.TICKET_REPLY);
-                      setRateLimitError(t('support.tooManyRequests', { seconds: resetTime }));
+                      setFormError(t('support.tooManyRequests', { seconds: resetTime }));
                       return;
                     }
                     replyMutation.mutate();
@@ -662,9 +692,9 @@ export default function Support() {
                         <SendIcon className="h-4 w-4" />
                       </Button>
                     </div>
-                    {rateLimitError && (
+                    {formError && (
                       <div className="mt-2 rounded-lg border border-error-500/30 bg-error-500/10 p-2 text-sm text-error-400">
-                        {rateLimitError}
+                        {formError}
                       </div>
                     )}
                   </div>

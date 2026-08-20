@@ -288,6 +288,7 @@ export default function AdminUsers() {
             <option value="balance">{t('admin.users.filters.byBalance')}</option>
             <option value="last_activity">{t('admin.users.filters.byActivity')}</option>
             <option value="total_spent">{t('admin.users.filters.bySpent')}</option>
+            <option value="subscription_end_date">{t('admin.users.filters.byExpiry')}</option>
           </select>
         </div>
       </div>
