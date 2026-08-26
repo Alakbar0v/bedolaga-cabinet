@@ -5,7 +5,7 @@ import { MessageMediaGrid } from '../components/tickets/MessageMediaGrid';
 import { useNavigate, useParams } from 'react-router';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { adminApi, AdminTicket, AdminTicketDetail } from '../api/admin';
+import { adminApi, type AdminTicket, type AdminTicketDetail } from '../api/admin';
 import { ticketsApi } from '../api/tickets';
 import { copyToClipboard as copyText } from '../utils/clipboard';
 import { usePlatform } from '../platform/hooks/usePlatform';
@@ -551,7 +551,7 @@ export default function AdminTickets() {
                     </div>
                     {msg.message_text && (
                       <p
-                        className="whitespace-pre-wrap text-dark-200 [&_a]:text-accent-400 [&_a]:underline"
+                        className="whitespace-pre-wrap break-words text-dark-200 [&_a]:text-accent-400 [&_a]:underline"
                         dangerouslySetInnerHTML={{ __html: linkifyText(msg.message_text) }}
                       />
                     )}

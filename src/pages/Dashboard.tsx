@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQueries, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../store/auth';
@@ -20,6 +20,7 @@ import { giftApi } from '../api/gift';
 import { promoApi } from '../api/promo';
 import PendingGiftCard from '../components/dashboard/PendingGiftCard';
 import SubscriptionListCard from '../components/subscription/SubscriptionListCard';
+import { DeviceLimitSheet } from '../components/subscription/DeviceLimitSheet';
 import { API } from '../config/constants';
 import { ChevronRightIcon, StarIcon } from '@/components/icons';
 
@@ -78,6 +79,35 @@ export default function Dashboard() {
     enabled: !!subscription && !isMultiTariff,
     staleTime: API.BALANCE_STALE_TIME_MS,
   });
+
+  // Плитка «Подключить устройство» на главной живёт в МУЛЬТИТАРИФНОЙ ветке, а
+  // запрос выше там выключен: он привязан к одиночной подписке (`subscription`
+  // в мультитарифе всегда null). Без отдельного запроса счётчик плитки всегда
+  // показывал бы «0 из N», а лимит устройств не срабатывал бы никогда — то
+  // есть ровно то, ради чего плитку и добавили, не работало бы.
+  // Ключ ['devices', id] — тот же, что на странице подписки, так что кэш общий.
+  // Карточки подписок на главной показывают, сколько устройств подключено, и
+  // дают подключить ещё. Число устройств живёт в панели, поэтому запрос идёт
+  // на каждую показанную подписку; ключ ['devices', id] тот же, что на
+  // странице подписки, так что кэш общий и переход туда не стоит сети.
+  const visibleSubscriptions = useMemo(
+    () => multiSubData?.subscriptions?.slice(0, 3) ?? [],
+    [multiSubData],
+  );
+
+  const deviceQueries = useQueries({
+    queries: visibleSubscriptions.map((sub) => ({
+      queryKey: ['devices', sub.id],
+      queryFn: () => subscriptionApi.getDevices(sub.id),
+      staleTime: API.BALANCE_STALE_TIME_MS,
+    })),
+  });
+
+  // Подписка, у которой разбираем исчерпанный лимит устройств.
+  const [deviceLimitSubId, setDeviceLimitSubId] = useState<number | null>(null);
+  const deviceLimitSub = visibleSubscriptions.find((s) => s.id === deviceLimitSubId) ?? null;
+  const deviceLimitDevices =
+    deviceQueries[visibleSubscriptions.findIndex((s) => s.id === deviceLimitSubId)]?.data;
 
   const { data: referralInfo, isLoading: refLoading } = useQuery({
     queryKey: ['referral-info'],
@@ -294,11 +324,16 @@ export default function Dashboard() {
               {t('dashboard.manageAll', 'Управление')} →
             </Link>
           </div>
-          {multiSubData.subscriptions.slice(0, 3).map((sub) => (
+          {visibleSubscriptions.map((sub, index) => (
             <SubscriptionListCard
               key={sub.id}
               subscription={sub}
               onClick={() => navigate(`/subscriptions/${sub.id}`)}
+              connect={{
+                connectedDevices: deviceQueries[index]?.data?.total,
+                onConnect: () => navigate(`/connection?sub=${sub.id}`),
+                onManage: () => setDeviceLimitSubId(sub.id),
+              }}
             />
           ))}
           {multiSubData.subscriptions.length > 3 && (
@@ -424,6 +459,22 @@ export default function Dashboard() {
           steps={onboardingSteps}
           onComplete={handleOnboardingComplete}
           onSkip={handleOnboardingComplete}
+        />
+      )}
+
+      {deviceLimitSub && (
+        <DeviceLimitSheet
+          isOpen
+          onClose={() => setDeviceLimitSubId(null)}
+          subscriptionId={deviceLimitSub.id}
+          subscriptionName={deviceLimitSub.tariff_name || t('subscription.defaultName', 'Подписка')}
+          deviceLimit={deviceLimitSub.device_limit}
+          isTrial={deviceLimitSub.is_trial}
+          devices={deviceLimitDevices?.devices ?? []}
+          onOpenSubscription={() => {
+            setDeviceLimitSubId(null);
+            navigate(`/subscriptions/${deviceLimitSub.id}`);
+          }}
         />
       )}
     </div>

@@ -1,5 +1,38 @@
 # Changelog
 
+## [1.66.0](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/compare/v1.65.0...v1.66.0) (2026-08-20)
+
+
+### Features
+
+* **auth:** allow manual opt-in for deep-link Telegram login ([d03b9bd](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/d03b9bdad785ac7710f30527f230eeb793e1089b))
+* **dashboard:** плитка «Подключить устройство» на главной ([06c7d13](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/06c7d1388308de5fc1adad0cd2697d3c03c41c49))
+* **dashboard:** подключение устройства прикреплено к карточке подписки ([28e25a9](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/28e25a92922501ed609623776e987fcd96f71032))
+* **landing:** автозаполнение поля контакта из параметра URL (?contact=...) ([8d0c33b](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/8d0c33bb08b8f28b19367d1ea612a8455fba0ff1))
+* **landing:** отправлять слаг рекламной кампании при гостевой покупке ([cfc2ab2](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/cfc2ab2f7fe641570a818d0ca75c9cd9dddbf2b7))
+* **landing:** отправлять слаг рекламной кампании при гостевой покупке ([d4379fc](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/d4379fce25af69e866e9232a3cd036652e7eae17))
+* **promocodes:** трафик в наборе бонусов промокода ([f6a64bf](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/f6a64bfc1eb885cde31bcbab1f1474b1d693e718))
+* **remnawave:** GeoCheck ноды в админке — запуск проверки и просмотр отчёта ([b4e1de6](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/b4e1de6152cfc85418c62e4f840180411989a2a7))
+* **users:** кнопка удаления подписки в карточке пользователя ([eafc563](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/eafc563128b68f49f0a1f03a30c899b527ce4734))
+
+
+### Bug Fixes
+
+* **admin:** дополнить тип sort_by и китайскую строку сортировки ([2d6f8d9](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/2d6f8d97546f7ca69540924aa0637f720500bef3))
+* **auth:** вернуть виджет после «Назад» и добить локали до четырёх ([c108832](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/c1088325aabaf43de6f60653ff650c3cfb1beb2f))
+* **auth:** читать initData из моста Telegram, а не только из кэша SDK ([f81af40](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/f81af401f7f6ca1a28806cbf237a33da7449d893))
+* **dashboard:** счётчик устройств в плитке на главной ([39b9b8e](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/39b9b8e1d2690c894ce08b0ce16d4780ecffee09))
+* **geocheck:** сквозные клики через портал и safe-зоны в полноэкранном режиме ([debe26a](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/debe26ae359545fead38bf087b069e9defecec26))
+* **geocheck:** скелетон до отрисовки отчёта и сброс зума на новом отчёте ([5c3031f](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/5c3031f5f52e4a7bbe101441a97f5e47dd1eff3f))
+* **geocheck:** убрать полноэкранный режим в Telegram Mini App ([5db1ffc](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/5db1ffccf6a6659c06a1fbe5b2b703abd0c609bd))
+* **geocheck:** убрать скачивание отчёта в Telegram Mini App ([a451a12](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/a451a129fe0b211369f336f09f8c8e1abd105173))
+* **landing:** не оставлять контакт из ссылки в адресной строке ([acbffa4](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/acbffa4e17e4549a1068f286e3009b38d30ae6be))
+* **promocodes:** чекбоксы набора по значениям, трафик в списке ([29c9ed1](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/29c9ed1a40bad95b187fabd81098a795d4c096da))
+* **support:** показывать пользователю отказ бэка при создании тикета ([d889289](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/d88928912acaaf9eeee52235ee4e2aace5e245e7))
+* **tickets:** длинный текст в сообщении уезжал за пределы карточки ([eede5ff](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/eede5ffdfdde9ece9956817c646ade36a9b2ccf6))
+* **tickets:** длинный текст в сообщении уезжал за пределы карточки ([2ba6fc0](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/2ba6fc0f6f743b8648c0d1e708cd123a465ee77f))
+* **users:** показывать причину отказа при удалении подписки ([415a76f](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/commit/415a76f7cff4e0e06edb15b91a24467f0465e2e9))
+
 ## [1.65.0](https://github.com/BEDOLAGA-DEV/bedolaga-cabinet/compare/v1.64.0...v1.65.0) (2026-08-03)
 
 

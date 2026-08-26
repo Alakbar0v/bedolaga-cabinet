@@ -132,6 +132,10 @@ export interface PurchaseRequest {
   referrer?: string;
   subid?: string;
   yclid?: string;
+  // Слаг рекламной кампании: без него покупка гостем не попадает в статистику
+  // кампании и не даёт её бонус — auth-флоу, который привязывает кампанию
+  // обычно, на этом пути не срабатывает.
+  campaign_slug?: string;
 }
 
 export interface PurchaseResponse {

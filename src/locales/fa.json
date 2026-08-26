@@ -199,6 +199,9 @@
     "orOpenInApp": "یا ربات را در برنامه باز کنید",
     "loginFailed": "ورود ناموفق",
     "telegramWidgetBlocked": "ویجت ورود تلگرام در دسترس نیست. از طریق ربات وارد شوید:",
+    "deepLinkIntro": "ورود را مستقیماً در ربات تأیید کنید — بدون نیاز به شماره تلفن:",
+    "loginWithBot": "ورود از طریق ربات",
+    "backToWidget": "بازگشت به ورود با ویجت",
     "openBotToLogin": "باز کردن ربات برای ورود",
     "waitingForConfirmation": "در انتظار تایید...",
     "deepLinkExpired": "لینک منقضی شده است. لطفا دوباره تلاش کنید.",
@@ -641,6 +644,16 @@
     },
     "dailyAutoCharge": "برداشت خودکار روزانه",
     "defaultName": "اشتراک",
+    "connectFooter": {
+      "connect": "اتصال دستگاه",
+      "full": "همه ظرفیت‌ها پر است",
+      "connectedDevices": "دستگاه‌های متصل",
+      "disconnect": "قطع اتصال",
+      "addSlots": "افزودن ظرفیت",
+      "limitExplained": "طرح «{{name}}» ‏{{count}} ظرفیت دارد و همه پر است. یکی را آزاد کنید یا ظرفیت اضافه کنید.",
+      "limitExplainedNoTopup": "طرح «{{name}}» ‏{{count}} ظرفیت دارد و همه پر است. یک ظرفیت را آزاد کنید.",
+      "noTopupHint": "روی اشتراک آزمایشی نمی‌توان ظرفیت خرید — یکی را آزاد کنید یا طرح پولی بگیرید."
+    },
     "delete": "حذف",
     "deleteTitle": "حذف اشتراک",
     "get_config": "دریافت پیکربندی",
@@ -1004,7 +1017,12 @@
     "ticketsDisabled": "تیکت‌ها غیرفعال است",
     "useExternalLink": "لطفاً از لینک خارجی برای دریافت پشتیبانی استفاده کنید",
     "create_ticket": "ایجاد تیکت",
-    "writeButton": "پیام"
+    "writeButton": "پیام",
+    "errors": {
+      "alreadyOpenTicket": "شما در حال حاضر یک تیکت باز دارید. گفتگو را در همان تیکت ادامه دهید؛ پس از بسته شدن آن می‌توانید تیکت جدید ایجاد کنید.",
+      "createFailed": "ایجاد تیکت ناموفق بود. لطفاً دوباره تلاش کنید.",
+      "replyFailed": "ارسال پاسخ ناموفق بود. لطفاً دوباره تلاش کنید."
+    }
   },
   "wheel": {
     "title": "چرخ شانس",
@@ -2810,7 +2828,10 @@
         "save": "ذخیره",
         "defaultTrialTariff": "تعرفه پیش‌فرض آزمایشی",
         "selectTariff": "تعرفه را انتخاب کنید",
-        "tariff": "تعرفه"
+        "tariff": "تعرفه",
+        "includeTraffic": "ترافیک",
+        "trafficAmount": "حجم ترافیک",
+        "gb": "گیگابایت"
       },
       "stats": {
         "title": "آمار کد تخفیف",
@@ -2882,7 +2903,8 @@
         "daysRequired": "تعداد روزها باید بیشتر از 0 باشد",
         "groupRequired": "یک گروه تخفیف انتخاب کنید",
         "discountPercentInvalid": "درصد تخفیف باید بین 1 تا 100 باشد",
-        "discountHoursRequired": "مدت اعتبار تخفیف را به ساعت مشخص کنید"
+        "discountHoursRequired": "مدت اعتبار تخفیف را به ساعت مشخص کنید",
+        "trafficRequired": "حجم ترافیک باید بیشتر از ۰ باشد"
       }
     },
     "promoGroups": {
@@ -2963,7 +2985,8 @@
         "byDate": "بر اساس تاریخ",
         "byBalance": "بر اساس موجودی",
         "byActivity": "بر اساس فعالیت",
-        "bySpent": "بر اساس هزینه"
+        "bySpent": "بر اساس هزینه",
+        "byExpiry": "بر اساس انقضا"
       },
       "pagination": {
         "showing": "نمایش {{from}}-{{to}} از {{total}}"
@@ -3105,7 +3128,11 @@
           "sbpCancelled": "پرداخت خودکار SBP غیرفعال شد",
           "sbpStatus_PENDING": "در انتظار",
           "sbpStatus_ACTIVE": "فعال",
-          "sbpStatus_PAST_DUE": "پرداخت ناموفق"
+          "sbpStatus_PAST_DUE": "پرداخت ناموفق",
+          "deleteTitle": "حذف اشتراک",
+          "deleteHint": "اشتراک و دستگاه‌های آن برای همیشه حذف می‌شوند",
+          "deleteButton": "حذف اشتراک",
+          "deleted": "اشتراک حذف شد"
         },
         "balance": {
           "current": "موجودی فعلی",
@@ -3446,6 +3473,47 @@
           "users": "کاربران"
         },
         "usersOnlineCount": "{{count}} آنلاین"
+      },
+      "geoCheck": {
+        "title": "GeoCheck",
+        "start": "اجرای بررسی",
+        "running": "در حال بررسی موقعیت جغرافیایی",
+        "runningHint": "نود در حال آزمایش اتصال است — معمولاً تا یک دقیقه طول می‌کشد.",
+        "changeRoute": "تغییر مسیر",
+        "rerun": "اجرای دوباره",
+        "reportAlt": "گزارش GeoCheck برای {{node}}",
+        "invalidIp": "یک نشانی معتبر IPv4 یا IPv6 وارد کنید",
+        "invalidInterface": "یک نام رابط شبکه معتبر وارد کنید",
+        "fullscreen": "تمام‌صفحه",
+        "exitFullscreen": "خروج از تمام‌صفحه",
+        "copyJson": "کپی گزارش JSON",
+        "download": "دانلود SVG",
+        "zoomIn": "بزرگ‌نمایی",
+        "zoomOut": "کوچک‌نمایی",
+        "zoomReset": "بازنشانی بزرگ‌نمایی",
+        "mode": {
+          "legend": "مسیر بررسی",
+          "default": "پیش‌فرض",
+          "ip": "نشانی IP",
+          "interface": "رابط شبکه"
+        },
+        "hint": {
+          "default": "نود از مسیر خروجی پیش‌فرض خود استفاده می‌کند.",
+          "ip": "یکی از نشانی‌های نود را انتخاب کنید یا هر نشانی دلخواه را وارد کنید.",
+          "interface": "یکی از رابط‌های نود را انتخاب کنید یا هر نامی را وارد کنید."
+        },
+        "placeholder": {
+          "default": "خودکار"
+        },
+        "tab": {
+          "report": "گزارش",
+          "json": "JSON"
+        },
+        "error": {
+          "title": "بررسی ناموفق بود",
+          "timeout": "نود به‌موقع پاسخ نداد. دوباره بررسی را اجرا کنید.",
+          "generic": "انجام بررسی ممکن نشد."
+        }
       },
       "overview": {
         "bandwidth": "ترافیک ورودی‌ها",
