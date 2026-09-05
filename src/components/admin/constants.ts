@@ -62,6 +62,8 @@ export const SETTINGS_TREE: SettingsTreeConfig = {
         { id: 'payments_antilopay', categories: ['ANTILOPAY'] },
         { id: 'payments_jupiter', categories: ['JUPITER'] },
         { id: 'payments_cispay', categories: ['CISPAY'] },
+        { id: 'payments_tabpay', categories: ['TABPAY'] },
+        { id: 'payments_paritypay', categories: ['PARITYPAY'] },
         { id: 'payments_donut', categories: ['DONUT'] },
         { id: 'payments_lava', categories: ['LAVA'] },
         { id: 'payments_apple_iap', categories: ['APPLE_IAP'] },
@@ -179,15 +181,6 @@ export function findTreeLocation(
     }
   }
   return null;
-}
-
-// Helper: get all backend category keys for a given sub-item id
-export function getCategoriesForSubItem(subItemId: string): string[] {
-  for (const group of SETTINGS_TREE.groups) {
-    const child = group.children.find((c) => c.id === subItemId);
-    if (child) return child.categories;
-  }
-  return [];
 }
 
 // Theme preset type
