@@ -159,7 +159,7 @@ export function useDocumentBranding(): void {
   const palette = colors ?? DEFAULT_THEME_COLORS;
   const accent = palette.accent;
   const background = isDark ? palette.darkBackground : palette.lightBackground;
-  const name = branding?.name.trim() || FALLBACK_NAME;
+  const name = branding?.name?.trim() || FALLBACK_NAME;
   const letter = branding?.logo_letter || FALLBACK_LOGO;
   const appliedTitleRef = useRef<string | null>(null);
 
