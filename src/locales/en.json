@@ -3961,7 +3961,9 @@
       "panelTagLabel": "Remnawave panel tag",
       "panelTagDesc": "Up to 16 characters: Latin letters, digits and underscore. Empty — the global tag from settings (trial or paid). The tag shows in the panel which tariff a user is on.",
       "trialDaysLabel": "Trial days on this tariff",
-      "trialDaysDesc": "Empty — the global trial duration setting."
+      "trialDaysDesc": "Empty — the global trial duration setting.",
+      "trialCardProductLabel": "Lava trial product (freeDays)",
+      "trialCardProductDesc": "UUID of a second product from the Lava dashboard — with freeDays configured and the same price as the regular product. Used for the paid trial: the card is bound now, and after freeDays the full tariff price is charged automatically. Empty — the card-based paid trial is unavailable for this tariff."
     },
     "servers": {
       "title": "Squad Management",
