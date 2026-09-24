@@ -2830,7 +2830,9 @@
       "panelTagLabel": "Remnawave 面板标签",
       "panelTagDesc": "最多 16 个字符：拉丁字母、数字和下划线。留空则使用设置中的通用标签（试用或付费）。面板中通过该标签可看出用户所用套餐。",
       "trialDaysLabel": "此套餐的试用天数",
-      "trialDaysDesc": "留空则使用全局试用时长设置。"
+      "trialDaysDesc": "留空则使用全局试用时长设置。",
+      "trialCardProductLabel": "Lava 试用产品（freeDays）",
+      "trialCardProductDesc": "来自 Lava 后台的第二个产品 UUID——已配置 freeDays，价格与普通产品相同。用于付费试用：立即绑定银行卡，freeDays 结束后自动扣取套餐全额费用。留空则该套餐不支持通过银行卡进行付费试用。"
     },
     "servers": {
       "title": "服务器管理",

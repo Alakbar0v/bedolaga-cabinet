@@ -39,6 +39,8 @@ export interface TariffListItem {
   lava_product_id?: string | null;
   /** Свой тег панельного пользователя Remnawave; null — общий тег из настроек */
   panel_tag?: string | null;
+  /** UUID продукта провайдера карточного триала (сегодня Lava, с freeDays) */
+  trial_card_product_id?: string | null;
   traffic_limit_gb: number;
   device_limit: number;
   tier_level: number;
@@ -97,6 +99,8 @@ export interface TariffDetail {
   lava_product_id?: string | null;
   /** Свой тег панельного пользователя Remnawave; null — общий тег из настроек */
   panel_tag?: string | null;
+  /** UUID продукта провайдера карточного триала (сегодня Lava, с freeDays) */
+  trial_card_product_id?: string | null;
   // Режим сброса трафика
   traffic_reset_mode: string | null; // 'DAY', 'WEEK', 'MONTH', 'MONTH_ROLLING', 'NO_RESET', null = глобальная настройка
   // Внешний сквад Remnawave
@@ -146,6 +150,8 @@ export interface TariffCreateRequest {
   lava_product_id?: string | null;
   /** Свой тег панельного пользователя Remnawave; null — общий тег из настроек */
   panel_tag?: string | null;
+  // Платный триал (карта): продукт провайдера с freeDays (сегодня — Lava)
+  trial_card_product_id?: string | null;
   // Режим сброса трафика
   traffic_reset_mode?: string | null;
   // Внешний сквад Remnawave
@@ -200,6 +206,8 @@ export interface TariffUpdateRequest {
   lava_product_id?: string | null;
   /** Свой тег панельного пользователя Remnawave; null — общий тег из настроек */
   panel_tag?: string | null;
+  // Платный триал (карта): продукт провайдера с freeDays (сегодня — Lava)
+  trial_card_product_id?: string | null;
   // Режим сброса трафика
   traffic_reset_mode?: string | null;
   // Внешний сквад Remnawave

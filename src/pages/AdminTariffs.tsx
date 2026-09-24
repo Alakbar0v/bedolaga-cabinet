@@ -273,7 +273,18 @@ export default function AdminTariffs() {
 
   const toggleTrialMutation = useMutation({
     mutationFn: tariffsApi.toggleTrial,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // Тарифы независимо друг от друга могут быть триальными одновременно —
+      // применяем ответ сразу к localTariffs, иначе при несохранённом
+      // порядке (orderChanged) бейдж не обновится: см. sync-эффект выше,
+      // который синхронизирует localTariffs из запроса только !orderChanged.
+      setLocalTariffs((prev) =>
+        prev.map((tariff) =>
+          tariff.id === data.id
+            ? { ...tariff, is_trial_available: data.is_trial_available }
+            : tariff,
+        ),
+      );
       queryClient.invalidateQueries({ queryKey: ['admin-tariffs'] });
     },
   });

@@ -60,6 +60,7 @@ export default function AdminTariffCreate() {
   const [panelTag, setPanelTag] = useState('');
   // Дни триала на этом тарифе; '' — глобальная настройка
   const [trialDurationDays, setTrialDurationDays] = useState<number | ''>('');
+  const [trialCardProductId, setTrialCardProductId] = useState('');
 
   // Traffic topup
   const [trafficTopupEnabled, setTrafficTopupEnabled] = useState(false);
@@ -138,6 +139,7 @@ export default function AdminTariffCreate() {
       setLavaProductId(data.lava_product_id || '');
       setPanelTag(data.panel_tag || '');
       setTrialDurationDays(data.trial_duration_days ?? '');
+      setTrialCardProductId(data.trial_card_product_id || '');
       setTrafficTopupEnabled(data.traffic_topup_enabled || false);
       setMaxTopupTrafficGb(data.max_topup_traffic_gb || 0);
       setTrafficTopupPackages(data.traffic_topup_packages || {});
@@ -205,6 +207,7 @@ export default function AdminTariffCreate() {
       panel_tag: panelTag.trim(),
       // Дни триала: пусто — глобальная настройка
       trial_duration_days: toNumber(trialDurationDays) > 0 ? toNumber(trialDurationDays) : null,
+      trial_card_product_id: trialCardProductId.trim(),
       traffic_reset_mode: trafficResetMode,
     };
 
@@ -560,6 +563,25 @@ export default function AdminTariffCreate() {
               className="input w-full"
             />
             <p className="mt-2 text-xs text-dark-500">{t('admin.tariffs.trialDaysDesc')}</p>
+          </div>
+
+          {/* Trial card product (freeDays) */}
+          <div>
+            <label
+              htmlFor="tariff-trial-card-product"
+              className="mb-2 block text-sm font-medium text-dark-300"
+            >
+              {t('admin.tariffs.trialCardProductLabel')}
+            </label>
+            <input
+              id="tariff-trial-card-product"
+              type="text"
+              value={trialCardProductId}
+              onChange={(e) => setTrialCardProductId(e.target.value)}
+              className="input w-full"
+              placeholder="6be21df9-0bcd-44ac-9c2c-3be7bc94decc"
+            />
+            <p className="mt-2 text-xs text-dark-500">{t('admin.tariffs.trialCardProductDesc')}</p>
           </div>
 
           {/* Traffic Limit */}
