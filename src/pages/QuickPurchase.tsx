@@ -26,6 +26,7 @@ import {
   CheckIcon,
   DevicesIcon,
   DownloadIcon,
+  UserIcon,
   WarningCircleIcon,
 } from '@/components/icons';
 import LanguageSwitcher from '../components/LanguageSwitcher';
@@ -108,27 +109,11 @@ function PersonalizationNotice({ personalization }: { personalization: LandingPe
     <div className="flex min-h-dvh items-center justify-center px-4">
       <div className="flex max-w-sm flex-col items-center gap-4 text-center">
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent-500/10">
-          <svg
-            className="h-8 w-8 text-accent-400"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={1.5}
-          >
-            {isBlocked ? (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            ) : (
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-              />
-            )}
-          </svg>
+          {isBlocked ? (
+            <CheckCircleIcon className="h-8 w-8 text-accent-400" />
+          ) : (
+            <UserIcon className="h-8 w-8 text-accent-400" />
+          )}
         </div>
         <h2 className="text-lg font-semibold text-dark-50">{title}</h2>
         <p className="text-sm text-dark-300">{desc}</p>
