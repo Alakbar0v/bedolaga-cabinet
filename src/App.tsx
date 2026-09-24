@@ -37,7 +37,9 @@ import {
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { BackgroundHost } from './components/backgrounds/BackgroundHost';
 import { PermissionRoute } from '@/components/auth/PermissionRoute';
+import { RemountOnParam } from '@/components/RemountOnParam';
 import { saveReturnUrl } from './utils/token';
+import { ScreenViewReporter } from './components/ScreenViewReporter';
 import { useAnalyticsCounters } from './hooks/useAnalyticsCounters';
 import { useSiteVerification } from './hooks/useSiteVerification';
 import { useDoneKey } from './hooks/useDoneKey';
@@ -51,12 +53,14 @@ import ResetPassword from './pages/ResetPassword';
 import PublicLegal from './pages/PublicLegal';
 import OAuthCallback from './pages/OAuthCallback';
 
-// Dashboard - load eagerly (default route, LCP-critical)
-import Dashboard from './pages/Dashboard';
+// Dashboard - load eagerly (default route, LCP-critical).
+// HomeScreen выбирает между полным и простым видом по настройке оператора.
+import HomeScreen from './pages/HomeScreen';
 
 // User pages - lazy load
 const Subscriptions = lazyWithRetry(() => import('./pages/Subscriptions'));
-const Subscription = lazyWithRetry(() => import('./pages/Subscription'));
+// Развилка простого и полного вида страницы подписки (оба экрана внутри ленивые).
+const SubscriptionScreen = lazyWithRetry(() => import('./pages/SubscriptionScreen'));
 const SubscriptionPurchase = lazyWithRetry(() => import('./pages/SubscriptionPurchase'));
 const Balance = lazyWithRetry(() => import('./pages/Balance'));
 const SavedCards = lazyWithRetry(() => import('./pages/SavedCards'));
@@ -150,6 +154,8 @@ const AdminUserDetail = lazyWithRetry(() => import('./pages/AdminUserDetail'));
 const AdminBroadcastDetail = lazyWithRetry(() => import('./pages/AdminBroadcastDetail'));
 const AdminPinnedMessages = lazyWithRetry(() => import('./pages/AdminPinnedMessages'));
 const AdminPinnedMessageCreate = lazyWithRetry(() => import('./pages/AdminPinnedMessageCreate'));
+const AdminReminders = lazyWithRetry(() => import('./pages/AdminReminders'));
+const AdminReminderEdit = lazyWithRetry(() => import('./pages/AdminReminderEdit'));
 const AdminChannelSubscriptions = lazyWithRetry(() => import('./pages/AdminChannelSubscriptions'));
 const AdminRoles = lazyWithRetry(() => import('./pages/AdminRoles'));
 const AdminRoleEdit = lazyWithRetry(() => import('./pages/AdminRoleEdit'));
@@ -194,7 +200,18 @@ function ProtectedRoute({
     return <Navigate to="/login" replace state={{ from: location.pathname }} />;
   }
 
-  return withLayout ? <Layout>{children}</Layout> : <>{children}</>;
+  // След пользователя: каждый открытый экран уходит в «Активность» его карточки.
+  return withLayout ? (
+    <Layout>
+      <ScreenViewReporter />
+      {children}
+    </Layout>
+  ) : (
+    <>
+      <ScreenViewReporter />
+      {children}
+    </>
+  );
 }
 
 function AdminRoute({ children }: { children: React.ReactNode }) {
@@ -345,7 +362,7 @@ function App() {
           element={
             <ProtectedRoute>
               <LazyPage>
-                <Dashboard />
+                <HomeScreen />
               </LazyPage>
             </ProtectedRoute>
           }
@@ -365,7 +382,7 @@ function App() {
           element={
             <ProtectedRoute>
               <LazyPage>
-                <Subscription />
+                <SubscriptionScreen />
               </LazyPage>
             </ProtectedRoute>
           }
@@ -1095,7 +1112,9 @@ function App() {
           element={
             <PermissionRoute permission="partners:read">
               <LazyPage>
-                <AdminPartnerDetail />
+                <RemountOnParam name="userId">
+                  <AdminPartnerDetail />
+                </RemountOnParam>
               </LazyPage>
             </PermissionRoute>
           }
@@ -1285,7 +1304,9 @@ function App() {
           element={
             <PermissionRoute permission="users:read">
               <LazyPage>
-                <AdminUserDetail />
+                <RemountOnParam name="id">
+                  <AdminUserDetail />
+                </RemountOnParam>
               </LazyPage>
             </PermissionRoute>
           }
@@ -1326,6 +1347,36 @@ function App() {
             <PermissionRoute permission="pinned_messages:read">
               <LazyPage>
                 <AdminPinnedMessageCreate />
+              </LazyPage>
+            </PermissionRoute>
+          }
+        />
+        <Route
+          path="/admin/reminders"
+          element={
+            <PermissionRoute permission="user_reminders:read">
+              <LazyPage>
+                <AdminReminders />
+              </LazyPage>
+            </PermissionRoute>
+          }
+        />
+        <Route
+          path="/admin/reminders/create"
+          element={
+            <PermissionRoute permission="user_reminders:create">
+              <LazyPage>
+                <AdminReminderEdit />
+              </LazyPage>
+            </PermissionRoute>
+          }
+        />
+        <Route
+          path="/admin/reminders/:id/edit"
+          element={
+            <PermissionRoute permission="user_reminders:edit">
+              <LazyPage>
+                <AdminReminderEdit />
               </LazyPage>
             </PermissionRoute>
           }

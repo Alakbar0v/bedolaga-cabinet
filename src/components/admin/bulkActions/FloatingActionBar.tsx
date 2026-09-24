@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { HIDDEN_UNDER_KEYBOARD, useVirtualKeyboard } from '@/hooks/useVirtualKeyboard';
-import { TrashIcon } from '@/components/icons';
+import { PhoneIcon, TrashIcon, UserMinusIcon } from '@/components/icons';
 import { ChevronDownIcon } from './DropdownSelect';
 import { isSubscriptionLevelAction } from './actionTargets';
 import type { BulkActionType } from '../../../api/adminBulkActions';
@@ -95,21 +95,7 @@ export function FloatingActionBar({
     {
       type: 'set_devices',
       labelKey: 'admin.bulkActions.actions.setDevices',
-      icon: (
-        <svg
-          className="h-3.5 w-3.5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
-          />
-        </svg>
-      ),
+      icon: <PhoneIcon className="h-3.5 w-3.5" />,
       colorClass: 'text-accent-400 hover:bg-accent-500/10',
     },
     {
@@ -139,21 +125,7 @@ export function FloatingActionBar({
     {
       type: 'delete_user',
       labelKey: 'admin.bulkActions.actions.deleteUser',
-      icon: (
-        <svg
-          className="h-3.5 w-3.5"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M22 10.5h-6m-8.25-4.5a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zM1.5 21a8.25 8.25 0 0115 0"
-          />
-        </svg>
-      ),
+      icon: <UserMinusIcon className="h-3.5 w-3.5" />,
       colorClass: 'text-error-400 hover:bg-error-500/10',
     },
   ];
@@ -170,9 +142,9 @@ export function FloatingActionBar({
     >
       <div
         ref={menuRef}
-        className="relative flex w-full max-w-2xl items-center gap-3 rounded-2xl border border-dark-700/60 bg-dark-800/80 px-5 py-3 shadow-2xl backdrop-blur-xl"
+        className="relative flex w-full max-w-2xl items-center gap-2 rounded-2xl border border-dark-700/60 bg-dark-800/80 px-3 py-3 shadow-2xl backdrop-blur-xl sm:gap-3 sm:px-5"
       >
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           {selectedUserCount > 0 && (
             <div className="flex items-center gap-1.5">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent-500/20 text-sm font-bold text-accent-400">
@@ -200,10 +172,10 @@ export function FloatingActionBar({
 
         {isMultiTariff && totalVisibleSubscriptionCount > 0 && (
           <>
-            <div className="mx-1 h-6 w-px bg-dark-700" />
+            <div className="mx-1 hidden h-6 w-px bg-dark-700 sm:block" />
             <button
               onClick={onToggleAllSubscriptions}
-              className="shrink-0 rounded-lg px-2.5 py-1.5 text-[11px] font-medium text-dark-300 transition-colors hover:bg-dark-700 hover:text-dark-200"
+              className="min-w-0 rounded-lg px-1.5 py-1.5 text-left text-[11px] font-medium leading-tight text-dark-300 transition-colors hover:bg-dark-700 hover:text-dark-200 sm:px-2.5"
             >
               {selectedSubscriptionCount === totalVisibleSubscriptionCount &&
               selectedSubscriptionCount > 0
@@ -213,19 +185,19 @@ export function FloatingActionBar({
           </>
         )}
 
-        <div className="mx-2 h-6 w-px bg-dark-700" />
+        <div className="mx-2 hidden h-6 w-px bg-dark-700 sm:block" />
 
-        <div className="relative ml-auto">
+        <div className="relative ml-auto shrink-0">
           <button
             onClick={() => setOpen(!open)}
-            className="flex items-center gap-2 rounded-xl bg-accent-500 px-4 py-2 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-600"
+            className="flex items-center gap-2 rounded-xl bg-accent-500 px-3 py-2 text-sm font-semibold text-on-accent transition-colors hover:bg-accent-600 sm:px-4"
           >
             {t('common.actions')}
             <ChevronDownIcon />
           </button>
 
           {open && (
-            <div className="absolute bottom-full right-0 mb-2 w-64 overflow-hidden rounded-xl border border-dark-700 bg-dark-800 py-1.5 shadow-2xl">
+            <div className="absolute bottom-full right-0 mb-2 w-64 max-w-[calc(100vw-3rem)] overflow-hidden rounded-xl border border-dark-700 bg-dark-800 py-1.5 shadow-2xl">
               {isMultiTariff && (
                 <div className="border-b border-dark-700/50 px-4 py-1.5">
                   <span className="text-[10px] font-semibold uppercase tracking-wider text-dark-500">

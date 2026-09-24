@@ -10,7 +10,7 @@ import { useTheme } from '../../hooks/useTheme';
 import { useTrafficZone } from '../../hooks/useTrafficZone';
 import { formatTraffic } from '../../utils/formatTraffic';
 import { getGlassColors } from '../../utils/glassTheme';
-import { CalendarIcon, RefreshIcon } from '@/components/icons';
+import { CalendarIcon, RefreshIcon, SparklesIcon } from '@/components/icons';
 import type { Subscription } from '../../types';
 
 interface SubscriptionCardActiveProps {
@@ -69,8 +69,8 @@ export default function SubscriptionCardActive({
           carried no information and ate visual attention. */}
 
       {/* ─── Header ─── */}
-      <div className="mb-7 flex items-start justify-between">
-        <div>
+      <div className="mb-7 flex items-start justify-between gap-3">
+        <div className="min-w-0">
           {/* Zone indicator */}
           <div className="mb-1 flex items-center gap-2">
             <div
@@ -89,21 +89,7 @@ export default function SubscriptionCardActive({
             </span>
             {subscription.is_trial && (
               <span className="inline-flex items-center gap-1 rounded-md border border-accent-400/25 bg-accent-400/10 px-2 py-0.5 font-mono text-[9px] font-bold uppercase tracking-widest text-accent-400">
-                <svg
-                  width="10"
-                  height="10"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <SparklesIcon className="h-2.5 w-2.5" />
                 {t('subscription.trialStatus')}
               </span>
             )}
@@ -161,13 +147,16 @@ export default function SubscriptionCardActive({
       />
 
       {/* ─── Stats row: Tariff + Days Left ─── */}
+      {/* Обеим плиткам нужен `min-w-0`: без него минимальная ширина флекс-элемента
+          равна ширине неразрывного имени тарифа, и длинное имя («🟡 Компания -
+          10 устройств») выпихивало плитку «Осталось» за правый край карточки. */}
       <div className="mb-5 flex gap-2.5">
         {/* Tariff badge — clickable. Neutral chrome: the tariff name has
             no traffic-zone semantics, so tinting it by the traffic zone
             (DESIGN.md Status-Hue Lockout) was wrong. */}
         <Link
           to={`/subscriptions/${subscription.id}`}
-          className="flex-1 rounded-[14px] p-3.5 transition-colors"
+          className="min-w-0 flex-1 rounded-[14px] p-3.5 transition-colors"
           style={{
             background: g.innerBg,
             border: `1px solid ${g.innerBorder}`,
@@ -179,7 +168,10 @@ export default function SubscriptionCardActive({
           >
             {t('dashboard.tariff')}
           </div>
-          <div className="min-w-0 truncate text-base font-bold leading-tight tracking-tight text-dark-50">
+          {/* Две строки вместо обрезки в одну: на телефоне плитка шириной ~145px,
+              и «🟡 Компания - 10 устройств» превращалось в «🟡 Компани…» —
+              пользователь переставал понимать, какой у него тариф. */}
+          <div className="line-clamp-2 min-w-0 break-words text-base font-bold leading-tight tracking-tight text-dark-50">
             {subscription.tariff_name || t('subscription.currentPlan')}
           </div>
           <div className="mt-0.5 font-mono text-[10px] text-dark-400">
@@ -189,7 +181,7 @@ export default function SubscriptionCardActive({
 
         {/* Days remaining */}
         <div
-          className="flex-1 rounded-[14px] p-3.5 transition-colors duration-300"
+          className="min-w-0 flex-1 rounded-[14px] p-3.5 transition-colors duration-300"
           style={{
             background: g.innerBg,
             border:
