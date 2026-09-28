@@ -7817,7 +7817,9 @@
       "allSettings": "All subscription settings",
       "delete": "Delete subscription",
       "plans": "See plans",
-      "support": "Support"
+      "support": "Support",
+      "copyLink": "Copy subscription link",
+      "copied": "Copied"
     },
     "error": {
       "load": "Could not load your data",

@@ -7262,7 +7262,9 @@
       "allSettings": "全部订阅设置",
       "delete": "删除订阅",
       "plans": "查看套餐",
-      "support": "客服"
+      "support": "客服",
+      "copyLink": "复制订阅链接",
+      "copied": "已复制"
     },
     "error": {
       "load": "无法加载数据",
