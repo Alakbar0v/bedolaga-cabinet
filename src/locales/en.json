@@ -2813,7 +2813,8 @@
         "showUsers": "View list",
         "users": "Broadcast recipients",
         "empty": "No recipients",
-        "conditions": "Conditions"
+        "conditions": "Conditions",
+        "noUsersPermission": "Requires permission to view users"
       },
       "atomic": {
         "all": "All users",

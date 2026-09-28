@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
 import { useFocusTrap } from '../../hooks/useFocusTrap';
+import { usePermissionStore } from '../../store/permissions';
 import {
   adminBroadcastsApi,
   type BroadcastAudience,
@@ -65,6 +66,8 @@ function UserLookup({
   rowIndex: number;
 }) {
   const { t } = useTranslation();
+  // Поиск выгружает людей из базы — сервер требует users:read (у роли Marketer его нет).
+  const canSearch = usePermissionStore((state) => state.hasPermission('users:read'));
   const [text, setText] = useState(condition.label || '');
   const [query, setQuery] = useState('');
   const [offset, setOffset] = useState(0);
@@ -78,7 +81,7 @@ function UserLookup({
   const results = useQuery({
     queryKey: ['admin', 'broadcasts', 'audience-users', field, query, offset],
     queryFn: () => adminBroadcastsApi.searchAudienceUsers({ field, q: query, offset }),
-    enabled: open && !condition.value && query.length > 0 && searchReady,
+    enabled: canSearch && open && !condition.value && query.length > 0 && searchReady,
   });
   const users = searchReady ? results.data?.users || [] : [];
   const describe = (user: (typeof users)[number]) =>
@@ -117,10 +120,15 @@ function UserLookup({
             ? `audience-user-${field}-${rowIndex}-${users[highlight].id}`
             : undefined
         }
-        placeholder={t(
-          'admin.broadcasts.atomic.searchUser',
-          'Начните вводить и выберите пользователя',
-        )}
+        placeholder={
+          canSearch
+            ? t('admin.broadcasts.atomic.searchUser', 'Начните вводить и выберите пользователя')
+            : t(
+                'admin.broadcasts.audience.noUsersPermission',
+                'Нужно право на просмотр пользователей',
+              )
+        }
+        disabled={!canSearch && !condition.value}
         value={text}
         onFocus={() => setOpen(!condition.value)}
         onChange={(event) => {
@@ -150,7 +158,7 @@ function UserLookup({
           }
         }}
       />
-      {open && !condition.value && query && searchReady && (
+      {canSearch && open && !condition.value && query && searchReady && (
         <div
           id={`audience-users-${field}-${rowIndex}`}
           role="listbox"
@@ -243,6 +251,8 @@ export function BroadcastAudienceEditor({
   isLoading,
 }: Props) {
   const { t } = useTranslation();
+  // Без users:read сервер отдаёт только размер аудитории, без людей — список не предлагаем.
+  const canSeeUsers = usePermissionStore((state) => state.hasPermission('users:read'));
   const [showUsers, setShowUsers] = useState(false);
   const dialogRef = useFocusTrap<HTMLDivElement>(showUsers, {
     onEscape: () => setShowUsers(false),
@@ -292,7 +302,7 @@ export function BroadcastAudienceEditor({
       field: 'traffic_zero',
       label: t('admin.broadcasts.atomic.trafficZero', 'Использованный трафик равен 0'),
       kind: 'fixed',
-      values: [{ value: 'zero', label: '0 ГБ' }],
+      values: [{ value: 'zero', label: `0 ${t('common.units.gb', 'ГБ')}` }],
     },
     {
       field: 'traffic_gt',
@@ -575,7 +585,7 @@ export function BroadcastAudienceEditor({
                       onChange={(event) => changeCondition(index, { value: event.target.value })}
                       aria-label={t('admin.broadcasts.atomic.gigabytes', 'Гигабайты')}
                     />
-                    <span className="text-sm text-dark-400">ГБ</span>
+                    <span className="text-sm text-dark-400">{t('common.units.gb', 'ГБ')}</span>
                   </div>
                 ) : choice?.kind === 'user' ? (
                   <UserLookup
@@ -635,22 +645,24 @@ export function BroadcastAudienceEditor({
               {t('admin.broadcasts.audience.recipientCount', 'Получателей')}:{' '}
               <strong className="text-accent-400">{preview.data.count}</strong>
             </span>
-            <button
-              type="button"
-              onClick={() => {
-                setOffset(0);
-                setShowUsers(true);
-                void preview.refetch();
-              }}
-              className="text-accent-400 hover:underline"
-            >
-              {t('admin.broadcasts.audience.showUsers', 'Посмотреть список')}
-            </button>
+            {canSeeUsers && (
+              <button
+                type="button"
+                onClick={() => {
+                  setOffset(0);
+                  setShowUsers(true);
+                  void preview.refetch();
+                }}
+                className="text-accent-400 hover:underline"
+              >
+                {t('admin.broadcasts.audience.showUsers', 'Посмотреть список')}
+              </button>
+            )}
           </>
         )}
       </div>
 
-      {showUsers && (
+      {showUsers && canSeeUsers && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
           role="presentation"

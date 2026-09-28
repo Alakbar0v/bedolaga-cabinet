@@ -1916,7 +1916,8 @@
         "showUsers": "查看名单",
         "users": "群发收件人",
         "empty": "没有收件人",
-        "conditions": "条件"
+        "conditions": "条件",
+        "noUsersPermission": "需要查看用户的权限"
       },
       "atomic": {
         "all": "所有用户",
