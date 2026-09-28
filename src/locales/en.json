@@ -905,6 +905,9 @@
       },
       "apple_iap": {
         "description": "Pay via Apple In-App Purchase"
+      },
+      "cashera": {
+        "description": "SBP, cards, crypto (Cashera)"
       }
     },
     "transactionHistory": "Transaction History",
@@ -3255,7 +3258,8 @@
         "iface_menu": "Menu button",
         "sys_cabinet": "Cabinet",
         "sys_other": "Other settings",
-        "sys_dpichecker": "DPI//CHECKER"
+        "sys_dpichecker": "DPI//CHECKER",
+        "payments_cashera": "Cashera"
       },
       "categories": {
         "CABINET": "Cabinet",

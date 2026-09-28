@@ -774,6 +774,9 @@
       },
       "apple_iap": {
         "description": "通过Apple应用内购买支付"
+      },
+      "cashera": {
+        "description": "SBP、银行卡、加密货币（Cashera）"
       }
     },
     "transactionHistory": "交易记录",
@@ -2352,7 +2355,8 @@
         "iface_menu": "菜单按钮",
         "sys_cabinet": "用户中心",
         "sys_other": "其他设置",
-        "sys_dpichecker": "DPI//CHECKER"
+        "sys_dpichecker": "DPI//CHECKER",
+        "payments_cashera": "Cashera"
       },
       "categories": {
         "CABINET": "用户中心",

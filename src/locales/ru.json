@@ -933,6 +933,9 @@
       },
       "apple_iap": {
         "description": "Оплата через Apple In-App Purchase"
+      },
+      "cashera": {
+        "description": "СБП, карты, криптовалюта (Cashera)"
       }
     },
     "transactionHistory": "История операций",
@@ -3301,7 +3304,8 @@
         "iface_menu": "Кнопка меню",
         "sys_cabinet": "Кабинет",
         "sys_other": "Прочие настройки",
-        "sys_dpichecker": "DPI//CHECKER"
+        "sys_dpichecker": "DPI//CHECKER",
+        "payments_cashera": "Cashera"
       },
       "presets": {
         "standard": "Стандарт",

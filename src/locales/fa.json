@@ -780,6 +780,9 @@
       },
       "apple_iap": {
         "description": "پرداخت از طریق Apple In-App Purchase"
+      },
+      "cashera": {
+        "description": "SBP، کارت‌ها، رمزارز (Cashera)"
       }
     },
     "transactionHistory": "تاریخچه تراکنش‌ها",
@@ -2291,7 +2294,8 @@
         "iface_menu": "دکمه منو",
         "sys_cabinet": "کابین",
         "sys_other": "سایر تنظیمات",
-        "sys_dpichecker": "DPI//CHECKER"
+        "sys_dpichecker": "DPI//CHECKER",
+        "payments_cashera": "Cashera"
       },
       "categories": {
         "CABINET": "کابین",
