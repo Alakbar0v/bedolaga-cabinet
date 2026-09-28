@@ -840,7 +840,31 @@
     "statusActive": "Активна",
     "statusExpired": "Истекла",
     "statusLimited": "Ограничена",
-    "statusTrial": "Триал"
+    "statusTrial": "Триал",
+    "casheraRecurring": {
+      "title": "Автопродление Cashera",
+      "connect": "Подключить",
+      "confirm": "Подтвердить автосписания",
+      "cancel": "Отключить",
+      "confirmCancel": "Отключить автопродление Cashera? Подписка больше не будет продлеваться автоматически.",
+      "cancelled": "Автопродление Cashera отключено",
+      "enableError": "Не удалось подключить автопродление Cashera",
+      "cancelError": "Не удалось отменить автопродление Cashera",
+      "statusPending": "Ожидает подтверждения по ссылке",
+      "statusActive": "Активно",
+      "statusPastDue": "Платёж не прошёл — попробуйте снова",
+      "nextCharge": "следующее списание {{date}}",
+      "amountPerInterval": "{{amount}} ₽ {{interval}}",
+      "interval": {
+        "daily": "ежедневно",
+        "weekly": "еженедельно",
+        "monthly": "ежемесячно",
+        "yearly": "ежегодно"
+      },
+      "autopayHint": "Подписка будет автоматически продлеваться через Cashera",
+      "purchaseButton": "⚡ Оформить с автооплатой Cashera",
+      "purchaseHint": "Подтвердите автосписания по ссылке Cashera; дальше продления списываются автоматически."
+    }
   },
   "balance": {
     "title": "Баланс",

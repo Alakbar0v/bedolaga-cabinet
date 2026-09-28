@@ -729,6 +729,30 @@
     "trialUpgrade": {
       "description": "دوره آزمایشی شما به‌زودی به پایان می‌رسد. برای ادامه استفاده از VPN بدون محدودیت، یک تعرفه مناسب انتخاب کنید.",
       "title": "ارتقای اشتراک"
+    },
+    "casheraRecurring": {
+      "title": "تمدید خودکار Cashera",
+      "connect": "فعال‌سازی",
+      "confirm": "تأیید برداشت خودکار",
+      "cancel": "غیرفعال",
+      "confirmCancel": "تمدید خودکار Cashera غیرفعال شود؟ اشتراک دیگر به‌طور خودکار تمدید نمی‌شود.",
+      "cancelled": "تمدید خودکار Cashera غیرفعال شد",
+      "enableError": "فعال‌سازی تمدید خودکار Cashera ممکن نشد",
+      "cancelError": "لغو تمدید خودکار Cashera ممکن نشد",
+      "statusPending": "در انتظار تأیید از طریق لینک",
+      "statusActive": "فعال",
+      "statusPastDue": "پرداخت ناموفق بود — دوباره تلاش کنید",
+      "nextCharge": "برداشت بعدی {{date}}",
+      "amountPerInterval": "{{amount}} ₽ {{interval}}",
+      "interval": {
+        "daily": "روزانه",
+        "weekly": "هفتگی",
+        "monthly": "ماهانه",
+        "yearly": "سالانه"
+      },
+      "autopayHint": "اشتراک به‌طور خودکار از طریق Cashera تمدید می‌شود",
+      "purchaseButton": "⚡ خرید با پرداخت خودکار Cashera",
+      "purchaseHint": "برداشت خودکار را از طریق لینک Cashera تأیید کنید؛ سپس تمدیدها خودکار برداشت می‌شوند."
     }
   },
   "balance": {

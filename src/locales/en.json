@@ -812,7 +812,31 @@
     "statusActive": "Active",
     "statusExpired": "Expired",
     "statusLimited": "Limited",
-    "statusTrial": "Trial"
+    "statusTrial": "Trial",
+    "casheraRecurring": {
+      "title": "Cashera auto-renewal",
+      "connect": "Connect",
+      "confirm": "Confirm auto-charges",
+      "cancel": "Turn off",
+      "confirmCancel": "Turn off Cashera auto-renewal? The subscription will no longer renew automatically.",
+      "cancelled": "Cashera auto-renewal turned off",
+      "enableError": "Could not connect Cashera auto-renewal",
+      "cancelError": "Could not cancel Cashera auto-renewal",
+      "statusPending": "Waiting for confirmation via the link",
+      "statusActive": "Active",
+      "statusPastDue": "Payment failed — please try again",
+      "nextCharge": "next charge {{date}}",
+      "amountPerInterval": "{{amount}} ₽ {{interval}}",
+      "interval": {
+        "daily": "daily",
+        "weekly": "weekly",
+        "monthly": "monthly",
+        "yearly": "yearly"
+      },
+      "autopayHint": "Your subscription will renew automatically via Cashera",
+      "purchaseButton": "⚡ Subscribe with Cashera auto-pay",
+      "purchaseHint": "Confirm auto-charges via the Cashera link; renewals are then charged automatically."
+    }
   },
   "balance": {
     "title": "Balance",

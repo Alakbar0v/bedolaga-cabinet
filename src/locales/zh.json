@@ -723,6 +723,30 @@
     "trialUpgrade": {
       "description": "您的试用期即将结束。请选择合适的套餐，以继续无限制使用 VPN。",
       "title": "升级订阅"
+    },
+    "casheraRecurring": {
+      "title": "Cashera 自动续费",
+      "connect": "开通",
+      "confirm": "确认自动扣款",
+      "cancel": "关闭",
+      "confirmCancel": "关闭 Cashera 自动续费？订阅将不再自动续订。",
+      "cancelled": "已关闭 Cashera 自动续费",
+      "enableError": "无法开通 Cashera 自动续费",
+      "cancelError": "无法取消 Cashera 自动续费",
+      "statusPending": "等待通过链接确认",
+      "statusActive": "已开通",
+      "statusPastDue": "扣款失败，请重试",
+      "nextCharge": "下次扣款 {{date}}",
+      "amountPerInterval": "{{amount}} ₽ {{interval}}",
+      "interval": {
+        "daily": "每天",
+        "weekly": "每周",
+        "monthly": "每月",
+        "yearly": "每年"
+      },
+      "autopayHint": "订阅将通过 Cashera 自动续费",
+      "purchaseButton": "⚡ 使用 Cashera 自动付款订阅",
+      "purchaseHint": "通过 Cashera 链接确认自动扣款，之后续费将自动扣款。"
     }
   },
   "balance": {
