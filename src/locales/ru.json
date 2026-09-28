@@ -201,13 +201,13 @@
     "validUntil": "Действует до",
     "goToSubscription": "Перейти к подписке",
     "goToBalance": "Перейти к балансу",
-    "devicesAdded": "+{{count}} устройств",
+    "devicesAdded": "Добавлено устройств",
     "devicesPurchased": {
       "title": "Устройства добавлены"
     },
-    "totalDevices": "Всего устройств: {{count}}",
-    "totalTraffic": "Всего трафика: {{value}}",
-    "trafficAdded": "+{{value}} трафика",
+    "totalDevices": "Всего устройств",
+    "totalTraffic": "Всего трафика",
+    "trafficAdded": "Добавлено трафика",
     "trafficPurchased": {
       "title": "Трафик добавлен"
     }

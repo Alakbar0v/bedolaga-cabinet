@@ -182,13 +182,13 @@
     "validUntil": "有效期至",
     "goToSubscription": "查看订阅",
     "goToBalance": "查看余额",
-    "devicesAdded": "+{{count}} 设备",
+    "devicesAdded": "已添加设备",
     "devicesPurchased": {
       "title": "设备已添加"
     },
-    "totalDevices": "总设备数：{{count}}",
-    "totalTraffic": "总流量：{{value}}",
-    "trafficAdded": "+{{value}} 流量",
+    "totalDevices": "总设备数",
+    "totalTraffic": "总流量",
+    "trafficAdded": "已添加流量",
     "trafficPurchased": {
       "title": "流量已添加"
     }
