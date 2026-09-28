@@ -887,7 +887,8 @@
       "goToBalance": "查看余额",
       "tryAgain": "重试"
     },
-    "top_up": "充值"
+    "top_up": "充值",
+    "scanQrToPay": "请在银行应用中扫描二维码，或打开支付页面"
   },
   "referral": {
     "title": "推荐计划",

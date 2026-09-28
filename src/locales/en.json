@@ -1020,7 +1020,8 @@
       "goToBalance": "Go to Balance",
       "tryAgain": "Try Again"
     },
-    "top_up": "Top up balance"
+    "top_up": "Top up balance",
+    "scanQrToPay": "Scan the QR code in your banking app or open the payment page"
   },
   "referral": {
     "title": "Referral Program",
