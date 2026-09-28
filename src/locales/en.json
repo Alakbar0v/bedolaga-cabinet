@@ -3033,7 +3033,8 @@
         "testInvalidTexts": "Fix the texts and save",
         "ruRequired": "Fill in the Russian title and text",
         "saveFailed": "Failed to save — check the fields"
-      }
+      },
+      "loadFailed": "Failed to load reminders"
     },
     "channelSubscriptions": {
       "title": "Required Channels",

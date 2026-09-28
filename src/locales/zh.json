@@ -2130,7 +2130,8 @@
         "testInvalidTexts": "请修正文本后重新保存",
         "ruRequired": "请填写俄语标题和正文",
         "saveFailed": "保存失败 — 请检查字段"
-      }
+      },
+      "loadFailed": "无法加载提醒"
     },
     "channelSubscriptions": {
       "title": "必订频道",
