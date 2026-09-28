@@ -193,13 +193,13 @@
     "validUntil": "Valid until",
     "goToSubscription": "Go to Subscription",
     "goToBalance": "Go to Balance",
-    "devicesAdded": "+{{count}} devices",
+    "devicesAdded": "Devices added",
     "devicesPurchased": {
       "title": "Devices added"
     },
-    "totalDevices": "Total devices: {{count}}",
-    "totalTraffic": "Total traffic: {{value}}",
-    "trafficAdded": "+{{value}} traffic",
+    "totalDevices": "Total devices",
+    "totalTraffic": "Total traffic",
+    "trafficAdded": "Traffic added",
     "trafficPurchased": {
       "title": "Traffic added"
     }
