@@ -1,8 +1,8 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import path from 'path';
-import packageJson from './package.json';
-import { brandingHtml } from './vite-plugins/brandingHtml';
+import path from 'node:path';
+import packageJson from './package.json' with { type: 'json' };
+import { brandingHtml } from './vite-plugins/brandingHtml.ts';
 
 // Vendor-чанки: [имя, какие модули в него идут]. Порядок = приоритет группы.
 // Rolldown по умолчанию забирает в группу и все зависимости её модулей, поэтому
@@ -37,7 +37,7 @@ const VENDOR_CHUNKS: ReadonlyArray<readonly [string, RegExp]> = [
 export default defineConfig(({ mode }) => {
   // Переменные из .env и из окружения сборки (Docker передаёт их через ENV);
   // окружение сильнее файла — как и у самого Vite.
-  const env = { ...loadEnv(mode, __dirname, 'VITE_'), ...process.env };
+  const env = { ...loadEnv(mode, import.meta.dirname, 'VITE_'), ...process.env };
   return {
     plugins: [
       react(),
@@ -51,7 +51,7 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, 'src'),
+        '@': path.resolve(import.meta.dirname, 'src'),
       },
     },
     // Base path - use '/' for standalone Docker deployment
