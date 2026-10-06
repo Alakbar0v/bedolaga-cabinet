@@ -867,7 +867,7 @@ export default function QuickPurchase() {
     // validate here too so a malformed/foreign yclid param never blocks checkout.
     const urlYclid = urlParams.get('yclid');
     if (urlYclid && /^[0-9]{1,64}$/.test(urlYclid)) {
-      sessionStorage.setItem('landing_yclid', urlYclid);
+      safeSession.setItem('landing_yclid', urlYclid);
     }
   }, []);
 
@@ -1139,7 +1139,7 @@ export default function QuickPurchase() {
     if (ymCid) data.yandex_cid = ymCid;
     const subid = safeSession.getItem('landing_subid');
     if (subid) (data as unknown as Record<string, unknown>).subid = subid;
-    const yclid = sessionStorage.getItem('landing_yclid');
+    const yclid = safeSession.getItem('landing_yclid');
     if (yclid) data.yclid = yclid;
 
     // Слаг рекламной кампании захватил captureCampaignFromUrl() при заходе по
