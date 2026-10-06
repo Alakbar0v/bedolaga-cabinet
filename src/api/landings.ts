@@ -139,6 +139,7 @@ export interface PurchaseRequest {
   // кампании и не даёт её бонус — auth-флоу, который привязывает кампанию
   // обычно, на этом пути не срабатывает.
   campaign_slug?: string;
+  yclid?: string;
 }
 
 export interface PurchaseResponse {
