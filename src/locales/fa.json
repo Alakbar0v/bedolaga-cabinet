@@ -4396,7 +4396,10 @@
         "trialEnding": "پایان دوره آزمایشی",
         "expiring": "اشتراک در حال انقضا",
         "expired": "اشتراک منقضی شده",
+        "no": "بدون اشتراک",
         "zero": "موجودی صفر",
+        "activeZero": "فعال با ترافیک صفر",
+        "trialZero": "آزمایشی با ترافیک صفر",
         "autopayFailed": "خطای پرداخت خودکار",
         "lowBalance": "موجودی کم",
         "inactive30d": "30 روز غیرفعال",
@@ -4405,7 +4408,11 @@
         "customToday": "امروز ثبت‌نام کرده",
         "customWeek": "این هفته ثبت‌نام کرده",
         "customMonth": "این ماه ثبت‌نام کرده",
-        "customActiveToday": "امروز فعال"
+        "customActiveToday": "امروز فعال",
+        "customInactiveWeek": "بیش از ۷ روز غیرفعال",
+        "customInactiveMonth": "بیش از ۳۰ روز غیرفعال",
+        "customReferrals": "ثبت‌نام از طریق معرفی",
+        "customDirect": "ثبت‌نام مستقیم"
       },
       "offerType": {
         "testAccess": "دسترسی آزمایشی",

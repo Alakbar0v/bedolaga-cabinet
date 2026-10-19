@@ -159,7 +159,10 @@ export const TARGET_SEGMENTS = {
   trial_ending: 'admin.promoOffers.segments.trialEnding',
   expiring: 'admin.promoOffers.segments.expiring',
   expired: 'admin.promoOffers.segments.expired',
+  no: 'admin.promoOffers.segments.no',
   zero: 'admin.promoOffers.segments.zero',
+  active_zero: 'admin.promoOffers.segments.activeZero',
+  trial_zero: 'admin.promoOffers.segments.trialZero',
   autopay_failed: 'admin.promoOffers.segments.autopayFailed',
   low_balance: 'admin.promoOffers.segments.lowBalance',
   inactive_30d: 'admin.promoOffers.segments.inactive30d',
@@ -169,6 +172,10 @@ export const TARGET_SEGMENTS = {
   custom_week: 'admin.promoOffers.segments.customWeek',
   custom_month: 'admin.promoOffers.segments.customMonth',
   custom_active_today: 'admin.promoOffers.segments.customActiveToday',
+  custom_inactive_week: 'admin.promoOffers.segments.customInactiveWeek',
+  custom_inactive_month: 'admin.promoOffers.segments.customInactiveMonth',
+  custom_referrals: 'admin.promoOffers.segments.customReferrals',
+  custom_direct: 'admin.promoOffers.segments.customDirect',
 } as const;
 
 export type TargetSegment = keyof typeof TARGET_SEGMENTS;

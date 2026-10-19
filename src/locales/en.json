@@ -5532,7 +5532,10 @@
         "trialEnding": "Trial ending",
         "expiring": "Subscription expiring",
         "expired": "Expired subscription",
+        "no": "No subscription",
         "zero": "Zero balance",
+        "activeZero": "Active with zero traffic",
+        "trialZero": "Trial with zero traffic",
         "autopayFailed": "Autopay failed",
         "lowBalance": "Low balance",
         "inactive30d": "Inactive 30 days",
@@ -5541,7 +5544,11 @@
         "customToday": "Registered today",
         "customWeek": "Registered this week",
         "customMonth": "Registered this month",
-        "customActiveToday": "Active today"
+        "customActiveToday": "Active today",
+        "customInactiveWeek": "Inactive 7+ days",
+        "customInactiveMonth": "Inactive 30+ days",
+        "customReferrals": "Joined via referral",
+        "customDirect": "Direct registration"
       },
       "offerType": {
         "testAccess": "Test access",

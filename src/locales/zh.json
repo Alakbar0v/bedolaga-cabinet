@@ -4371,7 +4371,10 @@
         "trialEnding": "试用即将结束",
         "expiring": "订阅即将到期",
         "expired": "已过期订阅",
+        "no": "无订阅",
         "zero": "零余额",
+        "activeZero": "流量为零的活跃用户",
+        "trialZero": "流量为零的试用用户",
         "autopayFailed": "自动支付失败",
         "lowBalance": "余额不足",
         "inactive30d": "30天未活跃",
@@ -4380,7 +4383,11 @@
         "customToday": "今天注册",
         "customWeek": "本周注册",
         "customMonth": "本月注册",
-        "customActiveToday": "今天活跃"
+        "customActiveToday": "今天活跃",
+        "customInactiveWeek": "7天以上未活跃",
+        "customInactiveMonth": "30天以上未活跃",
+        "customReferrals": "通过推荐注册",
+        "customDirect": "直接注册"
       },
       "offerType": {
         "testAccess": "测试访问",

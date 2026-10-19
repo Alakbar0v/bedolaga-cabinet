@@ -5991,7 +5991,10 @@
         "trialEnding": "Заканчивается триал",
         "expiring": "Заканчивается подписка",
         "expired": "Истекшая подписка",
+        "no": "Без подписки",
         "zero": "Нулевой баланс",
+        "activeZero": "Активные с нулевым трафиком",
+        "trialZero": "Триальные с нулевым трафиком",
         "autopayFailed": "Ошибка автоплатежа",
         "lowBalance": "Низкий баланс",
         "inactive30d": "Неактивны 30 дней",
@@ -6000,7 +6003,11 @@
         "customToday": "Зарегистрированы сегодня",
         "customWeek": "Зарегистрированы за неделю",
         "customMonth": "Зарегистрированы за месяц",
-        "customActiveToday": "Активны сегодня"
+        "customActiveToday": "Активны сегодня",
+        "customInactiveWeek": "Неактивны 7+ дней",
+        "customInactiveMonth": "Неактивны 30+ дней",
+        "customReferrals": "Пришли по рефералу",
+        "customDirect": "Прямая регистрация"
       },
       "offerType": {
         "testAccess": "Тестовый доступ",
