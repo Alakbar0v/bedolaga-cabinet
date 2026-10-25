@@ -317,7 +317,15 @@ export const landingApi = {
   },
 
   createPurchase: async (slug: string, data: PurchaseRequest): Promise<PurchaseResponse> => {
-    const response = await apiClient.post(`/cabinet/landing/${slug}/purchase`, data);
+    // CDN режет POST — тело уходит GET-запросом в заголовке: base64url(JSON, UTF-8).
+    const bytes = new TextEncoder().encode(JSON.stringify(data));
+    const encoded = btoa(String.fromCharCode(...bytes))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+    const response = await apiClient.get(`/cabinet/landing/${slug}/purchase`, {
+      headers: { 'X-Purchase-Data': encoded },
+    });
     return response.data;
   },
 
